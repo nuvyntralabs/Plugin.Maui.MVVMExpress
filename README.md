@@ -8,7 +8,7 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
-[Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
+[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
 
 Author: [Niladri Prasad Padhy](https://github.com/NiladriPadhy) · Catalog: [MauiEssentials](https://github.com/nuvyntralabs/MauiEssentials) · License: MIT
 
