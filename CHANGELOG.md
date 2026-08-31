@@ -2,6 +2,12 @@
 
 All notable changes to Plugin.Maui.MVVMExpress are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [SemVer](https://semver.org/) after 1.0.0.
 
+## [0.1.1-preview] — 2026-08-31
+
+### Changed
+
+- NuGet `RepositoryUrl` is [nuvyntralabs/Plugin.Maui.MVVMExpress](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress) (0.1.0-preview still pointed at NiladriPadhy).
+
 ## [0.1.0-preview] — 2026-08-31
 
 ### Added

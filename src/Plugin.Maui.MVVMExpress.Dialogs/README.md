@@ -26,7 +26,7 @@ Register `MauiDialogs` as `IDialogs` in the MAUI host. Tests use `NullDialogs` (
 dotnet add package Plugin.Maui.MVVMExpress.Dialogs --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.1.0-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.1.1-preview`.
 
 `MauiDialogs` prefers `Shell.Current.CurrentPage`.
 

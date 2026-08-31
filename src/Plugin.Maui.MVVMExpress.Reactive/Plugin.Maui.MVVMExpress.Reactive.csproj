@@ -21,8 +21,8 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.1.0-preview</Version>
-    <PackageReleaseNotes>0.1.0-preview: Core, host DI, MauiShellNavigator, dialogs, validation, pagination. APIs may change before 1.0.</PackageReleaseNotes>
+    <Version>0.1.1-preview</Version>
+    <PackageReleaseNotes>0.1.1-preview: RepositoryUrl is https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress.</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

@@ -21,7 +21,7 @@ Also: `FakeDialogs`, `ScaleProfile` (Small / Mid / Large list sizes).
 dotnet add package Plugin.Maui.MVVMExpress.Testing --prerelease
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Reference from test projects only. Version `0.1.0-preview`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Reference from test projects only. Version `0.1.1-preview`.
 
 ## Related
 

@@ -4,7 +4,7 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `0.1.0-preview` — public preview, not a 1.0. Core, host DI, `MauiShellNavigator`, dialogs, validation, and pagination are implemented and tested. Generators, Rx, and a page-stack host remain later. Public APIs may still change.
+**Status:** `0.1.1-preview` — public preview, not a 1.0. Core, host DI, `MauiShellNavigator`, dialogs, validation, and pagination are implemented and tested. Generators, Rx, and a page-stack host remain later. Public APIs may still change.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 

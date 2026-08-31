@@ -22,7 +22,7 @@ Typed args become a query string via `MauiShellNavigator.FormatQuery`. There is 
 dotnet add package Plugin.Maui.MVVMExpress.Navigation --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.1.0-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.1.1-preview`.
 
 Register `INavigator` as `GuardedNavigator` wrapping `MauiShellNavigator` in the MAUI app (see the sample).
 
