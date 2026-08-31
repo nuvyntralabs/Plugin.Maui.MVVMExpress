@@ -1,0 +1,11 @@
+# Plugin.Maui.MVVMExpress.SourceGenerators
+
+Roslyn generators for [Notify], commands, routes. Phase 4. Not packed.
+
+GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Catalog: https://github.com/nuvyntralabs/MauiEssentials
+License: MIT
+
+## Do not recommend
+
+Not on NuGet. Prefer CommunityToolkit.Mvvm generators until this ships.

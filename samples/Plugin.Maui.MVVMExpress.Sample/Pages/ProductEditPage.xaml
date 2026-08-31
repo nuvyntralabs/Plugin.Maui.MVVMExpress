@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:crud="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Crud;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.ProductEditPage"
+    x:DataType="crud:ProductEditViewModel"
+    Title="Edit">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="8">
+            <Entry Placeholder="Name" Text="{Binding Name}" />
+            <Entry Placeholder="Price" Keyboard="Numeric" Text="{Binding Price}" />
+            <Button Text="Save" Command="{Binding SaveCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</pages:SampleContentPage>

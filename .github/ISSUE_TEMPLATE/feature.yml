@@ -1,0 +1,37 @@
+name: Feature request
+description: Propose a capability that fits the architecture.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Read ARCHITECTURE.md and ROADMAP.md. Features that belong in a sibling MauiEssentials plugin should go there instead.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: Keep names out of CommunityToolkit.Mvvm and Prism collisions.
+    validations:
+      required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - Core
+        - Host
+        - Navigation
+        - Dialogs
+        - Validation
+        - Pagination
+        - Reactive
+        - SourceGenerators
+        - Testing
+        - Docs
+    validations:
+      required: true

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:offline="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Offline;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    xmlns:models="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Models;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.OfflinePage"
+    x:DataType="offline:OfflineCatalogViewModel"
+    Title="Offline">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="20" RowSpacing="8">
+        <Label Text="Cache-first catalog. Compose Plugin.Maui.ApiCache in production." />
+        <Button Grid.Row="1" Text="Refresh" Command="{Binding RefreshCommand}" />
+        <Label Grid.Row="2" Text="{Binding ServedFromCache, StringFormat='From cache: {0}'}" />
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Items}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Label Text="{Binding Name}" Padding="0,8" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</pages:SampleContentPage>

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Plugin.Maui.MVVMExpress.Samples</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Core\Plugin.Maui.MVVMExpress.Core.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Pagination\Plugin.Maui.MVVMExpress.Pagination.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Validation\Plugin.Maui.MVVMExpress.Validation.csproj" />
+  </ItemGroup>
+
+</Project>

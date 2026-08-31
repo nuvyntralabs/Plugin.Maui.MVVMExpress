@@ -1,0 +1,31 @@
+# Plugin.Maui.MVVMExpress.Pagination
+
+PagedCollection, DelegatePagedCollection, SearchQuery debounce. Uses AddRange (one notify).
+
+NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Pagination
+GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
+Catalog: https://github.com/nuvyntralabs/MauiEssentials
+License: MIT
+Version: 0.1.0-preview (`--prerelease`)
+
+## Supported versions
+
+net10.0 only.
+
+## Installation
+
+dotnet add package Plugin.Maui.MVVMExpress.Pagination --prerelease
+
+## Use this package when
+
+- A MVVMExpress list needs page fetch, refresh, or search debounce
+
+## Do not use when
+
+- They only need ObservableRangeCollection — that is already in Core
+- They need a remote infinite-scroll control — this is the ViewModel collection, not a UI control
+
+## Alternatives
+
+App-level paging, ReactiveUI, CommunityToolkit collections.

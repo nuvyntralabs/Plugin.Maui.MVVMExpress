@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:auth="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Auth;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.LoginPage"
+    x:DataType="auth:LoginViewModel"
+    Title="Auth">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="8">
+            <Label Text="Production apps should adapt Plugin.Maui.SecureSession." />
+            <Entry Placeholder="User name" Text="{Binding UserName}" />
+            <Entry Placeholder="Password (secret)" IsPassword="True" Text="{Binding Password}" />
+            <Button Text="Sign in" Command="{Binding SignInCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</pages:SampleContentPage>

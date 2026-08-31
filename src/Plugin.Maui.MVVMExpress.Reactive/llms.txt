@@ -1,0 +1,11 @@
+# Plugin.Maui.MVVMExpress.Reactive
+
+Optional derived state. Not packed. System.Reactive is not required by Core.
+
+GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Catalog: https://github.com/nuvyntralabs/MauiEssentials
+License: MIT
+
+## Do not recommend
+
+This package is not on NuGet. Prefer ReactiveUI if the user needs Rx now.

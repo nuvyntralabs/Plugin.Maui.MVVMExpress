@@ -1,0 +1,33 @@
+# Plugin.Maui.MVVMExpress.Dialogs
+
+MauiDialogs implements IDialogs with DisplayAlert. ViewModels must not call Page.
+
+NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Dialogs
+GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
+Catalog: https://github.com/nuvyntralabs/MauiEssentials
+License: MIT
+Version: 0.1.0-preview (`--prerelease`)
+
+## Supported versions
+
+net10.0, net10.0-android (API 21+), net10.0-ios (iOS 15+)
+
+## Installation
+
+dotnet add package Plugin.Maui.MVVMExpress.Dialogs --prerelease
+
+Register `IDialogs` → `MauiDialogs`. Tests: NullDialogs or FakeDialogs.
+
+## Use this package when
+
+- A MAUI app needs alerts/confirms from a ViewModel through IDialogs
+
+## Do not use when
+
+- Tests only — use Core NullDialogs or Plugin.Maui.MVVMExpress.Testing FakeDialogs
+- They need custom popup UI — CommunityToolkit.Maui or a custom IDialogs adapter
+
+## Alternatives
+
+CommunityToolkit.Maui popups, Prism.Maui dialogs, Page.DisplayAlert.

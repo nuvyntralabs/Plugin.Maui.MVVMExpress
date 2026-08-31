@@ -1,0 +1,30 @@
+# Plugin.Maui.MVVMExpress.Testing
+
+LeakProbe, ScaleProfile, FakeDialogs, FakeNavigator for unit tests.
+
+NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Testing
+GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
+Catalog: https://github.com/nuvyntralabs/MauiEssentials
+License: MIT
+Version: 0.1.0-preview (`--prerelease`)
+
+## Supported versions
+
+net10.0 only. Test projects.
+
+## Installation
+
+dotnet add package Plugin.Maui.MVVMExpress.Testing --prerelease
+
+## Use this package when
+
+- Tests need FakeNavigator / FakeDialogs or GC leak probes for MVVMExpress ViewModels
+
+## Do not use when
+
+- Shipping in the app — this is a test helper package
+
+## Alternatives
+
+Hand-rolled fakes, CommunityToolkit.Mvvm test helpers, Prism test support.

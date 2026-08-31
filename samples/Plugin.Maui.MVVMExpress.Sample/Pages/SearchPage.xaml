@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:search="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Reactive;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    xmlns:models="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Models;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.SearchPage"
+    x:DataType="search:SearchViewModel"
+    Title="Reactive">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Padding="20" RowSpacing="8">
+        <Entry Placeholder="Search products" Text="{Binding Query}" />
+        <Entry Grid.Row="1" Placeholder="First" Text="{Binding First}" />
+        <Entry Grid.Row="2" Placeholder="Last" Text="{Binding Last}" />
+        <Label Grid.Row="3" Text="{Binding FullName}" FontAttributes="Bold" />
+        <CollectionView Grid.Row="4" ItemsSource="{Binding Items}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Label Text="{Binding Name}" Padding="0,8" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</pages:SampleContentPage>

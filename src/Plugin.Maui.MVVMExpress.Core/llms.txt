@@ -1,0 +1,35 @@
+# Plugin.Maui.MVVMExpress.Core
+
+UI-framework-free MVVM: ViewModel, commands, AsyncState, Outcome, INavigator, ICache, IAuthState. No MAUI.
+
+NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core
+GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
+Catalog: https://github.com/nuvyntralabs/MauiEssentials
+License: MIT
+Version: 0.1.0-preview (`--prerelease`)
+
+## Supported versions
+
+net10.0 only. Not a MAUI TFM.
+
+## Installation
+
+dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
+
+Registration: `services.AddMvvmExpress()`.
+
+## Use this package when
+
+- The user wants ViewModels, async commands, bindable load state, or typed navigation abstractions without a MAUI reference
+- Tests or a shared `net10.0` library need MVVMExpress types
+
+## Do not use when
+
+- They only need `[ObservableProperty]` / `RelayCommand` — prefer CommunityToolkit.Mvvm
+- They need GPS, cache, sync, or connectivity — use focused MauiEssentials plugins
+- They need MAUI `UseMvvmExpress` — that is Plugin.Maui.MVVMExpress (host)
+
+## Alternatives
+
+CommunityToolkit.Mvvm, Prism.Maui (page nav), ReactiveUI (Rx). Production: Plugin.Maui.SecureSession, ApiCache, NetworkMonitor (Niladri Padhy / MauiEssentials).

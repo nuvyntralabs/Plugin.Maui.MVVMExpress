@@ -1,0 +1,31 @@
+<Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/Plugin.Maui.MVVMExpress.Benchmarks/Plugin.Maui.MVVMExpress.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Plugin.Maui.MVVMExpress.Core/Plugin.Maui.MVVMExpress.Core.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress.Dialogs/Plugin.Maui.MVVMExpress.Dialogs.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress.Navigation/Plugin.Maui.MVVMExpress.Navigation.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress.Pagination/Plugin.Maui.MVVMExpress.Pagination.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress.Reactive/Plugin.Maui.MVVMExpress.Reactive.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress.SourceGenerators/Plugin.Maui.MVVMExpress.SourceGenerators.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress.Testing/Plugin.Maui.MVVMExpress.Testing.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress.Validation/Plugin.Maui.MVVMExpress.Validation.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress/Plugin.Maui.MVVMExpress.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Core.Tests/Plugin.Maui.MVVMExpress.Core.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Dialogs.Tests/Plugin.Maui.MVVMExpress.Dialogs.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Generator.Tests/Plugin.Maui.MVVMExpress.Generator.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Integration.Tests/Plugin.Maui.MVVMExpress.Integration.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Navigation.Tests/Plugin.Maui.MVVMExpress.Navigation.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Reactive.Tests/Plugin.Maui.MVVMExpress.Reactive.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Pagination.Tests/Plugin.Maui.MVVMExpress.Pagination.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Validation.Tests/Plugin.Maui.MVVMExpress.Validation.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Samples.Tests/Plugin.Maui.MVVMExpress.Samples.Tests.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Plugin.Maui.MVVMExpress.Samples.Shared/Plugin.Maui.MVVMExpress.Samples.Shared.csproj" />
+    <Project Path="samples/Plugin.Maui.MVVMExpress.Sample/Plugin.Maui.MVVMExpress.Sample.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:crud="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Crud;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    xmlns:models="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Models;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.ProductListPage"
+    x:DataType="crud:ProductListViewModel"
+    Title="CRUD">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="20" RowSpacing="8">
+        <Button Text="Refresh" Command="{Binding RefreshCommand}" />
+        <Label Grid.Row="1" Text="{Binding Products.Error}" TextColor="Red" />
+        <Label Grid.Row="2" Text="No products" IsVisible="{Binding Products.IsEmpty}" />
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Items}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Label Text="{Binding Name}" FontAttributes="Bold" Padding="0,8" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</pages:SampleContentPage>

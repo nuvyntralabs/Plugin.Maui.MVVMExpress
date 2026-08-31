@@ -1,0 +1,38 @@
+name: Bug report
+description: Something does not match the documented design or a shipped API.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search existing issues first. Design questions belong on a discussion or a design-review issue.
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Roadmap phase
+      options:
+        - Design / docs
+        - Phase 1 Core
+        - Phase 2 Navigation / Dialogs
+        - Phase 3 Reactive / Forms
+        - Phase 4 Generators
+        - Phase 5 Samples / NuGet
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: 0.1.0-design

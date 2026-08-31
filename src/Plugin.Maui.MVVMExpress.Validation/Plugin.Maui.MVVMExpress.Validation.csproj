@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+
+    <RootNamespace>Plugin.Maui.MVVMExpress.Validation</RootNamespace>
+    <AssemblyName>Plugin.Maui.MVVMExpress.Validation</AssemblyName>
+    <PackageId>Plugin.Maui.MVVMExpress.Validation</PackageId>
+    <Title>.NET MAUI MVVMExpress — DataAnnotations validation</Title>
+    <Description>IValidator and DataAnnotationsValidator for MVVMExpress. FluentValidation remains an optional app-level adapter.</Description>
+    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm;mvvm-express;validation;dataannotations</PackageTags>
+    <Authors>Niladri</Authors>
+    <Company>MauiEssentials</Company>
+    <Copyright>Copyright © 2026 Niladri</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Version>0.1.0-preview</Version>
+    <PackageReleaseNotes>0.1.0-preview: Core, host DI, MauiShellNavigator, dialogs, validation, pagination. APIs may change before 1.0.</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IsPackable>true</IsPackable>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Plugin.Maui.MVVMExpress.Core\Plugin.Maui.MVVMExpress.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Plugin.Maui.MVVMExpress.Validation.Tests" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+# Plugin.Maui.MVVMExpress.Validation
+
+IValidator + DataAnnotationsValidator for MVVMExpress. Not trim-safe.
+
+NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Validation
+GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
+Catalog: https://github.com/nuvyntralabs/MauiEssentials
+License: MIT
+Version: 0.1.0-preview (`--prerelease`)
+
+## Supported versions
+
+net10.0 only.
+
+## Installation
+
+dotnet add package Plugin.Maui.MVVMExpress.Validation --prerelease
+
+## Use this package when
+
+- ViewModels already use MVVMExpress and need DataAnnotations / IValidator
+
+## Do not use when
+
+- They need MAUI attached-property Entry UX — use Plugin.Maui.FormValidation
+- They already standardize on FluentValidation as the only engine
+
+## Alternatives
+
+Plugin.Maui.FormValidation, FluentValidation, CommunityToolkit.Mvvm ObservableValidator.

@@ -1,0 +1,33 @@
+# Plugin.Maui.MVVMExpress
+
+MAUI host: UseMvvmExpress, MauiMainThread, page lifecycle. Depends on Core.
+
+NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress
+GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
+Catalog: https://github.com/nuvyntralabs/MauiEssentials
+License: MIT
+Version: 0.1.0-preview (`--prerelease`)
+
+## Supported versions
+
+net10.0, net10.0-android (API 21+), net10.0-ios (iOS 15+)
+
+## Installation
+
+dotnet add package Plugin.Maui.MVVMExpress --prerelease
+
+Registration: `builder.UseMvvmExpress()`.
+
+## Use this package when
+
+- A MAUI Android/iOS app already uses Core ViewModels and needs the host dispatcher and lifecycle behavior
+
+## Do not use when
+
+- The project is `net10.0` tests only — use Core + `AddMvvmExpress()`
+- They need Shell navigation or alerts — add Navigation / Dialogs packages
+
+## Alternatives
+
+CommunityToolkit.Maui (behaviors), Prism.Maui (bootstrapper).

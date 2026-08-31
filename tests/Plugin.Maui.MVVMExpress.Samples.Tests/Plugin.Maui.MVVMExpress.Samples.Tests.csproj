@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>Plugin.Maui.MVVMExpress.Samples.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <ProjectReference Include="..\..\samples\Plugin.Maui.MVVMExpress.Samples.Shared\Plugin.Maui.MVVMExpress.Samples.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Testing\Plugin.Maui.MVVMExpress.Testing.csproj" />
+  </ItemGroup>
+
+</Project>
