@@ -1,10 +1,21 @@
 # MVVMExpress Public API Design
 
-Proposed public surface for **Plugin.Maui.MVVMExpress**. **Shipped in 0.3.0-preview (with tests):** Core (`ObservableModel`, commands, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, range collection) plus `AddMvvmExpress` / `UseMvvmExpress`, `INavigator` / `IPageNavigator` / `MauiShellNavigator` / `MauiPageNavigator`, URI stack, dictionary/URI args, `IWindowContext`, `IDialogs` / `INotifier` / `MauiDialogs` / `MauiNotifier`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, and Testing fakes. Source generators and Reactive remain design-only. Signatures below that are not in FEATURE-MATRIX as Yes are still proposed. Breaking changes after 1.0 follow SemVer.
+Contract for **Plugin.Maui.MVVMExpress**. Default namespace root: `Plugin.Maui.MVVMExpress`. Breaking changes after 1.0 follow SemVer. Public APIs may still change before 1.0.
 
-Default namespace root: `Plugin.Maui.MVVMExpress`.
+**How to read this file**
 
-## 1. Hosting
+| Mark | Meaning |
+| --- | --- |
+| **Shipped (0.3.0-preview)** | Types exist in the packed packages **and** tests exist. Copy these signatures. |
+| **Proposed** | Design intent only. Not in a nupkg. Do not implement against these names. |
+
+Shipping versus designed is also tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). Phases live in [ROADMAP.md](ROADMAP.md). Architecture intent lives in [ARCHITECTURE.md](ARCHITECTURE.md).
+
+**Shipped in 0.3.0-preview:** Core (`ObservableModel`, commands, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, range collection), `AddMvvmExpress` / `UseMvvmExpress`, `INavigator` / `IPageNavigator` / `MauiShellNavigator` / `MauiPageNavigator`, URI stack, typed + dictionary/URI args, `IWindowContext`, `IDialogs` / `INotifier` / `MauiDialogs` / `MauiNotifier`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, and Testing fakes. Source generators and Reactive remain proposed.
+
+---
+
+## Shipped — 1. Hosting
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Hosting;
@@ -18,37 +29,37 @@ public static class MVVMExpressMauiAppBuilderExtensions
 
 public static class MVVMExpressServiceCollectionExtensions
 {
-    public static IServiceCollection AddMvvmExpress(
-        this IServiceCollection services,
-        Action<MvvmExpressOptions>? configure = null);
-
-    public static IServiceCollection AddViewModel<TViewModel>(
-        this IServiceCollection services,
-        ServiceLifetime lifetime = ServiceLifetime.Transient)
-        where TViewModel : class, IViewModel;
-
-    public static IServiceCollection AddView<TView, TViewModel>(
-        this IServiceCollection services,
-        ServiceLifetime viewLifetime = ServiceLifetime.Transient,
-        ServiceLifetime viewModelLifetime = ServiceLifetime.Transient)
-        where TView : class
-        where TViewModel : class, IViewModel;
+    public static IServiceCollection AddMvvmExpress(this IServiceCollection services);
 }
 
 public sealed class MvvmExpressOptions
 {
-    public bool EnableNavigation { get; set; } = true;
-    public bool EnableLifecycle { get; set; } = true;
-    public bool EnableAutoRegistration { get; set; } = false;
-    public bool EnableDiagnostics { get; set; } = false;
-    public bool EnableReactive { get; set; } = false;
-    public bool CancelOperationsOnDisappear { get; set; } = true;
+    public bool CancelOperationsOnDisappear { get; set; }
 }
 ```
 
-`AddMauiMvvm` is **not** used (avoids implying ownership of MAUI’s MVVM). Alias may be added later if review wants it.
+`UseMvvmExpress` registers Core services, then replaces `IMainThread` with `MauiMainThread`. `AddMvvmExpress` has no options callback. `CancelOperationsOnDisappear` is stored; the current `ViewModelLifecycleBehavior` calls `OnDisappearingAsync` and does **not** yet cancel the token on disappear. Dispose is the guaranteed cancel path.
 
-## 2. Observable model and ViewModels
+`AddMauiMvvm` is **not** used (avoids implying ownership of MAUI’s MVVM).
+
+`AddMvvmExpress` defaults:
+
+| Abstraction | Default | Typical app replacement |
+| --- | --- | --- |
+| `IMessageHub` | `MessageHub` | Keep |
+| `IBusyGate` | `BusyGate` | Keep |
+| `IErrorSink` | `NullErrorSink` | App logger sink |
+| `ICache` | `MemoryCache` | Plugin.Maui.ApiCache adapter |
+| `IConnectivityProbe` | `InMemoryConnectivityProbe` | Plugin.Maui.NetworkMonitor adapter |
+| `IWindowContext` | `WindowContext.Default` | `MauiWindowContext.Current` |
+| `IWindowNavigatorRegistry` | `WindowNavigatorRegistry` | Keep; register per window |
+| `INavigator` / `IPageNavigator` | `InMemoryNavigator` | `MauiShellNavigator` / `MauiPageNavigator` |
+| `IMainThread` | `ImmediateMainThread` | `MauiMainThread` (host) |
+| `IDialogs` / `INotifier` | `NullDialogs` | `MauiDialogs` / `MauiNotifier` |
+
+---
+
+## Shipped — 2. Observable model and ViewModels
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.ComponentModel;
@@ -68,8 +79,8 @@ public abstract class ObservableModel : INotifyPropertyChanged, INotifyPropertyC
         Action<T> onChanged,
         [CallerMemberName] string? propertyName = null);
 
-    protected void Notify(string propertyName);
-    protected void NotifyChanging(string propertyName);
+    protected void Notify([CallerMemberName] string? propertyName = null);
+    protected void NotifyChanging([CallerMemberName] string? propertyName = null);
     protected void NotifyDependsOn(string sourceProperty, params string[] dependents);
 }
 
@@ -86,118 +97,126 @@ public interface IViewModel : IAsyncDisposable, IDisposable
 
 public interface INavigable
 {
-    Task OnNavigatedToAsync(NavigationContext context, CancellationToken cancellationToken = default);
-    Task OnNavigatedFromAsync(NavigationContext context, CancellationToken cancellationToken = default);
-    Task<bool> CanNavigateAwayAsync(NavigationContext context, CancellationToken cancellationToken = default);
+    Task OnNavigatedToAsync(CancellationToken cancellationToken = default);
+    Task OnNavigatedFromAsync(CancellationToken cancellationToken = default);
+    Task<bool> CanNavigateAwayAsync(CancellationToken cancellationToken = default);
 }
 
 public abstract class ViewModel : ObservableModel, IViewModel
 {
-    protected ViewModel();
-    protected ViewModel(IErrorSink? errors, IBusyGate? busy, ILogger? logger);
+    protected ViewModel(IErrorSink? errors = null, IBusyGate? busy = null);
 
+    public ViewModelStatus Status { get; protected set; }
+    public virtual bool IsBusy { get; }
     public CancellationToken ViewModelCancellationToken { get; }
-    public IReadOnlyCollection<ITrackedOperation> ActiveOperations { get; }
+    public bool IsDisposed { get; }
 
     protected Task<Outcome> ExecuteAsync(
         Func<CancellationToken, Task> operation,
-        OperationOptions? options = null,
         CancellationToken cancellationToken = default);
 
-    protected Task<Outcome<T>> ExecuteAsync<T>(
-        Func<CancellationToken, Task<T>> operation,
-        OperationOptions? options = null,
-        CancellationToken cancellationToken = default);
+    public virtual Task InitializeAsync(CancellationToken cancellationToken = default);
+    public virtual Task OnAppearingAsync(CancellationToken cancellationToken = default);
+    public virtual Task OnDisappearingAsync(CancellationToken cancellationToken = default);
 }
 
 public abstract class PageViewModel : ViewModel, INavigable
 {
+    protected PageViewModel(INavigator? navigator = null, IDialogs? dialogs = null);
+
     protected INavigator? Navigator { get; }
     protected IDialogs? Dialogs { get; }
 }
 ```
 
-Manual INPC is always valid. Generators emit partials on types that already inherit `ObservableModel`.
+There is no `NavigationContext` parameter on `INavigable`. Manual INPC is always valid. Generators are Phase 4.
 
-```csharp
-// Phase 4 — generated
-[Notify]
-private string? name;
+Lifecycle (hosts that apply args):
 
-// emits public string? Name { get; set; }
-// partial void OnNameChanging(string? value);
-// partial void OnNameChanged(string? value);
+```
+Construct (DI)
+  → Accept(args) / Accept(query)    when IAcceptNavArgs / IAcceptNavQuery
+  → InitializeAsync(token)          once
+  → OnNavigatedToAsync(token)
+  → OnAppearingAsync(token)
+  → OnDisappearingAsync(token)
+  → OnNavigatedFromAsync(token)
+  → Dispose                         cancels ViewModelCancellationToken
 ```
 
-## 3. Commands
+The token stays readable after dispose (`IsCancellationRequested` is true).
+
+---
+
+## Shipped — 3. Commands
+
+There is no `IModelCommand` / `IAsyncModelCommand` interface. Commands implement `ICommand` directly.
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Input;
 
-public interface IModelCommand : ICommand
+public sealed class ModelCommand : ICommand
 {
-    bool IsRunning { get; }
-    bool IsCancellationRequested { get; }
-    CommandExecutionState State { get; } // Idle, Running, Completed, Failed, Cancelled
-    void NotifyCanExecuteChanged();
+    public ModelCommand(Action execute, Func<bool>? canExecute = null);
+    public void NotifyCanExecuteChanged();
 }
 
-public interface IAsyncModelCommand : IModelCommand
+public sealed class ModelCommand<T> : ICommand
 {
-    Task ExecuteAsync(CancellationToken cancellationToken = default);
-    void Cancel();
+    public ModelCommand(Action<T?> execute, Func<T?, bool>? canExecute = null);
+    public void NotifyCanExecuteChanged();
 }
 
-public class ModelCommand : IModelCommand { /* Action / Action<T>, CanExecute */ }
-public class ModelCommand<T> : IModelCommand { }
-public class AsyncModelCommand : IAsyncModelCommand { }
-public class AsyncModelCommand<T> : IAsyncModelCommand { }
+public sealed class AsyncModelCommand : ObservableModel, ICommand
+{
+    public AsyncModelCommand(
+        Func<CancellationToken, Task> execute,
+        Func<bool>? canExecute = null,
+        AsyncCommandOptions? options = null);
+
+    public bool IsRunning { get; }
+    public CommandExecutionState State { get; }
+    public bool IsCancellationRequested { get; }
+
+    public Task ExecuteAsync(CancellationToken cancellationToken = default);
+    public void Cancel();
+    public void NotifyCanExecuteChanged();
+}
+
+public sealed class AsyncModelCommand<T> : ObservableModel, ICommand { /* same + typed parameter */ }
+
+public enum ConcurrencyMode { Prevent = 0, CancelPrevious = 1 }
 
 public sealed class AsyncCommandOptions
 {
-    public bool AllowConcurrentExecution { get; init; }
-    public bool CancelPreviousExecution { get; init; }
+    public ConcurrencyMode Concurrency { get; init; } = ConcurrencyMode.Prevent;
     public TimeSpan? Timeout { get; init; }
     public int RetryCount { get; init; }
-    public TimeSpan RetryDelay { get; init; }
-    public TimeSpan? Debounce { get; init; }
-    public TimeSpan? Throttle { get; init; }
-    public ConcurrencyMode Concurrency { get; init; } = ConcurrencyMode.Prevent;
-    public ErrorHandling ErrorHandling { get; init; } = ErrorHandling.Sink;
+    public TimeSpan RetryDelay { get; init; } = TimeSpan.FromMilliseconds(50);
 }
 
-public enum ConcurrencyMode { Allow, Prevent, Queue, CancelPrevious, Replace }
-public enum ErrorHandling { Sink, Throw, Outcome }
-
-public class CompositeModelCommand : IModelCommand { }
+public enum CommandExecutionState { Idle, Running, Completed, Failed, Cancelled }
 ```
 
-`ExecuteAsync`, `Cancel`, `CanExecute`, `IsRunning`, and `IsCancellationRequested` are required on async commands.
+`Allow`, `Queue`, and `Replace` concurrency modes, debounce/throttle on the command, and `CompositeModelCommand` are **proposed**.
 
-## 4. State
+---
+
+## Shipped — 4. State
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.State;
 
 public enum ViewModelStatus
 {
-    Idle,
-    Loading,
-    Refreshing,
-    Saving,
-    Success,
-    Empty,
-    Error,
-    Offline,
-    Unauthorized,
-    Cancelled
+    Idle, Loading, Refreshing, Saving, Success, Empty, Error, Offline, Unauthorized, Cancelled
 }
 
-public class AsyncState<T> : ObservableModel
+public sealed class AsyncState<T> : ObservableModel
 {
     public ViewModelStatus Status { get; }
     public T? Data { get; }
-    public ErrorInfo? Error { get; }
+    public string? Error { get; }
     public Exception? Exception { get; }
     public DateTimeOffset? Timestamp { get; }
 
@@ -207,37 +226,21 @@ public class AsyncState<T> : ObservableModel
     public bool HasError { get; }
     public bool IsSuccess { get; }
 
-    public Task<Outcome<T>> LoadAsync(
+    public Task<T> LoadAsync(
         Func<CancellationToken, Task<T>> loader,
         CancellationToken cancellationToken = default);
 
-    public Task<Outcome<T>> RefreshAsync(
+    public Task<T> RefreshAsync(
         Func<CancellationToken, Task<T>> loader,
         CancellationToken cancellationToken = default);
 }
-
-public sealed class LoadState<T> : AsyncState<T> { }
-
-public interface IStateMachine<TState> where TState : struct, Enum
-{
-    TState Current { get; }
-    bool CanTransition(TState next);
-    Outcome Transition(TState next);
-    void Allow(TState from, TState to);
-}
 ```
 
-Default machine (when enabled):
+`LoadAsync` / `RefreshAsync` return `Task<T>`, not `Outcome<T>`. Failures set `Status` to `Error` or `Cancelled` and **rethrow**. `Error` is a user-facing string, not `ErrorInfo`. There is no `LoadState<T>` or `IStateMachine<T>` type.
 
-```
-Idle → Loading → Success | Empty | Error | Cancelled | Offline | Unauthorized
-Success → Refreshing → Success | Empty | Error | Cancelled
-Error → Loading | Refreshing
-```
+---
 
-Invalid transitions return `Outcome.Failure` and do not throw unless `ThrowOnInvalidTransition` is set.
-
-## 5. Outcome
+## Shipped — 5. Outcome
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Outcome;
@@ -260,31 +263,39 @@ public readonly struct Outcome<T>
 
     public static Outcome<T> Success(T value);
     public static Outcome<T> Failure(ErrorInfo error);
+    public static Outcome<T> Failure(string code, string message, Exception? exception = null);
 }
 
 public sealed class ErrorInfo
 {
-    public string Code { get; init; }
-    public string Message { get; init; }
-    public Exception? Exception { get; init; }
+    public ErrorInfo(string code, string message, Exception? exception = null);
+
+    public string Code { get; }
+    public string Message { get; }
+    public Exception? Exception { get; }
     public IReadOnlyList<ValidationMessage>? Validation { get; init; }
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
 }
+
+public sealed record ValidationMessage(string PropertyName, string Message);
 ```
 
 Named `Outcome` so it does not fight FluentResults, LanguageExt, or app-level `Result<T>`.
 
-## 6. Navigation
+---
+
+## Shipped — 6. Navigation
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Navigation;
 
 public interface INavigator
 {
-    object? CurrentViewModel { get; }
-    IReadOnlyList<object> Stack { get; }
-    IReadOnlyList<object> ModalStack { get; }
+    Type? Current { get; }
+    IReadOnlyList<Type> Stack { get; }
+    IReadOnlyList<Type> ModalStack { get; }
     bool CanGoBack { get; }
+    IReadOnlyList<NavigationRequest> History { get; }
 
     Task<Outcome> NavigateToAsync<TViewModel>(
         CancellationToken cancellationToken = default)
@@ -292,7 +303,6 @@ public interface INavigator
 
     Task<Outcome> NavigateToAsync<TViewModel, TArgs>(
         TArgs args,
-        NavOptions? options = null,
         CancellationToken cancellationToken = default)
         where TViewModel : class, IViewModel
         where TArgs : notnull;
@@ -303,13 +313,27 @@ public interface INavigator
         NavOptions? options = null,
         CancellationToken cancellationToken = default);
 
-    Task<Outcome<TResult>> NavigateForResultAsync<TViewModel, TResult>(
-        CancellationToken cancellationToken = default);
-
-    Task<Outcome> GoBackAsync(NavOptions? options = null, CancellationToken cancellationToken = default);
+    Task<Outcome> GoBackAsync(CancellationToken cancellationToken = default);
     Task<Outcome> PopToRootAsync(CancellationToken cancellationToken = default);
-    Task<Outcome> ReplaceAsync<TViewModel>(CancellationToken cancellationToken = default);
-    Task<Outcome> ResetAsync<TViewModel>(CancellationToken cancellationToken = default);
+    Task<Outcome> ReplaceAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel;
+    Task<Outcome> ResetAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel;
+}
+
+public interface IPageNavigator : INavigator
+{
+    IWindowContext Window { get; }
+}
+
+public interface IAcceptNavArgs<TArgs> where TArgs : notnull
+{
+    void Accept(TArgs args);
+}
+
+public interface IAcceptNavQuery
+{
+    void Accept(IReadOnlyDictionary<string, object> query);
 }
 
 public sealed class NavOptions
@@ -319,30 +343,77 @@ public sealed class NavOptions
     public bool Replace { get; init; }
 }
 
-public sealed class NavigationContext
+public sealed record NavigationRequest(
+    Type ViewModelType,
+    object? Args,
+    string? Route = null,
+    IReadOnlyDictionary<string, object>? Query = null,
+    bool Modal = false);
+
+public interface IWindowContext
 {
-    public object? Source { get; }
-    public object? Target { get; }
-    public object? Args { get; }
-    public IReadOnlyDictionary<string, object> Query { get; }
-    public bool IsCancelled { get; }
-    public void Cancel();
+    string WindowId { get; }
 }
 
-public interface IAcceptNavArgs<TArgs> where TArgs : notnull
+public sealed class WindowContext : IWindowContext
 {
-    TArgs Args { get; }
+    public static WindowContext Default { get; }
+    public WindowContext(string windowId);
+    public string WindowId { get; }
 }
 
-public interface INavigationHost
+public interface IWindowNavigatorRegistry
 {
-    // Implemented by ShellNavigationHost and PageNavigationHost
+    IWindowContext CurrentWindow { get; set; }
+    void Register(IWindowContext window, INavigator navigator);
+    INavigator GetNavigator(IWindowContext window);
+    INavigator GetCurrent();
+    bool TryGetNavigator(IWindowContext window, out INavigator? navigator);
+}
+
+public interface IRouteResolver
+{
+    bool TryResolve(string route, out Type viewModelType);
+}
+
+public sealed class GuardedNavigator : IPageNavigator
+{
+    public GuardedNavigator(INavigator inner, IAuthState auth, params Type[] protectedTypes);
+}
+
+public class InMemoryNavigator : IPageNavigator, IRouteResolver
+{
+    public InMemoryNavigator(Func<Type, bool>? canLeave = null, IWindowContext? window = null);
+    public InMemoryNavigator Map<TViewModel>(string route) where TViewModel : class, IViewModel;
+}
+
+public sealed class MauiShellNavigator : INavigator, IRouteResolver
+{
+    public MauiShellNavigator Map<TViewModel>(string route) where TViewModel : class, IViewModel;
+}
+
+public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
+{
+    public MauiPageNavigator(
+        IWindowContext? window = null,
+        IServiceProvider? services = null,
+        Func<INavigation?>? navigation = null);
+
+    public MauiPageNavigator Map<TViewModel, TPage>(string? route = null)
+        where TViewModel : class, IViewModel
+        where TPage : Page;
 }
 ```
 
-Guards run in this order: `OnNavigating` → `CanNavigateAwayAsync` → host navigate → `OnNavigatedFrom` / `OnNavigatedTo`.
+`Current` / `Stack` / `ModalStack` are ViewModel **types**, not instances. `IAcceptNavArgs<T>` is `void Accept(TArgs)` — not a stored `Args` property. There is no `NavigationContext`, `INavigationHost`, or `NavigateForResultAsync`.
 
-## 7. Dialogs and notifications
+Guards: `CanNavigateAwayAsync` → host navigate → `OnNavigatedFromAsync` / `OnNavigatedToAsync`. `GuardedNavigator` fails as `Outcome` (`E_AUTH`) when a protected type is requested and `IAuthState.IsAuthenticated` is false.
+
+`NavigationRouteTable.FormatQuery` / `ParseQuery` / `Split` / `MergeQuery` exist for URI interop. Host window helpers: `MauiWindowContext.Current` / `For(Window)`, `MauiVisualTree`.
+
+---
+
+## Shipped — 7. Dialogs and notifications
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Dialogs;
@@ -351,23 +422,40 @@ public interface IDialogs
 {
     Task AlertAsync(string title, string message, string cancel = "OK", CancellationToken cancellationToken = default);
     Task<bool> ConfirmAsync(string title, string message, string accept = "OK", string cancel = "Cancel", CancellationToken cancellationToken = default);
-    Task<string?> PromptAsync(string title, string message, string accept = "OK", string cancel = "Cancel", string? placeholder = null, CancellationToken cancellationToken = default);
-    Task<string?> ActionSheetAsync(string title, string cancel, string? destruction, IEnumerable<string> buttons, CancellationToken cancellationToken = default);
-    Task<IDisposable> ShowLoadingAsync(string? message = null, CancellationToken cancellationToken = default);
     Task ErrorAsync(ErrorInfo error, CancellationToken cancellationToken = default);
 }
 
 public interface INotifier
 {
     Task ToastAsync(string message, TimeSpan? duration = null, CancellationToken cancellationToken = default);
-    Task SnackbarAsync(string message, string? action = null, Func<CancellationToken, Task>? onAction = null, CancellationToken cancellationToken = default);
-    Task BannerAsync(string message, CancellationToken cancellationToken = default);
+}
+
+public interface IToastPresenter
+{
+    Task ShowAsync(string message, TimeSpan duration, CancellationToken cancellationToken = default);
+}
+
+public sealed class NullDialogs : IDialogs, INotifier
+{
+    public static NullDialogs Instance { get; }
+}
+
+public sealed class MauiDialogs : IDialogs
+{
+    public MauiDialogs(IWindowContext? window = null);
+}
+
+public sealed class MauiNotifier : INotifier
+{
+    public MauiNotifier(IToastPresenter? presenter = null, IWindowContext? window = null);
 }
 ```
 
-ViewModels must not call `Page.DisplayAlert`.
+ViewModels must not call `Page.DisplayAlert`. Prompt, action sheet, loading overlay, snackbar, and banner are **proposed**.
 
-## 8. Validation and forms
+---
+
+## Shipped — 8. Validation
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Validation;
@@ -376,43 +464,27 @@ public interface IValidator
 {
     Task<ValidationSummary> ValidateAsync(object instance, CancellationToken cancellationToken = default);
     Task<ValidationSummary> ValidatePropertyAsync(object instance, string propertyName, CancellationToken cancellationToken = default);
+    ValidationSummary Validate(object instance);
 }
 
 public sealed class ValidationSummary
 {
+    public ValidationSummary(IReadOnlyList<ValidationMessage> messages);
     public bool IsValid { get; }
     public IReadOnlyList<ValidationMessage> Messages { get; }
+    public static ValidationSummary Valid { get; }
 }
 
-public abstract class FormViewModel : PageViewModel
-{
-    public IDirtyState Dirty { get; }
-    public ValidationSummary Validation { get; }
-    public Task<Outcome> SubmitAsync(CancellationToken cancellationToken = default);
-    public void Reset();
-}
-
-public sealed class FormField<T> : ObservableModel
-{
-    public T? Value { get; set; }
-    public bool IsTouched { get; }
-    public bool IsDirty { get; }
-    public bool HasError { get; }
-    public string? Error { get; }
-}
-
-public interface IDirtyState
-{
-    DirtyStatus Status { get; } // Clean, Dirty, Saving, Saved
-    bool HasUnsavedChanges { get; }
-}
+public sealed class DataAnnotationsValidator : IValidator { }
 ```
 
-FluentValidation: `IValidator` adapter implemented in the app or an optional extra; **not** a PackageReference of `Plugin.Maui.MVVMExpress.Validation`.
+FluentValidation: `IValidator` adapter implemented in the app — **not** a PackageReference of `Plugin.Maui.MVVMExpress.Validation`.
 
-XAML `Validation.For` remains [Plugin.Maui.FormValidation](https://www.nuget.org/packages/Plugin.Maui.FormValidation).
+XAML `Validation.For` remains [Plugin.Maui.FormValidation](https://www.nuget.org/packages/Plugin.Maui.FormValidation). `FormViewModel`, `FormField<T>`, and `IDirtyState` are **proposed** (Phase 3).
 
-## 9. Messaging
+---
+
+## Shipped — 9. Messaging
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Messaging;
@@ -429,42 +501,77 @@ public interface IMessageHub
     Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken = default);
     void Unsubscribe(object subscriber);
 }
-
-// Designed, not shipped: RequestAsync<TRequest, TResponse>
-
 ```
 
-CommunityToolkit `IMessenger` is adapted in a later compatibility package, not implemented under the same name.
+Default subscribe is weak. The handler must use the recipient argument so the delegate does not capture `this`. `RequestAsync<TRequest, TResponse>` is **proposed**. CommunityToolkit `IMessenger` is not implemented under the same name.
 
-## 10. Pagination, refresh, search
+---
+
+## Shipped — 10. Pagination, search, collections
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Pagination;
 
 public abstract class PagedCollection<T> : ObservableModel
 {
+    protected PagedCollection(int pageSize = 20);
+
+    public int PageSize { get; }
     public AsyncState<IReadOnlyList<T>> State { get; }
+    public ObservableRangeCollection<T> Items { get; }
     public bool HasMore { get; }
+
     public Task LoadMoreAsync(CancellationToken cancellationToken = default);
     public Task RefreshAsync(CancellationToken cancellationToken = default);
     public Task RetryAsync(CancellationToken cancellationToken = default);
+
+    protected abstract Task<IReadOnlyList<T>> FetchAsync(
+        int skip, int take, CancellationToken cancellationToken);
+}
+
+public sealed class DelegatePagedCollection<T> : PagedCollection<T>
+{
+    public DelegatePagedCollection(
+        Func<int, int, CancellationToken, Task<IReadOnlyList<T>>> fetch,
+        int pageSize = 20);
 }
 
 public sealed class SearchQuery : ObservableModel
 {
+    public SearchQuery(TimeSpan? debounce = null, int minimumLength = 0);
+
+    public TimeSpan Debounce { get; }          // default 300 ms
+    public int MinimumLength { get; }
     public string Text { get; set; }
-    public TimeSpan Debounce { get; init; } = TimeSpan.FromMilliseconds(300);
-    public int MinimumLength { get; init; } = 2;
+    public bool IsReady { get; }
+
+    public Task<bool> WhenReadyAsync(CancellationToken cancellationToken = default);
+    public void Cancel();
+}
+
+namespace Plugin.Maui.MVVMExpress.Collections;
+
+public class ObservableRangeCollection<T> : ObservableCollection<T>
+{
+    public void AddRange(IEnumerable<T> items);       // one Reset
+    public void RemoveRange(IEnumerable<T> items);
+    public void ReplaceRange(IEnumerable<T> items);
+    public void Reset();
 }
 ```
 
-## 11. Cross-cutting abstractions
+The page loader is `(skip, take, token)`, not a 1-based page number.
+
+---
+
+## Shipped — 11. Cross-cutting abstractions
 
 ```csharp
 public interface IBusyGate
 {
-    IDisposable Enter();
     bool IsBusy { get; }
+    int Depth { get; }
+    IDisposable Enter();
 }
 
 public interface IErrorSink
@@ -483,129 +590,167 @@ public interface IMainThread
 public interface IConnectivityProbe
 {
     bool IsOnline { get; }
-    string? ConnectionType { get; }
-    event EventHandler? ConnectionChanged;
 }
 
 public interface ICache
 {
     Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default);
-    Task SetAsync<T>(string key, T value, CacheEntryOptions? options = null, CancellationToken cancellationToken = default);
+    Task SetAsync<T>(string key, T value, CancellationToken cancellationToken = default);
     Task RemoveAsync(string key, CancellationToken cancellationToken = default);
-}
-
-public interface IRetryPolicy
-{
-    Task<T> ExecuteAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default);
 }
 
 public interface IAuthState
 {
     bool IsAuthenticated { get; }
-    bool IsExpired { get; }
-}
-
-public interface IFeatureSwitch
-{
-    bool IsEnabled(string name);
-}
-
-public interface IPermissionGate
-{
-    Task<PermissionState> CheckAsync(string permission, CancellationToken cancellationToken = default);
-    Task<PermissionState> RequestAsync(string permission, CancellationToken cancellationToken = default);
-}
-
-public interface IMvvmExpressTelemetry
-{
-    void Track(string name, IReadOnlyDictionary<string, object?>? tags = null, TimeSpan? duration = null);
+    string? UserName { get; }
+    Task<Outcome> SignInAsync(string userName, string password, CancellationToken cancellationToken = default);
+    Task SignOutAsync(CancellationToken cancellationToken = default);
 }
 ```
 
-Default Host implementations may wrap MAUI Essentials. Production apps should swap:
+`IConnectivityProbe` has no `ConnectionType` / `ConnectionChanged` in 0.3.0. `ICache.SetAsync` has no entry-options overload. `IRetryPolicy`, `IFeatureSwitch`, `IPermissionGate`, and `IMvvmExpressTelemetry` are **proposed**.
+
+Default Host implementations may wrap in-memory stand-ins. Production apps should swap:
 
 | Abstraction | Suggested adapter |
 | --- | --- |
 | `IConnectivityProbe` | Plugin.Maui.NetworkMonitor |
 | `ICache` | Plugin.Maui.ApiCache |
 | `IAuthState` | Plugin.Maui.SecureSession |
-| `IFeatureSwitch` | Plugin.Maui.FeatureFlags |
-| `IPermissionGate` | Plugin.Maui.PermissionFlow |
+| Feature flags (proposed `IFeatureSwitch`) | Plugin.Maui.FeatureFlags |
+| Permissions (proposed `IPermissionGate`) | Plugin.Maui.PermissionFlow |
 
-## 12. Source generator attributes (Phase 4)
+---
 
-```csharp
-namespace Plugin.Maui.MVVMExpress.ComponentModel;
-
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public sealed class NotifyAttribute : Attribute { }
-
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public sealed class NotifyAlsoAttribute : Attribute
-{
-    public NotifyAlsoAttribute(params string[] propertyNames) { }
-}
-
-[AttributeUsage(AttributeTargets.Method)]
-public sealed class ModelCommandAttribute : Attribute { }
-
-[AttributeUsage(AttributeTargets.Method)]
-public sealed class AsyncModelCommandAttribute : Attribute
-{
-    public ConcurrencyMode Concurrency { get; set; }
-}
-
-[AttributeUsage(AttributeTargets.Class)]
-public sealed class RegisterViewModelAttribute : Attribute
-{
-    public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
-}
-
-[AttributeUsage(AttributeTargets.Class)]
-public sealed class RegisterViewAttribute : Attribute { }
-
-[AttributeUsage(AttributeTargets.Class)]
-public sealed class RouteAttribute : Attribute
-{
-    public RouteAttribute(string path) { }
-}
-
-[AttributeUsage(AttributeTargets.Property)]
-public sealed class PersistStateAttribute : Attribute { }
-
-[AttributeUsage(AttributeTargets.Class)]
-public sealed class RequiresAuthAttribute : Attribute { }
-
-[AttributeUsage(AttributeTargets.Class)]
-public sealed class RequiresRoleAttribute : Attribute
-{
-    public RequiresRoleAttribute(string role) { }
-}
-```
-
-## 13. Testing
+## Shipped — 12. Testing
 
 ```csharp
 namespace Plugin.Maui.MVVMExpress.Testing;
 
-public class FakeNavigator : INavigator { }
-public class FakeDialogs : IDialogs { }
-public class FakeNotifier : INotifier { }
-public class FakeMainThread : IMainThread { } // runs inline
-public class FakeConnectivity : IConnectivityProbe { }
-public class FakeMessageHub : IMessageHub { }
-
-public static class ViewModelTest
+public sealed class FakeNavigator : InMemoryNavigator
 {
-    public static Task AppearAsync(IViewModel vm, CancellationToken cancellationToken = default);
-    public static Task DisappearAsync(IViewModel vm, CancellationToken cancellationToken = default);
+    public FakeNavigator(Func<Type, bool>? canLeave = null, IWindowContext? window = null);
+}
+
+public sealed class FakeDialogs : IDialogs, INotifier
+{
+    public List<string> Alerts { get; }
+    public bool ConfirmResult { get; set; }
+}
+
+public static class LeakProbe
+{
+    public static bool IsCollected(WeakReference reference, int rounds = 3);
+    public static WeakReference Track(object target);
+}
+
+public enum ApplicationScale { Small, Mid, Large }
+
+public static class ScaleProfile
+{
+    public static int ListSize(ApplicationScale scale);
+    public static int ViewModelBatch(ApplicationScale scale);
 }
 ```
 
-## 14. Explicitly not public
+There is no `FakeNotifier` type — `FakeDialogs` is `INotifier`. Inject `IToastPresenter` to record toasts without a window. There is no `ViewModelTest` helper class.
+
+---
+
+## Proposed — later phases
+
+Do not copy these into app code. They are not packed.
+
+### Hosting (later)
+
+```csharp
+// Not shipped
+services.AddViewModel<TViewModel>(ServiceLifetime lifetime = Transient);
+services.AddView<TView, TViewModel>(...);
+
+public sealed class MvvmExpressOptions
+{
+    // Only CancelOperationsOnDisappear exists today.
+    public bool EnableNavigation { get; set; } = true;
+    public bool EnableLifecycle { get; set; } = true;
+    public bool EnableAutoRegistration { get; set; } = false;
+    public bool EnableDiagnostics { get; set; } = false;
+    public bool EnableReactive { get; set; } = false;
+}
+```
+
+### Commands (later)
+
+```csharp
+public enum ConcurrencyMode { Allow, Prevent, Queue, CancelPrevious, Replace }
+
+public sealed class AsyncCommandOptions
+{
+    public TimeSpan? Debounce { get; init; }
+    public TimeSpan? Throttle { get; init; }
+    public ErrorHandling ErrorHandling { get; init; }
+}
+
+public class CompositeModelCommand : ICommand { }
+public interface IOperationExecutor { /* shared busy + cancel + timeout + retry + Outcome */ }
+```
+
+### Navigation (later)
+
+```csharp
+public sealed class NavigationContext { /* Source, Target, Args, Query, Cancel */ }
+
+Task<Outcome<TResult>> NavigateForResultAsync<TViewModel, TResult>(...);
+```
+
+### Dialogs (later)
+
+```csharp
+Task<string?> PromptAsync(...);
+Task<string?> ActionSheetAsync(...);
+Task<IDisposable> ShowLoadingAsync(...);
+Task SnackbarAsync(...);
+Task BannerAsync(...);
+```
+
+### Forms and state machine (Phase 3)
+
+```csharp
+public abstract class FormViewModel : PageViewModel { }
+public sealed class FormField<T> : ObservableModel { }
+public interface IDirtyState { }
+public interface IStateMachine<TState> where TState : struct, Enum { }
+```
+
+### Messaging (later)
+
+```csharp
+Task<TResponse> RequestAsync<TRequest, TResponse>(...);
+```
+
+### Source generator attributes (Phase 4)
+
+```csharp
+namespace Plugin.Maui.MVVMExpress.ComponentModel;
+
+[Notify]                          // property + changing/changed + dependents
+[NotifyAlso("Label")]
+[ModelCommand] / [AsyncModelCommand]
+[RegisterViewModel] / [RegisterView]
+[Route("details")]
+[PersistState]
+[RequiresAuth] / [RequiresRole("admin")]
+```
+
+Until they ship, write properties and commands by hand. Typed `NavigateToAsync<TViewModel>()` and explicit `Map<TViewModel>` are the supported registration story.
+
+---
+
+## Explicitly not public
 
 - Prism `INavigationService`, `IDialogService`, `INavigationParameters`
-- CommunityToolkit `ObservableObject`, `RelayCommand`, `[ObservableProperty]`, `IMessenger` (unless Compatibility package)
+- CommunityToolkit `ObservableObject`, `RelayCommand`, `[ObservableProperty]`, `IMessenger` (unless a later Compatibility package)
 - ReactiveUI `ReactiveObject`, `ReactiveCommand`, `WhenAnyValue`
 - Static `MVVMExpress.Current` in Core
 - Types that reference `Page` or `Shell` inside Core
+- Prism-style regions (deferred past 1.0)
