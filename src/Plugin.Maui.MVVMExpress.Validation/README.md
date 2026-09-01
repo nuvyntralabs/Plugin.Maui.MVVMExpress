@@ -24,7 +24,7 @@ FluentValidation stays an optional app-level adapter. This package is not trim-s
 dotnet add package Plugin.Maui.MVVMExpress.Validation --prerelease
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `0.3.0-preview`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `0.4.0-preview`.
 
 ## Related
 

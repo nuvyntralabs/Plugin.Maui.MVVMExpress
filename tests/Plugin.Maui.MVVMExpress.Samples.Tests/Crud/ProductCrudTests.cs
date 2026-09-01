@@ -102,6 +102,26 @@ public sealed class ProductCrudTests
     }
 
     [Fact]
+    public async Task Edit_Dirty_BlocksNavigation_UntilSaved()
+    {
+        var (catalog, _, errors, busy) = SampleHarness.Core();
+        var vm = new ProductEditViewModel(catalog, errors, busy);
+        Assert.False(vm.IsDirty);
+        Assert.True(await vm.CanNavigateAwayAsync());
+        vm.Name = "Americano";
+        Assert.True(vm.IsDirty);
+        Assert.False(await vm.CanNavigateAwayAsync());
+        vm.Undo();
+        Assert.Equal("", vm.Name);
+        vm.Redo();
+        Assert.Equal("Americano", vm.Name);
+        vm.Price = 3.00m;
+        await vm.SaveCommand.ExecuteAsync();
+        Assert.False(vm.IsDirty);
+        Assert.True(await vm.CanNavigateAwayAsync());
+    }
+
+    [Fact]
     public async Task Appear_LoadsOnce()
     {
         var (catalog, hub, _, _) = SampleHarness.Core();

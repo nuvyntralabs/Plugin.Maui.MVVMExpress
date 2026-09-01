@@ -2,18 +2,18 @@
 
 Work plan for implementing [ARCHITECTURE.md](ARCHITECTURE.md) and [API-DESIGN.md](API-DESIGN.md). This is not a license to generate the entire framework in one change.
 
-**Stop condition:** Phase 2 is implemented in `0.3.0-preview`. Remaining work is Phase 3+ (Reactive, forms, generators). Do not regenerate the whole framework in one change.
+**Stop condition:** Phase 3 is implemented in `0.4.0-preview`. Remaining work is Phase 4+ (generators, restoration). Do not regenerate the whole framework in one change.
 
 ## 1. Current milestone
 
 | Item | Status |
 | --- | --- |
-| Architecture | Living contract — status banner updated for 0.3.0 |
+| Architecture | Living contract — status banner updated for 0.4.0 |
 | API design | Living contract — shipped vs proposed distinguished in the header |
-| Roadmap / feature matrix | Current — 0.3.0 Phase 2 complete |
-| Solution + packages | Core, Host, Navigation, Dialogs, Validation, Pagination, Testing packed |
-| Core runtime | Implemented + 127 Core tests. Host timings in MEMORY-AND-PERFORMANCE §2.1 |
-| Phase 2 application shell | Shipped: page host, URI stack, dictionary/URI args, multi-window root, toast |
+| Roadmap / feature matrix | Current — 0.4.0 Phase 3 complete |
+| Solution + packages | Core, Host, Navigation, Dialogs, Validation, Pagination, Reactive, Testing packed |
+| Core runtime | Implemented + forms / pipeline / scopes tests. Host timings in MEMORY-AND-PERFORMANCE §2.1 |
+| Phase 3 depth | Shipped: FormViewModel, CombineLatest, FetchPolicy, IOperationExecutor, child scopes |
 
 ## 2. Decision log
 

@@ -2,7 +2,7 @@
 
 Scenarios covered by `tests/Plugin.Maui.MVVMExpress.Core.Tests` after the 2026-08-31 recheck.
 
-Latest run (2026-09-01): **127 Core** + **45 sample** + **3 Validation** + **4 Pagination** + **13 Navigation** + **8 Dialogs** + identity facts for Reactive / Generators / Integration. Generators and Reactive remain identity-only until those packages ship APIs.
+Latest run (2026-09-01): **151 Core** + **47 sample** + **3 Reactive** + **3 Validation** + **4 Pagination** + **13 Navigation** + **8 Dialogs**. Generators remain identity-only.
 
 ## Properties
 
@@ -97,6 +97,20 @@ Latest run (2026-09-01): **127 Core** + **45 sample** + **3 Validation** + **4 P
 | Enterprise | online load, offline sink, hub notices, auth gate, DI composition |
 | Memory | counter + list VM GC |
 
+## Forms / cache / pipeline / Reactive
+
+| Scenario | Test |
+| --- | --- |
+| Form dirty blocks `CanNavigateAwayAsync` | `FormViewModelTests.Edit_MarksDirty_AndBlocksNavigation` |
+| Undo / redo / reset | `FormViewModelTests.UndoRedo_RestoresValues` |
+| Sample edit dirty + save | `ProductCrudTests.Edit_Dirty_BlocksNavigation_UntilSaved` |
+| Search debounce | `SearchViewModelTests.Debounce_CancelsPrevious` |
+| FetchPolicy cache / network / SWR | `CachedFetcherTests` |
+| Operation debounce / queue | `OperationExecutorTests` |
+| Command queue / debounce / throttle / allow | `CommandPipelineTests` |
+| Child attach + scope | `ViewModelComposerTests` |
+| CombineLatest | `PropertyObservableTests` |
+
 ## Not covered here (later phases)
 
-Device RSS, CollectionView virtualization, generators, and Reactive APIs. Navigation/Dialogs/Validation/Pagination packages now have unit tests (page host and toast without a window).
+Device RSS, CollectionView virtualization, and generators.

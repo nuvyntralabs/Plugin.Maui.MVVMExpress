@@ -12,6 +12,10 @@ Canonical design documents live at the repository root so they match the first d
 | [FEATURE-MATRIX.md](../FEATURE-MATRIX.md) | Comparison vs CommunityToolkit, Prism, ReactiveUI (shipping vs designed) |
 | [MEMORY-AND-PERFORMANCE.md](../MEMORY-AND-PERFORMANCE.md) | Leaks, memory budgets, Small / Mid / Large scale |
 | [getting-started.md](getting-started.md) | Core usage that ships today |
+| [navigation.md](navigation.md) | Shell / page hosts, toast |
+| [forms.md](forms.md) | FormViewModel, dirty guard, undo |
+| [reactive.md](reactive.md) | IPropertyObservable / CombineLatest |
+| [offline.md](offline.md) | FetchPolicy and capability abstractions |
 | [TEST-COVERAGE.md](TEST-COVERAGE.md) | Scenario matrix for Core tests |
 
-Getting started and navigation guides ship with 0.3.0. Migration guides remain Phase 5.
+Forms / reactive / offline guides ship with 0.4.0. Migration guides remain Phase 5.

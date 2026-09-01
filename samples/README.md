@@ -9,13 +9,13 @@ Each sample integrates **library** types. In-memory implementations (`InMemoryNa
 | Sample | ViewModels | Library integration |
 | --- | --- | --- |
 | [Basic](Plugin.Maui.MVVMExpress.Samples.Shared/Basic/) | `CounterViewModel` | `ViewModel`, `SetProperty`, `NotifyDependsOn`, `ModelCommand` |
-| [CRUD](Plugin.Maui.MVVMExpress.Samples.Shared/Crud/) | `ProductListViewModel`, `ProductEditViewModel` | `AsyncState<T>`, `AsyncModelCommand`, `ObservableRangeCollection`, `BusyGate`, `IErrorSink`, `MessageHub`, `IValidator` / DataAnnotations |
+| [CRUD](Plugin.Maui.MVVMExpress.Samples.Shared/Crud/) | `ProductListViewModel`, `ProductEditViewModel` | `FormViewModel` dirty / undo / redo, `AsyncState<T>`, `IValidator` / DataAnnotations |
 | [Navigation](Plugin.Maui.MVVMExpress.Samples.Shared/Navigation/) | `HomeViewModel`, `ProductDetailsViewModel`, `PageStackViewModel`, `PageStackItemViewModel` | `PageViewModel`, `INavigator` / `IPageNavigator`, typed + URI query, stack APIs, `INotifier` toast, dirty guard |
 | [Auth](Plugin.Maui.MVVMExpress.Samples.Shared/Auth/) | `LoginViewModel`, `SecureHomeViewModel` | `IAuthState`, `GuardedNavigator` — adapt [Plugin.Maui.SecureSession](https://www.nuget.org/packages/Plugin.Maui.SecureSession) in production |
-| [Offline](Plugin.Maui.MVVMExpress.Samples.Shared/Offline/) | `OfflineCatalogViewModel` | `ICache` + cache-first catalog, `IConnectivityProbe` — adapt [Plugin.Maui.ApiCache](https://www.nuget.org/packages/Plugin.Maui.ApiCache) / [Plugin.Maui.OfflineSync](https://www.nuget.org/packages/Plugin.Maui.OfflineSync) |
+| [Offline](Plugin.Maui.MVVMExpress.Samples.Shared/Offline/) | `OfflineCatalogViewModel` | `ICachedFetcher` + `FetchPolicy`, `IConnectivityProbe` — adapt [Plugin.Maui.ApiCache](https://www.nuget.org/packages/Plugin.Maui.ApiCache) / [Plugin.Maui.OfflineSync](https://www.nuget.org/packages/Plugin.Maui.OfflineSync) |
 | [Pagination](Plugin.Maui.MVVMExpress.Samples.Shared/Pagination/) | `PagedProductViewModel` | `DelegatePagedCollection<T>` load-more + refresh |
-| [Reactive](Plugin.Maui.MVVMExpress.Samples.Shared/Reactive/) | `SearchViewModel` | `SearchQuery` debounce + `NotifyDependsOn` `FullName` |
-| [Enterprise](Plugin.Maui.MVVMExpress.Samples.Shared/Enterprise/) | `EnterpriseShellViewModel` | `AddMvvmExpress` composition: hub, busy, probe, `IDialogs`, auth gate, `IMainThread` — adapt [Plugin.Maui.NetworkMonitor](https://www.nuget.org/packages/Plugin.Maui.NetworkMonitor) |
+| [Reactive](Plugin.Maui.MVVMExpress.Samples.Shared/Reactive/) | `SearchViewModel` | `SearchQuery` debounce + `PropertyObservable.CombineLatest` `FullName` |
+| [Enterprise](Plugin.Maui.MVVMExpress.Samples.Shared/Enterprise/) | `EnterpriseShellViewModel`, `CatalogStatusViewModel` | Child composition, `IFeatureSwitch`, hub, busy, probe, auth gate — adapt [Plugin.Maui.NetworkMonitor](https://www.nuget.org/packages/Plugin.Maui.NetworkMonitor) / [Plugin.Maui.FeatureFlags](https://www.nuget.org/packages/Plugin.Maui.FeatureFlags) |
 
 ```bash
 dotnet test tests/Plugin.Maui.MVVMExpress.Samples.Tests

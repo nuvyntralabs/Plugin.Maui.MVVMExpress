@@ -1,3 +1,4 @@
+using Plugin.Maui.MVVMExpress.Caching;
 using Plugin.Maui.MVVMExpress.Collections;
 using Plugin.Maui.MVVMExpress.ComponentModel;
 using Plugin.Maui.MVVMExpress.Connectivity;
@@ -12,13 +13,18 @@ public sealed class OfflineCatalogViewModel : ViewModel
 {
     private readonly IProductCatalog _catalog;
     private readonly IConnectivityProbe _connectivity;
+    private readonly ICachedFetcher _fetcher;
 
-    public OfflineCatalogViewModel(IProductCatalog catalog, IConnectivityProbe connectivity)
+    public OfflineCatalogViewModel(
+        IProductCatalog catalog,
+        IConnectivityProbe connectivity,
+        ICachedFetcher? fetcher = null)
     {
         ArgumentNullException.ThrowIfNull(catalog);
         ArgumentNullException.ThrowIfNull(connectivity);
         _catalog = catalog;
         _connectivity = connectivity;
+        _fetcher = fetcher ?? new CachedFetcher(new MemoryCache(), connectivity);
         RefreshCommand = new AsyncModelCommand(LoadAsync);
     }
 
@@ -35,36 +41,38 @@ public sealed class OfflineCatalogViewModel : ViewModel
 
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        ServedFromCache = false;
-        var online = _connectivity.IsOnline;
+        var policy = _connectivity.IsOnline ? FetchPolicy.NetworkFirst : FetchPolicy.CacheFirst;
+        var fromCache = false;
         try
         {
-            await Products.LoadAsync(_catalog.ListAsync, cancellationToken).ConfigureAwait(false);
+            await Products.LoadAsync(
+                async ct =>
+                {
+                    var fetch = await _fetcher.FetchAsync(
+                        CacheFirstCatalog.ListKey,
+                        _catalog.ListAsync,
+                        policy,
+                        ct).ConfigureAwait(false);
+                    fromCache = fetch.FromCache;
+                    return fetch.Value ?? (IReadOnlyList<Product>)[];
+                },
+                cancellationToken).ConfigureAwait(false);
             if (Products.Data is { } data)
             {
                 Items.ReplaceRange(data);
             }
 
-            ServedFromCache = !online && Items.Count > 0;
-            if (ServedFromCache)
-            {
-                Notify(nameof(ServedFromCache));
-            }
+            ServedFromCache = fromCache;
+            Notify(nameof(ServedFromCache));
         }
         catch (OperationCanceledException)
         {
             throw;
         }
-        catch
+        catch (Exception) when (Items.Count > 0)
         {
-            if (Items.Count > 0)
-            {
-                ServedFromCache = true;
-                Notify(nameof(ServedFromCache));
-                return;
-            }
-
-            throw;
+            ServedFromCache = true;
+            Notify(nameof(ServedFromCache));
         }
     }
 }

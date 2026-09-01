@@ -26,7 +26,7 @@ public sealed class HomeViewModel : ViewModel
 dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
 ```
 
-Target framework: `net10.0`. Version `0.3.0-preview` — APIs may change.
+Target framework: `net10.0`. Version `0.4.0-preview` — forms, cache policies, and the operation pipeline ship; APIs may still change.
 
 ```csharp
 services.AddMvvmExpress(); // tests and shared libraries
@@ -40,7 +40,8 @@ MAUI apps also add [Plugin.Maui.MVVMExpress](https://www.nuget.org/packages/Plug
 - `ModelCommand` / `AsyncModelCommand` (prevent, cancel-previous, timeout, retry)
 - `AsyncState<T>`, `Outcome`, `BusyGate`, `IMessageHub`
 - `ObservableRangeCollection<T>` (`AddRange` → one notify)
-- Abstractions: `INavigator`, `IDialogs`, `ICache`, `IConnectivityProbe`, `IAuthState`
+- Abstractions: `INavigator`, `IDialogs`, `ICache` / `ICachedFetcher`, `IConnectivityProbe`, `IAuthState`, `IFeatureSwitch`, `IPermissionGate`
+- `FormViewModel`, `IDirtyState`, `IOperationExecutor`, child `Attach`
 
 Do not call `Page.DisplayAlert` or `Shell.Current` from a ViewModel. Use `IDialogs` / `INavigator`.
 

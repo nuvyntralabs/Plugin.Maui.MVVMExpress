@@ -4,6 +4,7 @@ using Plugin.Maui.MVVMExpress.ComponentModel;
 using Plugin.Maui.MVVMExpress.Connectivity;
 using Plugin.Maui.MVVMExpress.Dialogs;
 using Plugin.Maui.MVVMExpress.Errors;
+using Plugin.Maui.MVVMExpress.Flags;
 using Plugin.Maui.MVVMExpress.Input;
 using Plugin.Maui.MVVMExpress.Messaging;
 using Plugin.Maui.MVVMExpress.Navigation;
@@ -35,7 +36,8 @@ public sealed class EnterpriseShellViewModel : PageViewModel
         IBusyGate busy,
         IMainThread mainThread,
         INavigator navigator,
-        IDialogs? dialogs = null)
+        IDialogs? dialogs = null,
+        IFeatureSwitch? flags = null)
         : base(navigator, dialogs)
     {
         ArgumentNullException.ThrowIfNull(catalog);
@@ -52,6 +54,7 @@ public sealed class EnterpriseShellViewModel : PageViewModel
         _errors = errors;
         _busy = busy;
         _mainThread = mainThread;
+        CatalogStatus = Attach(new CatalogStatusViewModel(connectivity, flags ?? new MemoryFeatureSwitch().Set("offline-banner", true)));
         RefreshCommand = new AsyncModelCommand(RefreshAsync);
         OpenSecureCommand = new AsyncModelCommand(ct => navigator.NavigateToAsync<SecureHomeViewModel>(ct));
         _subscription = hub.Subscribe<EnterpriseShellViewModel, ProductsChanged>(
@@ -61,6 +64,8 @@ public sealed class EnterpriseShellViewModel : PageViewModel
     }
 
     public AsyncState<IReadOnlyList<Product>> Products { get; } = new();
+
+    public CatalogStatusViewModel CatalogStatus { get; }
 
     public bool IsOnline => _connectivity.IsOnline;
 
@@ -76,8 +81,11 @@ public sealed class EnterpriseShellViewModel : PageViewModel
 
     public AsyncModelCommand OpenSecureCommand { get; }
 
-    public override Task InitializeAsync(CancellationToken cancellationToken = default)
-        => RefreshCommand.ExecuteAsync(cancellationToken);
+    public override async Task InitializeAsync(CancellationToken cancellationToken = default)
+    {
+        await InitializeChildrenAsync(cancellationToken).ConfigureAwait(false);
+        await RefreshCommand.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+    }
 
     public override Task OnDisappearingAsync(CancellationToken cancellationToken = default)
         => Task.CompletedTask;
@@ -94,6 +102,7 @@ public sealed class EnterpriseShellViewModel : PageViewModel
 
     private async Task RefreshAsync(CancellationToken cancellationToken)
     {
+        CatalogStatus.Refresh();
         if (!_connectivity.IsOnline)
         {
             Status = ViewModelStatus.Offline;

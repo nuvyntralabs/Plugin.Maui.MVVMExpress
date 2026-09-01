@@ -1,4 +1,6 @@
+using Plugin.Maui.MVVMExpress.Busy;
 using Plugin.Maui.MVVMExpress.Dialogs;
+using Plugin.Maui.MVVMExpress.Errors;
 using Plugin.Maui.MVVMExpress.Navigation;
 
 namespace Plugin.Maui.MVVMExpress.ComponentModel;
@@ -9,7 +11,14 @@ public abstract class PageViewModel : ViewModel, INavigable
     /// <summary>Creates a page ViewModel.</summary>
     /// <param name="navigator">Optional navigator.</param>
     /// <param name="dialogs">Optional dialogs.</param>
-    protected PageViewModel(INavigator? navigator = null, IDialogs? dialogs = null)
+    /// <param name="errors">Optional unexpected-error sink.</param>
+    /// <param name="busy">Optional nested busy gate.</param>
+    protected PageViewModel(
+        INavigator? navigator = null,
+        IDialogs? dialogs = null,
+        IErrorSink? errors = null,
+        IBusyGate? busy = null)
+        : base(errors, busy)
     {
         Navigator = navigator;
         Dialogs = dialogs;

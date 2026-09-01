@@ -1,5 +1,7 @@
 # Getting started — Core (what ships today)
 
+Phase 3 extras: [forms](forms.md), [reactive](reactive.md), [cache policies](offline.md).
+
 ```bash
 dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
 dotnet add package Plugin.Maui.MVVMExpress --prerelease
@@ -70,4 +72,4 @@ services.AddMvvmExpress();          // tests / net10.0
 builder.UseMvvmExpress();           // MAUI app
 ```
 
-`INavigator`, `MauiShellNavigator`, `MauiPageNavigator`, `IDialogs`, `INotifier` / `MauiNotifier`, `ICache`, `IConnectivityProbe`, `IAuthState`, `IValidator`, and `PagedCollection<T>` ship with tests. Source generators remain a later phase. Navigation hosts: [docs/navigation.md](navigation.md). Samples: [samples/README.md](../samples/README.md).
+`INavigator`, `MauiShellNavigator`, `MauiPageNavigator`, `IDialogs`, `INotifier` / `MauiNotifier`, `ICache` / `ICachedFetcher`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `FormViewModel`, `IOperationExecutor`, and `PagedCollection<T>` ship with tests. Source generators remain a later phase. Navigation hosts: [navigation.md](navigation.md). Samples: [samples/README.md](../samples/README.md).

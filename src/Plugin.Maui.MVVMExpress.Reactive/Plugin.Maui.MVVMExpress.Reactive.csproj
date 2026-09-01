@@ -11,7 +11,7 @@
     <AssemblyName>Plugin.Maui.MVVMExpress.Reactive</AssemblyName>
     <PackageId>Plugin.Maui.MVVMExpress.Reactive</PackageId>
     <Title>.NET MAUI MVVMExpress — reactive derived state</Title>
-    <Description>Optional derived-state and property observables for MVVMExpress. System.Reactive is not required by Core. Not packed yet.</Description>
+    <Description>Optional derived-state and property observables for MVVMExpress. System.Reactive is not required by Core.</Description>
     <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm;mvvm-express;reactive</PackageTags>
     <Authors>Niladri</Authors>
     <Company>MauiEssentials</Company>
@@ -21,18 +21,23 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.3.0-preview</Version>
-    <PackageReleaseNotes>0.3.0-preview: page host, URI stack, dictionary/URI args, multi-window root, MauiNotifier toast.</PackageReleaseNotes>
+    <Version>0.4.0-preview</Version>
+    <PackageReleaseNotes>0.4.0-preview: IPropertyObservable, CombineLatest, no System.Reactive.</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IsPackable>false</IsPackable>
+    <IsPackable>true</IsPackable>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Plugin.Maui.MVVMExpress.Core\Plugin.Maui.MVVMExpress.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

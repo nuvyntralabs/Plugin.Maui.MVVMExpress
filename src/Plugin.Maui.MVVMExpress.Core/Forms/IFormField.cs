@@ -1,0 +1,26 @@
+using System.ComponentModel;
+using Plugin.Maui.MVVMExpress.Outcome;
+
+namespace Plugin.Maui.MVVMExpress.Forms;
+
+/// <summary>Non-generic field surface for <see cref="FormViewModel"/>.</summary>
+public interface IFormField : INotifyPropertyChanged, INotifyPropertyChanging, IDirtyState
+{
+    /// <summary>Field name (usually a property name).</summary>
+    string Name { get; }
+
+    /// <summary>Gets a value indicating whether the user has edited the field.</summary>
+    bool IsTouched { get; }
+
+    /// <summary>Boxed current value.</summary>
+    object? BoxedValue { get; }
+
+    /// <summary>Current validation messages.</summary>
+    IReadOnlyList<ValidationMessage> Errors { get; }
+
+    /// <summary>Replaces <see cref="Errors"/>.</summary>
+    void SetErrors(IReadOnlyList<ValidationMessage> errors);
+
+    /// <summary>Assigns a boxed value without recording a user touch (undo / reset).</summary>
+    void RestoreBoxed(object? value);
+}

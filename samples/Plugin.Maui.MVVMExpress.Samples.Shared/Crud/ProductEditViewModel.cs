@@ -1,24 +1,33 @@
 using Plugin.Maui.MVVMExpress.Busy;
-using Plugin.Maui.MVVMExpress.ComponentModel;
+using Plugin.Maui.MVVMExpress.Dialogs;
 using Plugin.Maui.MVVMExpress.Errors;
+using Plugin.Maui.MVVMExpress.Forms;
 using Plugin.Maui.MVVMExpress.Input;
+using Plugin.Maui.MVVMExpress.Navigation;
 using Plugin.Maui.MVVMExpress.Samples.Models;
 using Plugin.Maui.MVVMExpress.Samples.Services;
 using Plugin.Maui.MVVMExpress.Validation;
 
 namespace Plugin.Maui.MVVMExpress.Samples.Crud;
 
-public sealed class ProductEditViewModel : ViewModel
+public sealed class ProductEditViewModel : FormViewModel
 {
     private readonly IProductCatalog _catalog;
     private readonly IErrorSink _errors;
     private readonly IBusyGate _busy;
     private readonly IValidator _validator;
-    private string _name = "";
-    private decimal _price;
+    private readonly FormField<string> _name;
+    private readonly FormField<decimal> _price;
     private Op.Outcome<Product>? _lastSave;
 
-    public ProductEditViewModel(IProductCatalog catalog, IErrorSink errors, IBusyGate busy, IValidator? validator = null)
+    public ProductEditViewModel(
+        IProductCatalog catalog,
+        IErrorSink errors,
+        IBusyGate busy,
+        IValidator? validator = null,
+        INavigator? navigator = null,
+        IDialogs? dialogs = null)
+        : base(navigator, dialogs, errors, busy)
     {
         ArgumentNullException.ThrowIfNull(catalog);
         ArgumentNullException.ThrowIfNull(errors);
@@ -28,26 +37,37 @@ public sealed class ProductEditViewModel : ViewModel
         _busy = busy;
         _validator = validator ?? DataAnnotationsValidator.Instance;
         SaveCommand = new AsyncModelCommand(SaveAsync, () => !string.IsNullOrWhiteSpace(Name));
+        _name = Field("Name", "");
+        _price = Field("Price", 0m);
+        _name.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(FormField<string>.Value))
+            {
+                Notify(nameof(Name));
+                SaveCommand.NotifyCanExecuteChanged();
+            }
+        };
+        _price.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(FormField<decimal>.Value))
+            {
+                Notify(nameof(Price));
+            }
+        };
     }
 
     public int Id { get; set; }
 
     public string Name
     {
-        get => _name;
-        set
-        {
-            if (SetProperty(ref _name, value))
-            {
-                SaveCommand.NotifyCanExecuteChanged();
-            }
-        }
+        get => _name.Value ?? "";
+        set => _name.Value = value ?? "";
     }
 
     public decimal Price
     {
-        get => _price;
-        set => SetProperty(ref _price, value);
+        get => _price.Value;
+        set => _price.Value = value;
     }
 
     public Op.Outcome<Product>? LastSave
@@ -81,6 +101,7 @@ public sealed class ProductEditViewModel : ViewModel
                     Id = saved.Id;
                     Name = saved.Name;
                     Price = saved.Price;
+                    MarkClean();
                     Status = State.ViewModelStatus.Success;
                     return;
                 }

@@ -1,4 +1,5 @@
 using Plugin.Maui.MVVMExpress.Busy;
+using Plugin.Maui.MVVMExpress.Composition;
 using Plugin.Maui.MVVMExpress.Errors;
 using Plugin.Maui.MVVMExpress.Outcome;
 using Plugin.Maui.MVVMExpress.State;
@@ -9,10 +10,11 @@ namespace Plugin.Maui.MVVMExpress.ComponentModel;
 /// <summary>
 /// ViewModel with lifecycle hooks, a lifetime <see cref="CancellationToken"/>, and dispose that cancels in-flight work.
 /// </summary>
-public abstract class ViewModel : ObservableModel, IViewModel
+public abstract class ViewModel : ObservableModel, IViewModel, IViewModelComposer
 {
     private readonly CancellationTokenSource _lifetime;
     private readonly CancellationToken _lifetimeToken;
+    private readonly List<IViewModel> _children = [];
     private ViewModelStatus _status = ViewModelStatus.Idle;
     private bool _disposed;
 
@@ -86,6 +88,46 @@ public abstract class ViewModel : ObservableModel, IViewModel
     /// <summary>Gets a value indicating whether <see cref="Dispose()"/> has run.</summary>
     public bool IsDisposed => _disposed;
 
+    /// <inheritdoc />
+    public IReadOnlyList<IViewModel> Children => _children;
+
+    /// <inheritdoc />
+    public TChild Attach<TChild>(TChild child)
+        where TChild : class, IViewModel
+    {
+        ArgumentNullException.ThrowIfNull(child);
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        _children.Add(child);
+        return child;
+    }
+
+    /// <summary>Initializes attached children.</summary>
+    protected async Task InitializeChildrenAsync(CancellationToken cancellationToken = default)
+    {
+        foreach (var child in _children)
+        {
+            await child.InitializeAsync(cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>Forwards appear to attached children.</summary>
+    protected async Task AppearChildrenAsync(CancellationToken cancellationToken = default)
+    {
+        foreach (var child in _children)
+        {
+            await child.OnAppearingAsync(cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>Forwards disappear to attached children.</summary>
+    protected async Task DisappearChildrenAsync(CancellationToken cancellationToken = default)
+    {
+        foreach (var child in _children)
+        {
+            await child.OnDisappearingAsync(cancellationToken).ConfigureAwait(false);
+        }
+    }
+
     /// <summary>Called once after construction when the host is ready.</summary>
     /// <param name="cancellationToken">Linked with <see cref="ViewModelCancellationToken"/> by the host.</param>
     public virtual Task InitializeAsync(CancellationToken cancellationToken = default)
@@ -125,6 +167,13 @@ public abstract class ViewModel : ObservableModel, IViewModel
 
         if (disposing)
         {
+            foreach (var child in _children)
+            {
+                child.Dispose();
+            }
+
+            _children.Clear();
+
             try
             {
                 _lifetime.Cancel();

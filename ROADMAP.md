@@ -10,8 +10,9 @@ Implementation is incremental. Do not implement a later phase in the same change
 | --- | --- |
 | 0.1.0-design | Documents + solution skeleton |
 | 0.1.0-preview | Core + Host + Shell navigator + dialogs + validation + pagination |
-| 0.3.0-preview | Phase 2 complete (page host, URI stack, toast, multi-window) (current) |
-| 0.4.x | Phase 3 — Reactive, forms, offline abstractions |
+| 0.3.0-preview | Phase 2 complete (page host, URI stack, toast, multi-window) |
+| 0.4.0-preview | Phase 3 complete (forms, reactive, cache policies, pipeline, scopes) (current) |
+| 0.4.x | Phase 3 patches |
 | 0.5.x | Phase 4 — Generators, restoration, compatibility |
 | 1.0.0 | Phase 5 complete: tests, samples, docs, NuGet, AOT |
 
@@ -36,9 +37,9 @@ After 1.0.0: SemVer. Breaking API changes require a major version.
 - [x] Manual property notification + dependents
 - [x] ModelCommand / AsyncModelCommand + generic + timeout / retry / cancel-previous
 - [x] ViewModel lifecycle + cancellation + dispose (token readable after dispose)
-- [x] ViewModelStatus + AsyncState\<T\> (explicit state machine still open)
+- [x] ViewModelStatus + AsyncState\<T\>
 - [x] Outcome / ErrorInfo
-- [x] IBusyGate, IErrorSink (IOperationExecutor still open)
+- [x] IBusyGate, IErrorSink, IOperationExecutor (Phase 3)
 - [x] IMessageHub
 - [x] IMainThread immediate + MauiMainThread
 - [x] UseMvvmExpress / AddMvvmExpress
@@ -68,18 +69,18 @@ After 1.0.0: SemVer. Breaking API changes require a major version.
 
 **Exit:** a net10.0 test navigates `Home → Details(args)` with a fake host and blocks navigation when `CanNavigateAwayAsync` returns false — **met**. Stack / URI / page-host / toast tests also pass.
 
-## Phase 3 — Depth
+## Phase 3 — Depth (shipped in 0.4.0-preview)
 
 **Package:** Reactive (+ types in Core for forms)
 
-- IPropertyObservable / CombineLatest (Rx optional)
-- ICache + fetch policies (adapters, not a database)
-- FormViewModel, FormField, IDirtyState, undo/redo
-- File / media / permission / auth / flag abstractions
-- Child ViewModel composition + scopes
-- Pipeline complete (debounce, throttle, queue)
+- [x] IPropertyObservable / CombineLatest (Rx optional)
+- [x] ICache + fetch policies (adapters, not a database)
+- [x] FormViewModel, FormField, IDirtyState, undo/redo
+- [x] File / media / permission / auth / flag abstractions
+- [x] Child ViewModel composition + scopes
+- [x] Pipeline complete (debounce, throttle, queue)
 
-**Exit:** form with dirty guard + search-with-debounce tests pass without MAUI.
+**Exit:** form with dirty guard + search-with-debounce tests pass without MAUI — **met**.
 
 ## Phase 4 — Generators and restoration
 

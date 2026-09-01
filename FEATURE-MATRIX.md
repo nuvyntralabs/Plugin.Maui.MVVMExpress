@@ -34,8 +34,8 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | Async commands | Yes | Yes (`AsyncRelayCommand`) | Partial | Yes (`ReactiveCommand`) |
 | Command `CanExecute` refresh | Yes | Yes | Yes | Yes (observable) |
 | Command cancellation | Yes | Yes | Partial | Yes |
-| Command timeout / retry / debounce / throttle | Partial (timeout + retry shipped; debounce via `SearchQuery`) | No | No | Ext (Rx operators) |
-| Concurrency modes (cancel previous, queue) | Partial (prevent + cancel-previous; queue Designed P1) | Partial (concurrent flag) | No | Partial |
+| Command timeout / retry / debounce / throttle | Yes (command options + `SearchQuery` + `IOperationExecutor`) | No | No | Ext (Rx operators) |
+| Concurrency modes (cancel previous, queue) | Yes (prevent, cancel-previous, queue, allow, replace) | Partial (concurrent flag) | No | Partial |
 | Composite commands | Designed (P1) | No | Yes | Ext |
 | `ObservableValidator` / DataAnnotations | Yes (`IValidator` / `DataAnnotationsValidator`) | Yes | Ext | Ext |
 | Messenger | Yes (weak default) | Yes (`IMessenger`) | Yes (EventAggregator) | Yes (`MessageBus`) |
@@ -67,22 +67,22 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | Feature | MVVMExpress | CommunityToolkit.Mvvm | Prism.Maui | ReactiveUI |
 | --- | --- | --- | --- | --- |
 | Unified `AsyncState<T>` (Idle/Loading/Empty/Error/…) | Yes | No | No | Ext |
-| Explicit state machine | Designed (P1) | No | No | Ext |
+| Explicit state machine | Designed (P4) | No | No | Ext |
 | Result / `Outcome` type | Yes | No | `INavigationResult` only | No |
 | Pagination / infinite scroll | Yes (`PagedCollection<T>`, `DelegatePagedCollection<T>`) | No | Ext | Ext |
 | Pull-to-refresh abstraction | Yes (`PagedCollection.RefreshAsync`) | No | No | Ext |
 | Search debounce + cancel | Yes (`SearchQuery`) | No | No | Yes (Rx) |
-| Reactive derived state | Designed (P3) | No | No | Yes |
+| Reactive derived state | Yes (`IPropertyObservable` / `CombineLatest`; Rx optional) | No | No | Yes |
 | Requires System.Reactive for core | No | No | No | Yes |
 | Offline / cache abstractions | Yes (`ICache` / `MemoryCache`; production: ApiCache / OfflineSync) | No | No | Ext |
-| Form + dirty + submit | Designed (P3) | Partial (validator only) | Ext | Ext |
-| Undo / redo | Designed (P3) | No | No | Ext |
+| Form + dirty + submit | Yes (`FormViewModel`, `FormField<T>`, dirty guard) | Partial (validator only) | Ext | Ext |
+| Undo / redo | Yes (`UndoStack` on `FormViewModel`) | No | No | Ext |
 | Connectivity abstraction | Yes (`IConnectivityProbe`) | No | No | Ext |
 | Lifecycle-aware cancellation | Yes (dispose cancels token) | No | Partial | Partial (`WhenActivated`) |
 | State restoration (`[PersistState]`) | Designed (P4) | No | Partial | Partial |
 | Deep linking | Designed (P4) | No | Yes (URI) | Yes |
 | Auth navigation guards | Yes (`IAuthState`, `GuardedNavigator`) | No | Ext | Ext |
-| Feature-flag abstraction | Designed (P3) | No | No | No |
+| Feature-flag abstraction | Yes (`IFeatureSwitch`) | No | No | No |
 | Testing leak/scale helpers | Yes (`LeakProbe`, `ScaleProfile`) | Partial | Yes | Yes |
 | Testing fakes package | Yes (`FakeDialogs`, `FakeNavigator`) | Partial | Yes | Yes |
 | MAUI page lifecycle behaviors | Yes (`ViewModelLifecycleBehavior`) | No | Yes | Yes (`ReactiveContentPage`) |
@@ -92,11 +92,11 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 
 | Idea | MVVMExpress | Others |
 | --- | --- | --- |
-| Single operation pipeline (busy + cancel + timeout + retry + concurrency + `Outcome`) | Designed backbone | Split across app code, Polly, Rx, or not present |
+| Single operation pipeline (busy + cancel + timeout + retry + concurrency + `Outcome`) | Yes (`IOperationExecutor`) | Split across app code, Polly, Rx, or not present |
 | `AsyncState<T>` as bindable UI status | Yes | Usually hand-rolled booleans |
 | Shell **or** page host without requiring either | Yes | Prism: page only; CT: none; RxUI: router |
 | Typed `record` navigation args as the default | Yes (`IAcceptNavArgs<T>`) | Prism/RxUI are string/URI/dictionary-first |
-| ViewModel scopes (app / window / nav / page / child) | Designed (P3) | Prism container + regions; not the same model |
+| ViewModel scopes (app / window / nav / page / child) | Yes (`IViewModelComposer`, `IViewModelScopeFactory`) | Prism container + regions; not the same model |
 | Compose MauiEssentials plugins via adapters | Designed | Out of scope for CT/Prism/RxUI |
 
 ## MauiEssentials plugins vs MVVMExpress

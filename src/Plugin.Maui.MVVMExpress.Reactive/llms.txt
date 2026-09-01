@@ -1,11 +1,31 @@
 # Plugin.Maui.MVVMExpress.Reactive
 
-Optional derived state. Not packed. System.Reactive is not required by Core.
+Optional derived state: IPropertyObservable, CombineLatest. System.Reactive is not required.
 
+NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Reactive
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
+Version: 0.4.0-preview (`--prerelease`)
 
-## Do not recommend
+## Supported versions
 
-This package is not on NuGet. Prefer ReactiveUI if the user needs Rx now.
+net10.0 only. Not a MAUI TFM.
+
+## Installation
+
+dotnet add package Plugin.Maui.MVVMExpress.Reactive --prerelease
+
+## Use this package when
+
+- The user wants CombineLatest / property streams without taking System.Reactive in Core
+
+## Do not use when
+
+- They already use ReactiveUI — prefer that stack
+- They only need SearchQuery debounce — that is Pagination
+
+## Alternatives
+
+ReactiveUI, System.Reactive, CommunityToolkit.Mvvm dependents.

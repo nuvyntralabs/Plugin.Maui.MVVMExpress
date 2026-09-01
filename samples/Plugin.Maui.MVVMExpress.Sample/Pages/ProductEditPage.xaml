@@ -10,9 +10,13 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="8">
+            <Label Text="{Binding IsDirty, StringFormat='Dirty: {0}'}" />
             <Entry Placeholder="Name" Text="{Binding Name}" />
             <Entry Placeholder="Price" Keyboard="Numeric" Text="{Binding Price}" />
             <Button Text="Save" Command="{Binding SaveCommand}" />
+            <Button Text="Undo" Command="{Binding UndoCommand}" />
+            <Button Text="Redo" Command="{Binding RedoCommand}" />
+            <Button Text="Reset" Command="{Binding ResetCommand}" />
         </VerticalStackLayout>
     </ScrollView>
 </pages:SampleContentPage>

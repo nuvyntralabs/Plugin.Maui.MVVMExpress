@@ -20,8 +20,8 @@
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
     <MauiVersion>10.0.90</MauiVersion>
-    <Version>0.3.0-preview</Version>
-    <PackageReleaseNotes>0.3.0-preview: page host, URI stack, dictionary/URI args, multi-window root, MauiNotifier toast.</PackageReleaseNotes>
+    <Version>0.4.0-preview</Version>
+    <PackageReleaseNotes>0.4.0-preview: forms, dirty/undo, cache policies, reactive CombineLatest, operation pipeline, ViewModel scopes.</PackageReleaseNotes>
     <PackageTags>dotnet-maui;maui;mvvm;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm-express</PackageTags>
   </PropertyGroup>
 </Project>

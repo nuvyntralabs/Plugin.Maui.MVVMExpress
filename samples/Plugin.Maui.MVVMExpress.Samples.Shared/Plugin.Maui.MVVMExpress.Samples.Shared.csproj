@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Core\Plugin.Maui.MVVMExpress.Core.csproj" />
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Pagination\Plugin.Maui.MVVMExpress.Pagination.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Reactive\Plugin.Maui.MVVMExpress.Reactive.csproj" />
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Validation\Plugin.Maui.MVVMExpress.Validation.csproj" />
   </ItemGroup>
 

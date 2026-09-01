@@ -11,6 +11,7 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
     private readonly Func<CancellationToken, Task> _execute;
     private readonly Func<bool>? _canExecute;
     private readonly AsyncCommandOptions _options;
+    private readonly CommandPipeline _pipeline;
     private CancellationTokenSource? _execution;
     private int _runLock;
     private CommandExecutionState _state = CommandExecutionState.Idle;
@@ -29,6 +30,7 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
         _execute = execute;
         _canExecute = canExecute;
         _options = options ?? new AsyncCommandOptions();
+        _pipeline = new CommandPipeline(_options);
     }
 
     /// <inheritdoc />
@@ -54,7 +56,7 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
     /// <inheritdoc />
     public bool CanExecute(object? parameter)
     {
-        if (IsRunning && _options.Concurrency != ConcurrencyMode.CancelPrevious)
+        if (IsRunning && !_pipeline.AllowsExecuteWhileRunning)
         {
             return false;
         }
@@ -68,28 +70,51 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
     /// <summary>Executes the command and observes cancellation.</summary>
     public async Task ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        if (_options.Concurrency == ConcurrencyMode.CancelPrevious && IsRunning)
-        {
-            Cancel();
-        }
-        else if (!CanExecute(null))
+        if (_canExecute?.Invoke() == false)
         {
             return;
         }
 
-        if (Interlocked.CompareExchange(ref _runLock, 1, 0) != 0)
+        if (!await _pipeline.WaitPolicyAsync(cancellationToken).ConfigureAwait(false))
         {
-            if (_options.Concurrency != ConcurrencyMode.CancelPrevious)
-            {
-                return;
-            }
-
-            while (Interlocked.CompareExchange(ref _runLock, 1, 0) != 0)
-            {
-                await Task.Yield();
-            }
+            return;
         }
 
+        if (_pipeline.InterruptsPrevious && IsRunning)
+        {
+            Cancel();
+        }
+        else if (IsRunning && !_pipeline.AllowsExecuteWhileRunning)
+        {
+            return;
+        }
+
+        await _pipeline.EnterQueueAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            if (!_pipeline.AllowsOverlap && Interlocked.CompareExchange(ref _runLock, 1, 0) != 0)
+            {
+                if (!_pipeline.InterruptsPrevious)
+                {
+                    return;
+                }
+
+                while (Interlocked.CompareExchange(ref _runLock, 1, 0) != 0)
+                {
+                    await Task.Yield();
+                }
+            }
+
+            await RunCoreAsync(cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            _pipeline.ExitQueue();
+        }
+    }
+
+    private async Task RunCoreAsync(CancellationToken cancellationToken)
+    {
         CancellationTokenSource? linked = null;
         try
         {
@@ -144,7 +169,11 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
 
             linked?.Dispose();
             IsRunning = false;
-            Interlocked.Exchange(ref _runLock, 0);
+            if (!_pipeline.AllowsOverlap)
+            {
+                Interlocked.Exchange(ref _runLock, 0);
+            }
+
             NotifyCanExecuteChanged();
         }
     }

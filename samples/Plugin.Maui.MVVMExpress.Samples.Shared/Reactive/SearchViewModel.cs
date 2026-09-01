@@ -2,6 +2,7 @@ using Plugin.Maui.MVVMExpress.Collections;
 using Plugin.Maui.MVVMExpress.ComponentModel;
 using Plugin.Maui.MVVMExpress.Input;
 using Plugin.Maui.MVVMExpress.Pagination;
+using Plugin.Maui.MVVMExpress.Reactive;
 using Plugin.Maui.MVVMExpress.Samples.Models;
 using Plugin.Maui.MVVMExpress.Samples.Services;
 using Plugin.Maui.MVVMExpress.State;
@@ -12,6 +13,7 @@ public sealed class SearchViewModel : PageViewModel
 {
     private readonly IProductCatalog _catalog;
     private readonly SearchQuery _query;
+    private readonly IPropertyObservable<string> _fullName;
     private string? _first;
     private string? _last;
 
@@ -21,6 +23,11 @@ public sealed class SearchViewModel : PageViewModel
         _catalog = catalog;
         _query = new SearchQuery(debounce ?? TimeSpan.FromMilliseconds(300));
         SearchCommand = new AsyncModelCommand(SearchNowAsync);
+        _fullName = PropertyObservable.CombineLatest(
+            PropertyObservable.Observe(this, nameof(First), () => First ?? ""),
+            PropertyObservable.Observe(this, nameof(Last), () => Last ?? ""),
+            static (first, last) => $"{first} {last}".Trim());
+        _fullName.Subscribe(_ => Notify(nameof(FullName)));
     }
 
     public TimeSpan Debounce => _query.Debounce;
@@ -46,28 +53,16 @@ public sealed class SearchViewModel : PageViewModel
     public string? First
     {
         get => _first;
-        set
-        {
-            if (SetProperty(ref _first, value))
-            {
-                NotifyDependsOn(nameof(First), nameof(FullName));
-            }
-        }
+        set => SetProperty(ref _first, value);
     }
 
     public string? Last
     {
         get => _last;
-        set
-        {
-            if (SetProperty(ref _last, value))
-            {
-                NotifyDependsOn(nameof(Last), nameof(FullName));
-            }
-        }
+        set => SetProperty(ref _last, value);
     }
 
-    public string FullName => $"{First} {Last}".Trim();
+    public string FullName => _fullName.Value;
 
     public AsyncState<IReadOnlyList<Product>> Results { get; } = new();
 
@@ -82,6 +77,7 @@ public sealed class SearchViewModel : PageViewModel
         if (disposing)
         {
             _query.Cancel();
+            _fullName.Dispose();
         }
 
         base.Dispose(disposing);

@@ -4,11 +4,11 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `0.3.0-preview` — public preview, not a 1.0. Core, host DI, Shell + page navigators, dialogs/toast, validation, and pagination are implemented and tested. Generators and Rx remain later. Public APIs may still change.
+**Status:** `0.4.0-preview` — public preview, not a 1.0. Core through Reactive (forms, cache policies, pipeline, CombineLatest) ship with tests. Source generators remain later. Public APIs may still change.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
-[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Navigation](docs/navigation.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
+[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Navigation](docs/navigation.md) · [Forms](docs/forms.md) · [Reactive](docs/reactive.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
 
 Author: [Niladri Prasad Padhy](https://github.com/NiladriPadhy) · Catalog: [MauiEssentials](https://github.com/nuvyntralabs/MauiEssentials) · License: MIT
 
@@ -29,7 +29,7 @@ MVVMExpress is that shell. It is **not** a fork of those libraries. Capability w
 | [`Plugin.Maui.MVVMExpress.Dialogs`](src/Plugin.Maui.MVVMExpress.Dialogs/README.md) | `IDialogs` + `MauiDialogs` + `MauiNotifier` toast | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Validation`](src/Plugin.Maui.MVVMExpress.Validation/README.md) | DataAnnotations + `IValidator` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Pagination`](src/Plugin.Maui.MVVMExpress.Pagination/README.md) | `PagedCollection<T>`, `SearchQuery` | **Implemented + tests** |
-| [`Plugin.Maui.MVVMExpress.Reactive`](src/Plugin.Maui.MVVMExpress.Reactive/README.md) | Derived state; System.Reactive optional | Phase 3 (not packed) |
+| [`Plugin.Maui.MVVMExpress.Reactive`](src/Plugin.Maui.MVVMExpress.Reactive/README.md) | `IPropertyObservable` / `CombineLatest` (no Rx required) | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.SourceGenerators`](src/Plugin.Maui.MVVMExpress.SourceGenerators/README.md) | `[Notify]`, commands, register, routes | Phase 4 (not packed) |
 
 Each packed package ships its own README on nuget.org. This file is the product index. License and changelog stay at the repo root.
@@ -78,7 +78,7 @@ Designed product surface, validated 2026-08-31 against CommunityToolkit.Mvvm 8.4
 | Lifecycle + cancellation | Yes | No | Yes | Yes |
 | Dialogs / in-app notifications | Yes | Separate | Yes | Extensions |
 | Validation | Yes | Yes | Extensions | Yes |
-| Reactive derived state | Designed (package not shipped) | No | No | Yes (Rx required) |
+| Reactive derived state | Yes (`CombineLatest`; Rx optional) | No | No | Yes (Rx required) |
 | Pagination + refresh + search | Yes | No | Extensions | Extensions |
 | Offline / cache abstractions | Yes (adapters; not a database) | No | No | Extensions |
 | Unified `AsyncState<T>` | Yes | No | No | Extensions |
@@ -89,7 +89,7 @@ Designed product surface, validated 2026-08-31 against CommunityToolkit.Mvvm 8.4
 
 This table does not claim MVVMExpress is faster than the others. Measured Core numbers are in [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md).
 
-**Shipped in this repo with tests:** properties, commands (prevent / cancel-previous, timeout, retry), ViewModel lifecycle/dispose/`ExecuteAsync`, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, `ObservableRangeCollection<T>`, `INavigator` / `GuardedNavigator` / `MauiShellNavigator` / `IAcceptNavArgs<T>`, `IDialogs`, `ICache`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, `AddMvvmExpress` / `UseMvvmExpress`, leak probes, Small/Mid/Large scale tests.
+**Shipped in this repo with tests:** properties, commands (prevent / cancel-previous / queue / allow, timeout, retry, debounce, throttle), ViewModel lifecycle/dispose/`ExecuteAsync`, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, `ObservableRangeCollection<T>`, `INavigator` / `GuardedNavigator` / `MauiShellNavigator` / `IAcceptNavArgs<T>`, `IDialogs`, `ICache` / `ICachedFetcher`, `FormViewModel`, `IOperationExecutor`, `IPropertyObservable`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, `AddMvvmExpress` / `UseMvvmExpress`, leak probes, Small/Mid/Large scale tests.
 
 ## Memory, leaks, and scale
 
@@ -133,6 +133,7 @@ dotnet pack src/Plugin.Maui.MVVMExpress.Dialogs/Plugin.Maui.MVVMExpress.Dialogs.
 dotnet pack src/Plugin.Maui.MVVMExpress.Validation/Plugin.Maui.MVVMExpress.Validation.csproj -c Release -o artifacts
 dotnet pack src/Plugin.Maui.MVVMExpress.Pagination/Plugin.Maui.MVVMExpress.Pagination.csproj -c Release -o artifacts
 dotnet pack src/Plugin.Maui.MVVMExpress.Testing/Plugin.Maui.MVVMExpress.Testing.csproj -c Release -o artifacts
+dotnet pack src/Plugin.Maui.MVVMExpress.Reactive/Plugin.Maui.MVVMExpress.Reactive.csproj -c Release -o artifacts
 ```
 
 Publish (requires a nuget.org API key; siblings are packed and pushed this way, not via a workflow in-repo):

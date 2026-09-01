@@ -6,12 +6,12 @@ Contract for **Plugin.Maui.MVVMExpress**. Default namespace root: `Plugin.Maui.M
 
 | Mark | Meaning |
 | --- | --- |
-| **Shipped (0.3.0-preview)** | Types exist in the packed packages **and** tests exist. Copy these signatures. |
+| **Shipped (0.4.0-preview)** | Types exist in the packed packages **and** tests exist. Copy these signatures. |
 | **Proposed** | Design intent only. Not in a nupkg. Do not implement against these names. |
 
 Shipping versus designed is also tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). Phases live in [ROADMAP.md](ROADMAP.md). Architecture intent lives in [ARCHITECTURE.md](ARCHITECTURE.md).
 
-**Shipped in 0.3.0-preview:** Core (`ObservableModel`, commands, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, range collection), `AddMvvmExpress` / `UseMvvmExpress`, `INavigator` / `IPageNavigator` / `MauiShellNavigator` / `MauiPageNavigator`, URI stack, typed + dictionary/URI args, `IWindowContext`, `IDialogs` / `INotifier` / `MauiDialogs` / `MauiNotifier`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, and Testing fakes. Source generators and Reactive remain proposed.
+**Shipped in 0.4.0-preview:** everything from 0.3.0 plus `FormViewModel` / `FormField<T>` / `IDirtyState`, `IPropertyObservable` / `CombineLatest`, `ICachedFetcher` / `FetchPolicy`, `IOperationExecutor`, command debounce / throttle / queue, child ViewModel scopes, and file / media / permission / flag abstractions. Source generators remain proposed.
 
 ---
 
@@ -198,7 +198,7 @@ public sealed class AsyncCommandOptions
 public enum CommandExecutionState { Idle, Running, Completed, Failed, Cancelled }
 ```
 
-`Allow`, `Queue`, and `Replace` concurrency modes, debounce/throttle on the command, and `CompositeModelCommand` are **proposed**.
+`CompositeModelCommand` remains **proposed**. `Allow`, `Queue`, `Replace`, debounce, and throttle ship on `AsyncCommandOptions`.
 
 ---
 
@@ -480,7 +480,7 @@ public sealed class DataAnnotationsValidator : IValidator { }
 
 FluentValidation: `IValidator` adapter implemented in the app — **not** a PackageReference of `Plugin.Maui.MVVMExpress.Validation`.
 
-XAML `Validation.For` remains [Plugin.Maui.FormValidation](https://www.nuget.org/packages/Plugin.Maui.FormValidation). `FormViewModel`, `FormField<T>`, and `IDirtyState` are **proposed** (Phase 3).
+XAML `Validation.For` remains [Plugin.Maui.FormValidation](https://www.nuget.org/packages/Plugin.Maui.FormValidation). `FormViewModel`, `FormField<T>`, and `IDirtyState` ship in Core (Phase 3).
 
 ---
 
@@ -608,7 +608,7 @@ public interface IAuthState
 }
 ```
 
-`IConnectivityProbe` has no `ConnectionType` / `ConnectionChanged` in 0.3.0. `ICache.SetAsync` has no entry-options overload. `IRetryPolicy`, `IFeatureSwitch`, `IPermissionGate`, and `IMvvmExpressTelemetry` are **proposed**.
+`IConnectivityProbe` has no `ConnectionType` / `ConnectionChanged`. `ICache.SetAsync` has no entry-options overload. `IRetryPolicy` and `IMvvmExpressTelemetry` remain **proposed**.
 
 Default Host implementations may wrap in-memory stand-ins. Production apps should swap:
 
@@ -617,8 +617,8 @@ Default Host implementations may wrap in-memory stand-ins. Production apps shoul
 | `IConnectivityProbe` | Plugin.Maui.NetworkMonitor |
 | `ICache` | Plugin.Maui.ApiCache |
 | `IAuthState` | Plugin.Maui.SecureSession |
-| Feature flags (proposed `IFeatureSwitch`) | Plugin.Maui.FeatureFlags |
-| Permissions (proposed `IPermissionGate`) | Plugin.Maui.PermissionFlow |
+| Feature flags (`IFeatureSwitch`) | Plugin.Maui.FeatureFlags |
+| Permissions (`IPermissionGate`) | Plugin.Maui.PermissionFlow |
 
 ---
 
@@ -657,6 +657,46 @@ There is no `FakeNotifier` type — `FakeDialogs` is `INotifier`. Inject `IToast
 
 ---
 
+## Shipped — 13. Forms, cache policies, pipeline, scopes (0.4.0)
+
+```csharp
+namespace Plugin.Maui.MVVMExpress.Forms;
+
+public interface IDirtyState { bool IsDirty { get; } void MarkClean(); void Reset(); }
+public sealed class FormField<T> : ObservableModel, IFormField { }
+public abstract class FormViewModel : PageViewModel, IDirtyState { }
+public sealed class UndoStack : ObservableModel { }
+
+namespace Plugin.Maui.MVVMExpress.Caching;
+
+public enum FetchPolicy { CacheFirst, NetworkFirst, StaleWhileRevalidate, NetworkOnly, CacheOnly }
+public interface ICachedFetcher { Task<CachedFetchResult<T>> FetchAsync<T>(...); }
+public sealed class CachedFetcher : ICachedFetcher { }
+
+namespace Plugin.Maui.MVVMExpress.Operations;
+
+public interface IOperationExecutor { Task<Outcome<T>> RunAsync<T>(...); }
+public sealed class OperationOptions { }
+
+namespace Plugin.Maui.MVVMExpress.Composition;
+
+public interface IViewModelComposer { TChild Attach<TChild>(TChild child); }
+public interface IViewModelScopeFactory { IViewModelScope CreatePageScope(); }
+
+namespace Plugin.Maui.MVVMExpress.Reactive;
+
+public interface IPropertyObservable<out T> : IDisposable { }
+public static class PropertyObservable
+{
+    public static IPropertyObservable<T> Observe<T>(...);
+    public static IPropertyObservable<TResult> CombineLatest<T1, T2, TResult>(...);
+}
+```
+
+`FormViewModel.CanNavigateAwayAsync` returns `false` while `IsDirty`. `IFeatureSwitch`, `IPermissionGate`, `IFileStore`, and `IMediaPicker` ship as in-memory / no-op defaults.
+
+---
+
 ## Proposed — later phases
 
 Do not copy these into app code. They are not packed.
@@ -682,17 +722,12 @@ public sealed class MvvmExpressOptions
 ### Commands (later)
 
 ```csharp
-public enum ConcurrencyMode { Allow, Prevent, Queue, CancelPrevious, Replace }
-
 public sealed class AsyncCommandOptions
 {
-    public TimeSpan? Debounce { get; init; }
-    public TimeSpan? Throttle { get; init; }
     public ErrorHandling ErrorHandling { get; init; }
 }
 
 public class CompositeModelCommand : ICommand { }
-public interface IOperationExecutor { /* shared busy + cancel + timeout + retry + Outcome */ }
 ```
 
 ### Navigation (later)
@@ -713,12 +748,9 @@ Task SnackbarAsync(...);
 Task BannerAsync(...);
 ```
 
-### Forms and state machine (Phase 3)
+### State machine (later)
 
 ```csharp
-public abstract class FormViewModel : PageViewModel { }
-public sealed class FormField<T> : ObservableModel { }
-public interface IDirtyState { }
 public interface IStateMachine<TState> where TState : struct, Enum { }
 ```
 

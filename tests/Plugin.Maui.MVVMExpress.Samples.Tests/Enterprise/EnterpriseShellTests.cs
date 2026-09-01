@@ -75,6 +75,20 @@ public sealed class EnterpriseShellTests
         Assert.NotNull(provider.GetService(typeof(INavigator)));
         Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Caching.ICache)));
         Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Validation.IValidator)));
+        Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Flags.IFeatureSwitch)));
+        Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Operations.IOperationExecutor)));
+    }
+
+    [Fact]
+    public async Task ChildStatus_IsAttachedAndDisposed()
+    {
+        var vm = Create(out _, out _, out _, out _);
+        Assert.Single(vm.Children);
+        Assert.Same(vm.CatalogStatus, vm.Children[0]);
+        await vm.InitializeAsync();
+        Assert.True(vm.CatalogStatus.IsOnline);
+        vm.Dispose();
+        Assert.True(vm.CatalogStatus.IsDisposed);
     }
 
     private static EnterpriseShellViewModel Create(

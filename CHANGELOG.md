@@ -2,6 +2,23 @@
 
 All notable changes to Plugin.Maui.MVVMExpress are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [SemVer](https://semver.org/) after 1.0.0.
 
+## [0.4.0-preview] — 2026-09-01
+
+### Added
+
+- `FormViewModel`, `FormField<T>`, `IDirtyState`, `UndoStack` — dirty navigation guard + undo / redo
+- `IPropertyObservable<T>` / `PropertyObservable.CombineLatest` in the Reactive package (no System.Reactive)
+- `ICachedFetcher` / `CachedFetcher` with `FetchPolicy` (cache-first, network-first, SWR)
+- `IOperationExecutor` — shared timeout / retry / debounce / throttle / queue pipeline
+- Command `ConcurrencyMode.Queue` / `Allow` / `Replace` plus `Debounce` / `Throttle` on `AsyncCommandOptions`
+- Child ViewModel composition (`IViewModelComposer.Attach`) and `IViewModelScopeFactory`
+- Abstractions: `IFeatureSwitch`, `IPermissionGate`, `IFileStore`, `IMediaPicker`
+- Reactive package is packable. Sample Edit page shows dirty / undo / redo.
+
+### Changed
+
+- Version is `0.4.0-preview`. Phase 3 (forms, reactive, cache policies, pipeline, scopes) ships with tests.
+
 ## [0.3.0-preview] — 2026-09-01
 
 ### Added
@@ -43,8 +60,7 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 
 ### Notes
 
-- Packable packages: Core, Host, Navigation, Dialogs, Validation, Pagination, Testing. Reactive and SourceGenerators are not packed yet.
-- No page-stack host, source generators, or Reactive package.
+- Packable packages: Core, Host, Navigation, Dialogs, Validation, Pagination, Testing. SourceGenerators are not packed yet.
 - Device RSS / AOT / trim are still Phase 5 work.
 - In-memory auth / cache / connectivity are demo adapters. Production: Plugin.Maui.SecureSession, ApiCache / OfflineSync, NetworkMonitor.
 

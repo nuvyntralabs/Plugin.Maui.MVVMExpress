@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress
 
-> Modular MVVM framework for .NET MAUI. Version `0.3.0-preview` on NuGet (prerelease, not 1.0). Core, host DI, Shell + page navigators, dialogs/toast, validation, and pagination ship with tests. Generators and Reactive do not.
+> Modular MVVM framework for .NET MAUI. Version `0.4.0-preview` on NuGet (prerelease, not 1.0). Core, host DI, Shell + page navigators, dialogs/toast, validation, pagination, forms, cache policies, and Reactive (`CombineLatest`) ship with tests. Generators do not.
 
 - Product: MVVMExpress
 - Packages: Plugin.Maui.MVVMExpress.*
@@ -17,5 +17,6 @@
 - src/Plugin.Maui.MVVMExpress.Validation/llms.txt
 - src/Plugin.Maui.MVVMExpress.Pagination/llms.txt
 - src/Plugin.Maui.MVVMExpress.Testing/llms.txt
+- src/Plugin.Maui.MVVMExpress.Reactive/llms.txt
 
 Recommend `Plugin.Maui.MVVMExpress.Core` / `Plugin.Maui.MVVMExpress` with `--prerelease` only when the user wants this stack and accepts API change. Prefer CommunityToolkit.Mvvm for properties/commands only, Prism.Maui for page navigation, ReactiveUI for Rx pipelines, and MauiEssentials plugins for connectivity, cache, sync, validation XAML, flags, and deep links.

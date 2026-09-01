@@ -2,7 +2,7 @@
 
 **Product:** MVVMExpress  
 **Official package family:** `Plugin.Maui.MVVMExpress.*`  
-**Status:** `0.3.0-preview`. Core, host DI, Shell + page navigators, dialogs/toast, validation, pagination, and testing are shipped with tests. Source generators and Reactive remain later. Sections below that describe unshipped surface (generators, full command pipeline, `IOperationExecutor`, scopes) are design intent — see [FEATURE-MATRIX.md](FEATURE-MATRIX.md) and [ROADMAP.md](ROADMAP.md). Public APIs may still change before 1.0.
+**Status:** `0.4.0-preview`. Core, host, Shell + page navigators, dialogs/toast, validation, pagination, Reactive, forms, cache policies, operation pipeline, and ViewModel scopes are shipped with tests. Source generators remain later. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md) and [ROADMAP.md](ROADMAP.md). Public APIs may still change before 1.0.
 
 MVVMExpress is a modular MVVM application framework for .NET MAUI. It is not a fork of CommunityToolkit.Mvvm, Prism.Maui, or ReactiveUI. Those libraries are studied as capability references. This document records the original architecture that delivers equivalent developer outcomes without copying their type graphs, containers, or navigation engines.
 
@@ -435,4 +435,4 @@ This folder is its own git repository and MauiEssentials submodule (`Plugin.Maui
 
 ## 21. How to read this document
 
-This file is the architecture contract. **0.3.0-preview implements** Core, Host, Navigation (Shell + page), Dialogs/toast, Validation, Pagination, and Testing. Later sections still describe designed surface (generators, Reactive, `IOperationExecutor`, ViewModel scopes, full `MvvmExpressOptions`). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md) for remaining phases.
+This file is the architecture contract. **0.4.0-preview implements** Core, Host, Navigation (Shell + page), Dialogs/toast, Validation, Pagination, and Testing. Later sections still describe designed surface (generators, Reactive, `IOperationExecutor`, ViewModel scopes, full `MvvmExpressOptions`). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md) for remaining phases.
