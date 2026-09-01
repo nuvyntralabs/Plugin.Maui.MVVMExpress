@@ -21,8 +21,8 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.5.0-preview</Version>
-    <PackageReleaseNotes>0.5.0-preview: IPropertyObservable, CombineLatest, no System.Reactive.</PackageReleaseNotes>
+    <Version>0.6.0-preview</Version>
+    <PackageReleaseNotes>0.6.0-preview: IPropertyObservable, CombineLatest, no System.Reactive.</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

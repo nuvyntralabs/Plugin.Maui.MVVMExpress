@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress.Dialogs
 
-MAUI `DisplayAlert` and toast adapter for **MVVMExpress**. ViewModels depend on `IDialogs` / `INotifier`, not `Page`.
+MAUI `DisplayAlert` and toast adapter for **MVVMExpress**. ViewModels depend on `IDialogs` / `INotifier`, not `Page`. **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. Alerts hop to `IMainThread`.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Dialogs.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Dialogs)
 
@@ -32,7 +32,9 @@ Register `MauiDialogs` as `IDialogs` and `MauiNotifier` as `INotifier` in the MA
 dotnet add package Plugin.Maui.MVVMExpress.Dialogs --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.5.0-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile TFMs are present and compile-only. Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.6.0-preview`.
+
+`MauiNotifier` toasts use `Window.AddOverlay` and never wrap `Page.Content`.
 
 `MauiDialogs` and `MauiNotifier` resolve the current page from `IWindowContext` (Shell first, then the window's page).
 

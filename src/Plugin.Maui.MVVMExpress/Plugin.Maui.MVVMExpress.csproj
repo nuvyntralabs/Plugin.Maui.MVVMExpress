@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net10.0;net10.0-android;net10.0-ios</TargetFrameworks>
+    <TargetFrameworks>net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
     <SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
@@ -11,7 +12,9 @@
     <NoWarn>$(NoWarn);CA1416</NoWarn>
 
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 
     <RootNamespace>Plugin.Maui.MVVMExpress</RootNamespace>
     <AssemblyName>Plugin.Maui.MVVMExpress</AssemblyName>
@@ -27,8 +30,8 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.5.0-preview</Version>
-    <PackageReleaseNotes>0.5.0-preview: source generators, persist/auth attributes, CommunityToolkit adapter, AOT registration.</PackageReleaseNotes>
+    <Version>0.6.0-preview</Version>
+    <PackageReleaseNotes>0.6.0-preview: UI-thread marshal for commands and dialogs, no-throw Execute, host UseShell/UseDialogs, dirty confirm, auth challenge.</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

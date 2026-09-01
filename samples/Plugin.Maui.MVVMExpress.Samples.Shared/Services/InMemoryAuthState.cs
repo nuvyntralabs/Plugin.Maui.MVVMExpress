@@ -1,14 +1,23 @@
+using System.ComponentModel;
 using Plugin.Maui.MVVMExpress.Auth;
 
 namespace Plugin.Maui.MVVMExpress.Samples.Services;
 
-public sealed class InMemoryAuthState : IAuthState, IRoleState
+public sealed class InMemoryAuthState : IAuthState, IRoleState, INotifyPropertyChanged
 {
     private readonly HashSet<string> _roles = new(StringComparer.OrdinalIgnoreCase);
 
     public bool IsAuthenticated { get; private set; }
 
     public string? UserName { get; private set; }
+
+    public string? Email { get; private set; }
+
+    public string? DisplayName => UserName;
+
+    public event EventHandler? Changed;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public IReadOnlyCollection<string> Roles => _roles;
 
@@ -46,6 +55,8 @@ public sealed class InMemoryAuthState : IAuthState, IRoleState
 
         IsAuthenticated = true;
         UserName = userName.Trim();
+        Email = UserName.Contains('@', StringComparison.Ordinal) ? UserName : null;
+        RaiseSession();
         return Task.FromResult(Op.Outcome.Success());
     }
 
@@ -54,7 +65,18 @@ public sealed class InMemoryAuthState : IAuthState, IRoleState
         cancellationToken.ThrowIfCancellationRequested();
         IsAuthenticated = false;
         UserName = null;
+        Email = null;
         _roles.Clear();
+        RaiseSession();
         return Task.CompletedTask;
+    }
+
+    private void RaiseSession()
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAuthenticated)));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UserName)));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Email)));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayName)));
+        Changed?.Invoke(this, EventArgs.Empty);
     }
 }

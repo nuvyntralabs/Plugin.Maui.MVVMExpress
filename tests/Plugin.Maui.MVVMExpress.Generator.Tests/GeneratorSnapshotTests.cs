@@ -54,6 +54,8 @@ public sealed class GeneratorSnapshotTests
         Assert.Contains("AuthPolicy", registration.Source);
         Assert.Contains("\"admin\"", registration.Source);
         Assert.Contains("typeof(global::Demo.DemoViewModel)", registration.Source);
+        Assert.Contains("ModuleInitializer", registration.Source);
+        Assert.Contains("GeneratedRegistrationHooks", registration.Source);
     }
 
     [Fact]

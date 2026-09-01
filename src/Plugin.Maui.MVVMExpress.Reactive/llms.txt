@@ -7,7 +7,7 @@ GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.5.0-preview (`--prerelease`)
+Version: 0.6.0-preview (`--prerelease`)
 
 ## Supported versions
 

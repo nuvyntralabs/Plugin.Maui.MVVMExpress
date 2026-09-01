@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Plugin.Maui.MVVMExpress.AuthApp</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
+    <IsPackable>false</IsPackable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <MauiXamlInflator>SourceGen</MauiXamlInflator>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WindowsPackageType>None</WindowsPackageType>
+    <ApplicationTitle>MVVMExpress Auth</ApplicationTitle>
+    <ApplicationId>com.mauiessentials.plugin.maui.mvvmexpress.authapp</ApplicationId>
+    <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\CounterPage.xaml.cs" />
+    <Compile Remove="Pages\ProductListPage.xaml.cs" />
+    <Compile Remove="Pages\ProductEditPage.xaml.cs" />
+    <Compile Remove="Pages\PageStackPage.xaml.cs" />
+    <Compile Remove="Pages\PageStackItemPage.xaml.cs" />
+    <Compile Remove="Pages\ProductDetailsPage.xaml.cs" />
+    <Compile Remove="Pages\SecureHomePage.xaml.cs" />
+    <Compile Remove="Pages\OfflinePage.xaml.cs" />
+    <Compile Remove="Pages\PaginationPage.xaml.cs" />
+    <Compile Remove="Pages\SearchPage.xaml.cs" />
+    <Compile Remove="Pages\EnterprisePage.xaml.cs" />
+    <Compile Remove="Pages\ScopesPage.xaml.cs" />
+    <Compile Remove="Pages\SampleContentPage.cs" />
+    <MauiXaml Remove="Pages\CounterPage.xaml" />
+    <MauiXaml Remove="Pages\ProductListPage.xaml" />
+    <MauiXaml Remove="Pages\ProductEditPage.xaml" />
+    <MauiXaml Remove="Pages\PageStackPage.xaml" />
+    <MauiXaml Remove="Pages\PageStackItemPage.xaml" />
+    <MauiXaml Remove="Pages\ProductDetailsPage.xaml" />
+    <MauiXaml Remove="Pages\SecureHomePage.xaml" />
+    <MauiXaml Remove="Pages\OfflinePage.xaml" />
+    <MauiXaml Remove="Pages\PaginationPage.xaml" />
+    <MauiXaml Remove="Pages\SearchPage.xaml" />
+    <MauiXaml Remove="Pages\EnterprisePage.xaml" />
+    <MauiXaml Remove="Pages\ScopesPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+    <MauiImage Include="Resources\Images\*" />
+    <MauiFont Include="Resources\Fonts\*" />
+    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Plugin.Maui.MVVMExpress.Samples.Shared\Plugin.Maui.MVVMExpress.Samples.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress\Plugin.Maui.MVVMExpress.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Dialogs\Plugin.Maui.MVVMExpress.Dialogs.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Navigation\Plugin.Maui.MVVMExpress.Navigation.csproj" />
+  </ItemGroup>
+
+</Project>

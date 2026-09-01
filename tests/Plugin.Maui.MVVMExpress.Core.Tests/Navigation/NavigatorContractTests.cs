@@ -40,7 +40,7 @@ public sealed class NavigatorContractTests
     {
         var navigator = new InMemoryNavigator();
         await Assert.ThrowsAsync<ArgumentException>(() => navigator.NavigateToAsync(" "));
-        await Assert.ThrowsAsync<ArgumentNullException>(() => navigator.NavigateToAsync(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => navigator.NavigateToAsync((string)null!));
     }
 
     [Fact]

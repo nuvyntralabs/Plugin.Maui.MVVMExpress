@@ -97,6 +97,13 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
     }
 
     /// <inheritdoc />
+    public Task<Result> NavigateToAsync(Type viewModelType, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(viewModelType);
+        return GoAsync(viewModelType, null, null, null, cancellationToken);
+    }
+
+    /// <inheritdoc />
     public Task<Result> GoBackAsync(CancellationToken cancellationToken = default)
         => PopCore(toRoot: false, cancellationToken);
 

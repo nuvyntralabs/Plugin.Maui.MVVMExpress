@@ -5,7 +5,24 @@ using Plugin.Maui.MVVMExpress.Dialogs;
 using Plugin.Maui.MVVMExpress.Errors;
 using Plugin.Maui.MVVMExpress.Input;
 using Plugin.Maui.MVVMExpress.Navigation;
+using Plugin.Maui.MVVMExpress.Outcome;
+using Plugin.Maui.MVVMExpress.Threading;
+using Result = Plugin.Maui.MVVMExpress.Outcome.Outcome;
+
 namespace Plugin.Maui.MVVMExpress.Forms;
+
+/// <summary>How a dirty form treats navigation away.</summary>
+public enum DirtyNavigationMode
+{
+    /// <summary>Return <see langword="false"/> with no UI (tests / silent block).</summary>
+    SilentBlock = 0,
+
+    /// <summary>Confirm via <c>IDialogs</c> when dialogs are available.</summary>
+    Confirm = 1,
+
+    /// <summary>Allow leave even when dirty.</summary>
+    Allow = 2
+}
 
 /// <summary>
 /// Page ViewModel with tracked <see cref="FormField{T}"/> values, dirty navigation guard, and undo / redo.
@@ -23,14 +40,18 @@ public abstract class FormViewModel : PageViewModel, IDirtyState
         INavigator? navigator = null,
         IDialogs? dialogs = null,
         IErrorSink? errors = null,
-        IBusyGate? busy = null)
-        : base(navigator, dialogs, errors, busy)
+        IBusyGate? busy = null,
+        IMainThread? mainThread = null)
+        : base(navigator, dialogs, errors, busy, mainThread)
     {
         ResetCommand = new ModelCommand(Reset, () => IsDirty);
         UndoCommand = new ModelCommand(Undo, () => CanUndo);
         RedoCommand = new ModelCommand(Redo, () => CanRedo);
         _history.PropertyChanged += OnHistoryChanged;
     }
+
+    /// <summary>Dirty leave policy. Default confirms when <see cref="PageViewModel.Dialogs"/> is set.</summary>
+    public DirtyNavigationMode DirtyNavigation { get; set; } = DirtyNavigationMode.Confirm;
 
     /// <summary>Tracked fields.</summary>
     public IReadOnlyList<IFormField> Fields => _fields;
@@ -64,8 +85,75 @@ public abstract class FormViewModel : PageViewModel, IDirtyState
     public ModelCommand RedoCommand { get; }
 
     /// <inheritdoc />
-    public override Task<bool> CanNavigateAwayAsync(CancellationToken cancellationToken = default)
-        => Task.FromResult(!IsDirty);
+    public override async Task<bool> CanNavigateAwayAsync(CancellationToken cancellationToken = default)
+    {
+        if (!IsDirty || DirtyNavigation == DirtyNavigationMode.Allow)
+        {
+            return true;
+        }
+
+        if (DirtyNavigation == DirtyNavigationMode.Confirm && Dialogs is { } dialogs)
+        {
+            return await dialogs.ConfirmAsync(
+                "Discard changes?",
+                "You have unsaved changes.",
+                "Discard",
+                "Stay",
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Runs <paramref name="work"/> and calls <see cref="MarkClean"/> when it succeeds.
+    /// Apply field errors first when <paramref name="validation"/> is invalid.
+    /// </summary>
+    protected async Task<Result> SubmitAsync(
+        Func<CancellationToken, Task<Result>> work,
+        IReadOnlyList<ValidationMessage>? validation = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(work);
+        if (validation is { Count: > 0 })
+        {
+            ApplyFieldErrors(validation);
+            return Result.Failure("E_VAL", string.Join("; ", validation.Select(static item => item.Message)));
+        }
+
+        var result = await work(cancellationToken).ConfigureAwait(false);
+        if (result.IsSuccess)
+        {
+            MarkClean();
+        }
+
+        return result;
+    }
+
+    /// <summary>Pushes validation messages onto matching <see cref="FormField{T}"/> instances.</summary>
+    protected void ApplyFieldErrors(IEnumerable<ValidationMessage> messages)
+    {
+        ArgumentNullException.ThrowIfNull(messages);
+        var grouped = messages.GroupBy(static item => item.PropertyName, StringComparer.Ordinal)
+            .ToDictionary(static g => g.Key, static g => (IReadOnlyList<ValidationMessage>)g.ToArray(), StringComparer.Ordinal);
+        foreach (var field in _fields)
+        {
+            field.SetErrors(grouped.TryGetValue(field.Name, out var list) ? list : []);
+        }
+    }
+
+    /// <summary>Adds a compare error when <paramref name="left"/> and <paramref name="right"/> differ.</summary>
+    protected static ValidationMessage? MustMatch<T>(FormField<T> left, FormField<T> right, string? message = null)
+    {
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+        if (EqualityComparer<T>.Default.Equals(left.Value, right.Value))
+        {
+            return null;
+        }
+
+        return new ValidationMessage(right.Name, message ?? "Values do not match.");
+    }
 
     /// <inheritdoc />
     public void MarkClean()

@@ -92,6 +92,13 @@ public class InMemoryNavigator : IPageNavigator, IRouteResolver
     }
 
     /// <inheritdoc />
+    public Task<Result> NavigateToAsync(Type viewModelType, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(viewModelType);
+        return NavigateCore(viewModelType, null, null, null, null, cancellationToken);
+    }
+
+    /// <inheritdoc />
     public Task<Result> GoBackAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();

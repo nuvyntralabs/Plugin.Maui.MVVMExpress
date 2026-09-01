@@ -26,7 +26,7 @@ public sealed class HomeViewModel : ViewModel
 dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
 ```
 
-Target framework: `net10.0`. Version `0.5.0-preview` — generators, persist/auth, and the operation pipeline ship. Shipped APIs are the 1.0 contract.
+Target framework: `net10.0`. Version `0.6.0-preview` — UI-thread marshal, weak `CanExecuteChanged`, and the operation pipeline ship. Shipped APIs are the 1.0 contract.
 
 ```csharp
 services.AddMvvmExpress(); // tests and shared libraries
@@ -37,7 +37,7 @@ MAUI apps also add [Plugin.Maui.MVVMExpress](https://www.nuget.org/packages/Plug
 ## What this package is
 
 - `ViewModel` / `PageViewModel` with dispose and `ViewModelCancellationToken`
-- `ModelCommand` / `AsyncModelCommand` (prevent, cancel-previous, timeout, retry)
+- `ModelCommand` / `AsyncModelCommand` (prevent, cancel-previous, timeout, retry; weak `CanExecuteChanged`)
 - `AsyncState<T>`, `Outcome`, `BusyGate`, `IMessageHub`
 - `ObservableRangeCollection<T>` (`AddRange` → one notify)
 - Abstractions: `INavigator`, `IDialogs`, `ICache` / `ICachedFetcher`, `IConnectivityProbe`, `IAuthState`, `IFeatureSwitch`, `IPermissionGate`

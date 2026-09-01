@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.MVVMExpress.Auth;
 using Plugin.Maui.MVVMExpress.Dialogs;
@@ -20,7 +19,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .UseMvvmExpress()
+            .UseMvvmExpress(o => o.UseShell().UseDialogs())
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -28,24 +27,19 @@ public static class MauiProgram
             });
 
         builder.Services.AddMvvmExpressSamples();
-        builder.Services.RemoveAll<IDialogs>();
-        builder.Services.AddSingleton<IDialogs, MauiDialogs>();
-        builder.Services.RemoveAll<INotifier>();
-        builder.Services.AddSingleton<INotifier, MauiNotifier>();
-        builder.Services.RemoveAll<INavigator>();
         builder.Services.AddSingleton<INavigator>(sp =>
         {
-            var shell = new MauiShellNavigator()
+            var shell = new MauiShellNavigator(builder.Services)
                 .Map<ProductListViewModel>("//products")
                 .Map<ProductDetailsViewModel>("details")
                 .Map<SecureHomeViewModel>("secure");
             return new GuardedNavigator(
                 shell,
                 sp.GetRequiredService<IAuthState>(),
+                Plugin.Maui.MVVMExpress.Generated.MvvmExpressGeneratedRegistrations.AuthPolicy,
                 typeof(SecureHomeViewModel),
                 typeof(EnterpriseShellViewModel));
         });
-        builder.Services.RemoveAll<IPageNavigator>();
         builder.Services.AddSingleton<IPageNavigator>(sp => new MauiPageNavigator(
                 new WindowContext("page-stack"),
                 sp,

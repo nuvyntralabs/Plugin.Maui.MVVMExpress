@@ -18,6 +18,12 @@ public interface IFormField : INotifyPropertyChanged, INotifyPropertyChanging, I
     /// <summary>Current validation messages.</summary>
     IReadOnlyList<ValidationMessage> Errors { get; }
 
+    /// <summary>First validation message, if any.</summary>
+    string? Error { get; }
+
+    /// <summary>Gets a value indicating whether <see cref="Errors"/> is non-empty.</summary>
+    bool HasError { get; }
+
     /// <summary>Replaces <see cref="Errors"/>.</summary>
     void SetErrors(IReadOnlyList<ValidationMessage> errors);
 

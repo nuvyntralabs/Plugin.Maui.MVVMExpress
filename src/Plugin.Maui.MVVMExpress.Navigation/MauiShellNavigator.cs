@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Plugin.Maui.MVVMExpress.ComponentModel;
 using Plugin.Maui.MVVMExpress.Hosting;
 using Result = Plugin.Maui.MVVMExpress.Outcome.Outcome;
@@ -11,6 +13,7 @@ public sealed class MauiShellNavigator : INavigator, IRouteResolver
 {
     private readonly NavigationRouteTable _routes = new();
     private readonly NavigationStack _stack = new();
+    private readonly IServiceCollection? _services;
 
     /// <inheritdoc />
     public Type? Current => _stack.Current;
@@ -27,12 +30,59 @@ public sealed class MauiShellNavigator : INavigator, IRouteResolver
     /// <inheritdoc />
     public IReadOnlyList<NavigationRequest> History => _stack.History;
 
+    /// <summary>Creates a Shell navigator. Pass <paramref name="services"/> so <see cref="Map{TViewModel,TPage}"/> can register DI.</summary>
+    public MauiShellNavigator(IServiceCollection? services = null)
+        => _services = services;
+
     /// <summary>Maps <typeparamref name="TViewModel"/> to a Shell route (<c>details</c> or <c>//products</c>).</summary>
     public MauiShellNavigator Map<TViewModel>(string route)
         where TViewModel : class, IViewModel
     {
         _routes.Map<TViewModel>(route);
         return this;
+    }
+
+    /// <summary>
+    /// Maps a ViewModel to a page type: Shell route, <c>Routing.RegisterRoute</c>, and transient DI.
+    /// Prefer <see cref="CreateContent{TPage}"/> so Shell does not capture a singleton page instance.
+    /// </summary>
+    public MauiShellNavigator Map<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TViewModel,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TPage>(string route)
+        where TViewModel : class, IViewModel
+        where TPage : Page
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(route);
+        _routes.Map<TViewModel>(route);
+        var path = route.TrimStart('/');
+        if (path.StartsWith("//", StringComparison.Ordinal))
+        {
+            path = path[2..];
+        }
+
+        Routing.RegisterRoute(path, typeof(TPage));
+        _services?.TryAddTransient<TViewModel>();
+        _services?.TryAddTransient<TPage>();
+        return this;
+    }
+
+    /// <summary>Creates a <see cref="ShellContent"/> that resolves <typeparamref name="TPage"/> per navigation.</summary>
+    public static ShellContent CreateContent<TPage>(string route, IServiceProvider services)
+        where TPage : Page
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(route);
+        ArgumentNullException.ThrowIfNull(services);
+        var path = route.TrimStart('/');
+        if (path.StartsWith("//", StringComparison.Ordinal))
+        {
+            path = path[2..];
+        }
+
+        return new ShellContent
+        {
+            Route = path,
+            ContentTemplate = new DataTemplate(() => services.GetRequiredService<TPage>())
+        };
     }
 
     /// <inheritdoc />
@@ -70,6 +120,13 @@ public sealed class MauiShellNavigator : INavigator, IRouteResolver
 
         var targetType = viewModelType ?? typeof(object);
         return GoUriAsync(BuildUri(mapped, merged), targetType, merged, mapped, merged, options, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<Result> NavigateToAsync(Type viewModelType, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(viewModelType);
+        return GoAsync(viewModelType, null, null, null, cancellationToken);
     }
 
     /// <inheritdoc />

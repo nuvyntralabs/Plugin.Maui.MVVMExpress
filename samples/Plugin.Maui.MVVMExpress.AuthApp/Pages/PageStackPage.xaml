@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:nav="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Navigation;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.PageStackPage"
+    x:DataType="nav:PageStackViewModel"
+    Title="Page stack">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="8">
+            <Label Text="MauiPageNavigator pushes onto INavigation. Stack APIs: push, pop, pop-to-root, replace, reset. Toast uses MauiNotifier." />
+            <Label Text="{Binding WindowId, StringFormat='Window: {0}'}" />
+            <Label Text="{Binding StackCount, StringFormat='Stack count: {0}'}" />
+            <Button Text="Push item (URI + query)" Command="{Binding PushCommand}" />
+            <Button Text="Pop" Command="{Binding PopCommand}" />
+            <Button Text="Pop to root" Command="{Binding PopToRootCommand}" />
+            <Button Text="Replace top with URI" Command="{Binding ReplaceCommand}" />
+            <Button Text="Reset stack" Command="{Binding ResetCommand}" />
+            <Button Text="Show toast" Command="{Binding ToastCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</pages:SampleContentPage>

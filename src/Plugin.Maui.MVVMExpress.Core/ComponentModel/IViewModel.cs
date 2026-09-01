@@ -22,4 +22,12 @@ public interface IViewModel : IAsyncDisposable, IDisposable
 
     /// <summary>Called when the page disappears.</summary>
     Task OnDisappearingAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Cancels in-flight work when the host has <c>CancelOperationsOnDisappear</c>.
+    /// Default is a no-op; override to cancel commands without disposing the ViewModel.
+    /// </summary>
+    void CancelPendingOperations()
+    {
+    }
 }

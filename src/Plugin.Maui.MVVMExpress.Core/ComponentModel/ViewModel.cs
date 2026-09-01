@@ -3,6 +3,7 @@ using Plugin.Maui.MVVMExpress.Composition;
 using Plugin.Maui.MVVMExpress.Errors;
 using Plugin.Maui.MVVMExpress.Outcome;
 using Plugin.Maui.MVVMExpress.State;
+using Plugin.Maui.MVVMExpress.Threading;
 using Result = Plugin.Maui.MVVMExpress.Outcome.Outcome;
 
 namespace Plugin.Maui.MVVMExpress.ComponentModel;
@@ -21,12 +22,17 @@ public abstract class ViewModel : ObservableModel, IViewModel, IViewModelCompose
     /// <summary>Creates a ViewModel and captures a lifetime token that stays readable after dispose.</summary>
     /// <param name="errors">Optional unexpected-error sink.</param>
     /// <param name="busy">Optional nested busy gate used by <see cref="ExecuteAsync"/>.</param>
-    protected ViewModel(IErrorSink? errors = null, IBusyGate? busy = null)
+    /// <param name="mainThread">Optional UI dispatcher for property notifications.</param>
+    protected ViewModel(IErrorSink? errors = null, IBusyGate? busy = null, IMainThread? mainThread = null)
     {
         _lifetime = new CancellationTokenSource();
         _lifetimeToken = _lifetime.Token;
         Errors = errors ?? NullErrorSink.Instance;
         Busy = busy;
+        if (mainThread is not null)
+        {
+            NotificationThread = mainThread;
+        }
     }
 
     /// <summary>Unexpected-error sink.</summary>

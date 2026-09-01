@@ -18,10 +18,12 @@ public sealed class ProductEditViewModel : FormViewModel
         set => _name.Value = value;
     }
 
-    // CanNavigateAwayAsync is false while IsDirty
+    // CanNavigateAwayAsync confirms via IDialogs when dirty (silent block if dialogs are null)
 }
 ```
 
-`InMemoryNavigator` can take `canLeave: _ => !form.IsDirty`. After a successful save call `MarkClean()`. `UndoCommand` / `RedoCommand` / `ResetCommand` are on the base type.
+`InMemoryNavigator` can take `canLeave: _ => !form.IsDirty`. After a successful save call `MarkClean()` — `SubmitAsync(work)` does that on success. Bind `FormField.Error` / `HasError`. Use `[MustMatch(nameof(Password))]` or `MustMatch(password, confirm)` for compare rules.
+
+`UndoCommand` / `RedoCommand` / `ResetCommand` are on the base type. Set `DirtyNavigation = DirtyNavigationMode.SilentBlock` for tests that must not show a dialog.
 
 XAML field highlighting stays [Plugin.Maui.FormValidation](https://www.nuget.org/packages/Plugin.Maui.FormValidation) (`Validation.For`). That package is Niladri Padhy / MauiEssentials work; FluentValidation and CommunityToolkit `ObservableValidator` are usual alternatives.

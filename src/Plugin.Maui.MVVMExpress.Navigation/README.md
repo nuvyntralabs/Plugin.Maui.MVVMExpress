@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress.Navigation
 
-Shell and page navigation hosts for **MVVMExpress**: map a ViewModel type to a Shell route or a `Page`.
+Shell and page navigation hosts for **MVVMExpress**: map a ViewModel type to a Shell route or a `Page`. **Supported: Android + iOS.** Mac Catalyst / Windows compile-only.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Navigation.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Navigation)
 
@@ -30,7 +30,7 @@ Typed args become a query string via `NavigationRouteTable.FormatQuery`. `INavig
 dotnet add package Plugin.Maui.MVVMExpress.Navigation --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.5.0-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.6.0-preview`.
 
 Register `INavigator` as `GuardedNavigator` wrapping `MauiShellNavigator`, and `IPageNavigator` as `MauiPageNavigator`, in the MAUI app (see the sample).
 

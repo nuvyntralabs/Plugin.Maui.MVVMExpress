@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:auth="clr-namespace:Plugin.Maui.MVVMExpress.Samples.AuthApp;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.AuthApp.Pages.ForgotPage"
+    x:DataType="auth:AuthForgotViewModel"
+    Title="Reset password">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="8">
+            <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" />
+            <Entry Placeholder="New password" IsPassword="True" Text="{Binding Password}" />
+            <Entry Placeholder="Confirm password" IsPassword="True" Text="{Binding Confirm}" />
+            <Button Text="Reset" Command="{Binding SubmitCommand}" />
+            <Button Text="Back" Command="{Binding BackCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

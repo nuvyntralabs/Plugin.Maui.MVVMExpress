@@ -299,6 +299,17 @@ public sealed class MvvmExpressGenerator : IIncrementalGenerator
                 }
             }
 
+            sb.AppendLine();
+            sb.AppendLine("    private sealed class GeneratedModule : global::Plugin.Maui.MVVMExpress.Generated.IGeneratedMvvmExpressModule");
+            sb.AppendLine("    {");
+            sb.AppendLine("        public void AddViewModels(global::Microsoft.Extensions.DependencyInjection.IServiceCollection services) => AddGeneratedViewModels(services);");
+            sb.AppendLine("        public void ApplyRoutes(global::System.Action<global::System.Type, string> map) => MvvmExpressGeneratedRegistrations.ApplyRoutes(map);");
+            sb.AppendLine("        public global::Plugin.Maui.MVVMExpress.Auth.INavigationAuthPolicy AuthPolicy => MvvmExpressGeneratedRegistrations.AuthPolicy;");
+            sb.AppendLine("    }");
+            sb.AppendLine();
+            sb.AppendLine("    [global::System.Runtime.CompilerServices.ModuleInitializer]");
+            sb.AppendLine("    internal static void RegisterGeneratedModule()");
+            sb.AppendLine("        => global::Plugin.Maui.MVVMExpress.Generated.GeneratedRegistrationHooks.Add(new GeneratedModule());");
             sb.AppendLine("}");
             return sb.ToString();
         }

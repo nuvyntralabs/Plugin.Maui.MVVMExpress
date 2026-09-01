@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CA1416</NoWarn>
 
@@ -19,8 +21,8 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.5.0-preview</Version>
-    <PackageReleaseNotes>0.5.0-preview: source generators, persist/auth attributes, CommunityToolkit adapter, AOT registration.</PackageReleaseNotes>
+    <Version>0.6.0-preview</Version>
+    <PackageReleaseNotes>0.6.0-preview: UI-thread marshal for commands and dialogs, no-throw Execute, host UseShell/UseDialogs, dirty confirm, auth challenge.</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -34,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TrimmerRootDescriptor Include="ILLink.Descriptors.xml" />
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>

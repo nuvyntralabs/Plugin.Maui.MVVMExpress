@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:auth="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Auth;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.SecureHomePage"
+    x:DataType="auth:SecureHomeViewModel"
+    Title="Secure home">
+
+    <VerticalStackLayout Padding="20" Spacing="8">
+        <Label Text="{Binding UserName, StringFormat='Signed in as {0}'}" />
+        <Button Text="Sign out" Command="{Binding SignOutCommand}" />
+    </VerticalStackLayout>
+</pages:SampleContentPage>

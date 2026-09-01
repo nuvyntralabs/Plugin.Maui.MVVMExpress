@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress
 
-MAUI host for **MVVMExpress** on **Android** and **iOS**: DI, main-thread dispatcher, and page lifecycle.
+MAUI host for **MVVMExpress**. **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. DI, main-thread marshal, and page lifecycle.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress)
 
@@ -9,10 +9,10 @@ Depends on [Plugin.Maui.MVVMExpress.Core](https://www.nuget.org/packages/Plugin.
 ```csharp
 builder
     .UseMauiApp<App>()
-    .UseMvvmExpress();
+    .UseMvvmExpress(o => o.UseShell().UseDialogs());
 ```
 
-`UseMvvmExpress` calls `AddMvvmExpress()` and replaces `IMainThread` with `MauiMainThread`.
+`UseMvvmExpress` calls `AddMvvmExpress()`, replaces `IMainThread` with `MauiMainThread`, and marshals command/property notifications. `UseShell` / `UseDialogs` are in the Navigation and Dialogs packages.
 
 ## Install
 
@@ -21,7 +21,7 @@ dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
 dotnet add package Plugin.Maui.MVVMExpress --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Version `0.5.0-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Version `0.6.0-preview`.
 
 ## What this package is
 

@@ -2,7 +2,7 @@
 
 **Product:** MVVMExpress  
 **Official package family:** `Plugin.Maui.MVVMExpress.*`  
-**Status:** `0.5.0-preview`. Core through Reactive, source generators, persist/auth attributes, CommunityToolkit adapter, and Phase 5 productization (samples, Testing fakes, migration guides, AOT/trim notes) are shipped with tests. Shipped public APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
+**Status:** `0.6.0-preview`. Device-safe marshal, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation `ILLink.Descriptors.xml`, host/auth/forms UX, and Phase 5 productization are shipped with tests. Shipped public APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
 
 MVVMExpress is a modular MVVM application framework for .NET MAUI. It is not a fork of CommunityToolkit.Mvvm, Prism.Maui, or ReactiveUI. Those libraries are studied as capability references. This document records the original architecture that delivers equivalent developer outcomes without copying their type graphs, containers, or navigation engines.
 
@@ -89,8 +89,8 @@ Plugin.Maui.MVVMExpress.Testing              net10.0 fakes
 | `Plugin.Maui.MVVMExpress.Core` | `net10.0` | No | Observable model, commands, ViewModel, state, outcome, messaging, busy, retry, timeout, collections, selection, dirty, undo, task tracking |
 | `Plugin.Maui.MVVMExpress` | `net10.0` + platform TFMs | Yes | `AddMvvmExpress`, lifecycle behaviors, main-thread dispatcher, ViewModel resolver, window context, app lifecycle bridge |
 | `Plugin.Maui.MVVMExpress.Navigation` | MAUI TFMs | Yes | `INavigator`, Shell + page hosts, guards, stacks, typed args, deep-link mapping |
-| `Plugin.Maui.MVVMExpress.Dialogs` | MAUI TFMs | Yes | Alerts, confirm, input, action sheet, loading, toast/snackbar abstractions |
-| `Plugin.Maui.MVVMExpress.Validation` | `net10.0` | No | DataAnnotations, custom validators, optional FluentValidation adapter |
+| `Plugin.Maui.MVVMExpress.Dialogs` | MAUI TFMs | Yes | Alerts, confirm, `Window.AddOverlay` toast (never wraps `Page.Content`) |
+| `Plugin.Maui.MVVMExpress.Validation` | `net10.0` | No | DataAnnotations + `ILLink.Descriptors.xml`; FluentValidation stays an app-level adapter |
 | `Plugin.Maui.MVVMExpress.Pagination` | `net10.0` | No | Page/cursor lists, load-more, refresh, search |
 | `Plugin.Maui.MVVMExpress.Reactive` | `net10.0` | No | Property streams, derived state, reactive commands — **no System.Reactive in Core** |
 | `Plugin.Maui.MVVMExpress.SourceGenerators` | `netstandard2.0` | No | `[Notify]`, commands, register, route |
@@ -349,7 +349,7 @@ Until generators ship, all of the above is handwritten. Attributes may exist in 
 | Convention scan (`*Page` / `*ViewModel`) | Generator registration is the supported AOT path. Reflection scan is opt-in and annotated with `DynamicallyAccessedMembers` / `RequiresUnreferencedCode` |
 | `Activator.CreateInstance` for pages | Resolve from DI (`IServiceProvider.GetRequiredService<TPage>()`) |
 | Dictionary navigation by string type name | Typed `NavigateToAsync<TViewModel>()` is the AOT path; string routes require a generated route table |
-| DataAnnotations | Use source-generated validators where possible; document trim warnings on `ValidationContext` |
+| DataAnnotations | `Plugin.Maui.MVVMExpress.Validation` ships `ILLink.Descriptors.xml` + `[DynamicDependency]` for `Required` / `MinLength` / `MustMatch` and the other 0.6 attributes. Custom attributes need an app-level descriptor. |
 | Messaging by `typeof(TMessage)` | Closed generic `IMessageHub.Subscribe<T>` — no string topic required |
 | JSON state restoration | `System.Text.Json` + `[JsonSerializable]` context supplied by the app |
 | FluentValidation / Rx optional refs | Never referenced from Core; no trim graph leak |
@@ -360,7 +360,7 @@ Until generators ship, all of the above is handwritten. Attributes may exist in 
 | --- | --- |
 | Page → Behavior → ViewModel → Page | Behaviors unsubscribe on `Unloaded`. ViewModel does not hold `Page` |
 | Strong messenger subscriptions | Default `IMessageHub` is weak. Strong subscribe is explicit and `IDisposable` |
-| Command `CanExecuteChanged` + property events | Commands hold weak refs to the model or dispose with the ViewModel |
+| Command `CanExecuteChanged` + property events | `CanExecuteChanged` is a weak event on `ModelCommand` / `AsyncModelCommand`. A long-lived command does not pin a Button or popped page. |
 | Navigation stack retaining popped VMs | Page scope dispose on pop |
 | Child ViewModels | Parent dispose walks children |
 | Static `Application.Current` handlers | Host registers `IDisposable` with the MAUI app lifetime |
@@ -435,4 +435,4 @@ This folder is its own git repository and MauiEssentials submodule (`Plugin.Maui
 
 ## 21. How to read this document
 
-This file is the architecture contract. **0.5.0-preview implements** Core through Reactive, source generators, persist/auth attributes, CommunityToolkit compatibility, and Phase 5 productization. Remaining 1.0.0 work is design-review sign-off; accepted scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).
+This file is the architecture contract. **0.6.0-preview implements** Core through Reactive, device-safe marshal, weak command events, window-overlay toasts, Validation trim roots, source generators, persist/auth attributes, CommunityToolkit compatibility, and Phase 5 productization. Remaining 1.0.0 work is design-review sign-off; accepted scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).

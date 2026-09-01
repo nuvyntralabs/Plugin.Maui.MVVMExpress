@@ -1,13 +1,29 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Plugin.Maui.MVVMExpress.Outcome;
 
 namespace Plugin.Maui.MVVMExpress.Validation;
 
 /// <summary><see cref="IValidator"/> using <see cref="Validator"/>.</summary>
+[UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "ILLink.Descriptors.xml and DynamicDependency root the DataAnnotations used by Validator.TryValidateObject.")]
+[UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Property lookup uses the caller-supplied name; supported attributes are rooted.")]
 public sealed class DataAnnotationsValidator : IValidator
 {
     /// <summary>Shared instance.</summary>
     public static DataAnnotationsValidator Instance { get; } = new();
+
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(RequiredAttribute))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(StringLengthAttribute))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MinLengthAttribute))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MaxLengthAttribute))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(RangeAttribute))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(RegularExpressionAttribute))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(EmailAddressAttribute))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CompareAttribute))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MustMatchAttribute))]
+    static DataAnnotationsValidator()
+    {
+    }
 
     /// <inheritdoc />
     public ValidationSummary Validate(object instance)

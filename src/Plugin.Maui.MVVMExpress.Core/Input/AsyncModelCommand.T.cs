@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using Plugin.Maui.MVVMExpress.ComponentModel;
+using Plugin.Maui.MVVMExpress.Threading;
 
 namespace Plugin.Maui.MVVMExpress.Input;
 
@@ -11,6 +12,7 @@ public sealed class AsyncModelCommand<T> : ObservableModel, ICommand
     private readonly Func<T?, bool>? _canExecute;
     private readonly AsyncCommandOptions _options;
     private readonly CommandPipeline _pipeline;
+    private readonly WeakCanExecuteChanged _canExecuteChanged = new();
     private CancellationTokenSource? _execution;
     private int _runLock;
     private CommandExecutionState _state = CommandExecutionState.Idle;
@@ -30,10 +32,18 @@ public sealed class AsyncModelCommand<T> : ObservableModel, ICommand
         _canExecute = canExecute;
         _options = options ?? new AsyncCommandOptions();
         _pipeline = new CommandPipeline(_options);
+        if (_options.MainThread is not null)
+        {
+            NotificationThread = _options.MainThread;
+        }
     }
 
     /// <inheritdoc />
-    public event EventHandler? CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged
+    {
+        add => _canExecuteChanged.Add(value);
+        remove => _canExecuteChanged.Remove(value);
+    }
 
     /// <summary>Gets a value indicating whether the command is executing.</summary>
     public bool IsRunning
@@ -71,9 +81,18 @@ public sealed class AsyncModelCommand<T> : ObservableModel, ICommand
     /// <inheritdoc />
     public async void Execute(object? parameter)
     {
-        if (TryCast(parameter, out var value))
+        if (!TryCast(parameter, out var value))
+        {
+            return;
+        }
+
+        try
         {
             await ExecuteAsync(value).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            await CommandFailure.HandleAsync(ex, _options).ConfigureAwait(false);
         }
     }
 
@@ -204,7 +223,11 @@ public sealed class AsyncModelCommand<T> : ObservableModel, ICommand
     }
 
     /// <summary>Raises <see cref="CanExecuteChanged"/>.</summary>
-    public void NotifyCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    public void NotifyCanExecuteChanged()
+        => NotificationMarshaller.Raise(
+            () => _canExecuteChanged.Raise(this, EventArgs.Empty),
+            _options.MainThread,
+            _options.MarshalToMainThread);
 
     private static bool TryCast(object? parameter, out T? value)
     {

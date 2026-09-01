@@ -12,7 +12,8 @@ Implementation is incremental. Do not implement a later phase in the same change
 | 0.1.0-preview | Core + Host + Shell navigator + dialogs + validation + pagination |
 | 0.3.0-preview | Phase 2 complete (page host, URI stack, toast, multi-window) |
 | 0.4.0-preview | Phase 3 released (forms, reactive, cache policies, pipeline, scopes) |
-| 0.5.0-preview | Phases 4–5 (current). Generators, persist/auth, productization |
+| 0.5.0-preview | Phases 4–5. Generators, persist/auth, productization |
+| 0.6.0-preview | Device-safe marshal, weak `CanExecuteChanged`, window-overlay toasts, Validation trim roots, host/auth/forms UX (current). Not 1.0.0 |
 | 1.0.0 | SemVer lock after design-review sign-off only. Accepted scope: [known-limitations.md](docs/known-limitations.md) |
 
 After 1.0.0: SemVer. Breaking API changes require a major version.

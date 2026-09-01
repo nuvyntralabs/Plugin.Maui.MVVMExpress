@@ -2,6 +2,8 @@
 
 ViewModels live in [`Plugin.Maui.MVVMExpress.Samples.Shared`](Plugin.Maui.MVVMExpress.Samples.Shared/) (`net10.0`, no MAUI). They are covered by [`tests/Plugin.Maui.MVVMExpress.Samples.Tests`](../tests/Plugin.Maui.MVVMExpress.Samples.Tests/).
 
+**First run:** [`Plugin.Maui.MVVMExpress.AuthApp`](Plugin.Maui.MVVMExpress.AuthApp/) — login / register / forgot / guarded home (`ResetAsync` replace-root). Demo: `demo@mvvmexpress.dev` / `secret`.
+
 The MAUI host [`Plugin.Maui.MVVMExpress.Sample`](Plugin.Maui.MVVMExpress.Sample/) is a flyout app with one XAML page per scenario. `MauiProgram` calls `UseMvvmExpress()`, then `AddMvvmExpressSamples()`, then replaces `INavigator` with `GuardedNavigator` around `MauiShellNavigator` and `IPageNavigator` with `MauiPageNavigator`. Home → products switches the CRUD flyout; Home → details (typed or URI query) and login → secure home push real Shell pages. **Page stack** pushes onto `INavigation` and shows a `MauiNotifier` toast.
 
 Each sample integrates **library** types. In-memory implementations (`InMemoryNavigator`, `MemoryCache`, `InMemoryConnectivityProbe`, `InMemoryAuthState`) are for the demo host. Production apps should adapt sibling plugins instead of shipping those in-memory types.

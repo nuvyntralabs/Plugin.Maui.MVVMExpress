@@ -2,14 +2,15 @@ namespace Plugin.Maui.MVVMExpress.Sample;
 
 public partial class App : Application
 {
-    private readonly AppShell _shell;
+    private readonly IServiceProvider _services;
 
-    public App(AppShell shell)
+    public App(IServiceProvider services)
     {
+        ArgumentNullException.ThrowIfNull(services);
         InitializeComponent();
-        _shell = shell;
+        _services = services;
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
-        => new(_shell);
+        => new(_services.GetRequiredService<AppShell>());
 }

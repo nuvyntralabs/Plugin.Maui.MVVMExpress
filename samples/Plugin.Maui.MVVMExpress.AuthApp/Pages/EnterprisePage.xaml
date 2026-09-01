@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:ent="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Enterprise;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    xmlns:models="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Models;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.EnterprisePage"
+    x:DataType="ent:EnterpriseShellViewModel"
+    Title="Enterprise">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Padding="20" RowSpacing="8">
+        <Label Text="Composes Core + sample adapters. Production: Plugin.Maui.NetworkMonitor + SecureSession." />
+        <Label Grid.Row="1" Text="{Binding IsOnline, StringFormat='Online: {0}'}" />
+        <Button Grid.Row="2" Text="Refresh" Command="{Binding RefreshCommand}" />
+        <Button Grid.Row="3" Text="Open secure" Command="{Binding OpenSecureCommand}" />
+        <CollectionView Grid.Row="4" ItemsSource="{Binding Products.Data}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Label Text="{Binding Name}" Padding="0,8" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</pages:SampleContentPage>

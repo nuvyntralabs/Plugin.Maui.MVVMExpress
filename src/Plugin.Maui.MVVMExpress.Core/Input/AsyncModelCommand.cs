@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using Plugin.Maui.MVVMExpress.ComponentModel;
+using Plugin.Maui.MVVMExpress.Threading;
 
 namespace Plugin.Maui.MVVMExpress.Input;
 
@@ -12,6 +13,7 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
     private readonly Func<bool>? _canExecute;
     private readonly AsyncCommandOptions _options;
     private readonly CommandPipeline _pipeline;
+    private readonly WeakCanExecuteChanged _canExecuteChanged = new();
     private CancellationTokenSource? _execution;
     private int _runLock;
     private CommandExecutionState _state = CommandExecutionState.Idle;
@@ -31,10 +33,18 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
         _canExecute = canExecute;
         _options = options ?? new AsyncCommandOptions();
         _pipeline = new CommandPipeline(_options);
+        if (_options.MainThread is not null)
+        {
+            NotificationThread = _options.MainThread;
+        }
     }
 
     /// <inheritdoc />
-    public event EventHandler? CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged
+    {
+        add => _canExecuteChanged.Add(value);
+        remove => _canExecuteChanged.Remove(value);
+    }
 
     /// <summary>Gets a value indicating whether the command is executing.</summary>
     public bool IsRunning
@@ -65,7 +75,17 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
     }
 
     /// <inheritdoc />
-    public async void Execute(object? parameter) => await ExecuteAsync().ConfigureAwait(false);
+    public async void Execute(object? parameter)
+    {
+        try
+        {
+            await ExecuteAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            await CommandFailure.HandleAsync(ex, _options).ConfigureAwait(false);
+        }
+    }
 
     /// <summary>Executes the command and observes cancellation.</summary>
     public async Task ExecuteAsync(CancellationToken cancellationToken = default)
@@ -192,5 +212,9 @@ public sealed class AsyncModelCommand : ObservableModel, ICommand
     }
 
     /// <summary>Raises <see cref="CanExecuteChanged"/>.</summary>
-    public void NotifyCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    public void NotifyCanExecuteChanged()
+        => NotificationMarshaller.Raise(
+            () => _canExecuteChanged.Raise(this, EventArgs.Empty),
+            _options.MainThread,
+            _options.MarshalToMainThread);
 }

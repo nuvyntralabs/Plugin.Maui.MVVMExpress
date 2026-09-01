@@ -1,18 +1,29 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Plugin.Maui.MVVMExpress.Threading;
 
 namespace Plugin.Maui.MVVMExpress.ComponentModel;
 
 /// <summary>
 /// Bindable model with property-change notification. Event args are cached by property name.
+/// When an <see cref="IMainThread"/> is present, changing/changed events hop to the UI thread.
 /// </summary>
 public abstract class ObservableModel : INotifyPropertyChanged, INotifyPropertyChanging
 {
+    private IMainThread? _notificationThread;
+
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <inheritdoc />
     public event PropertyChangingEventHandler? PropertyChanging;
+
+    /// <summary>Optional per-instance dispatcher. Falls back to <see cref="NotificationMarshaller.Current"/>.</summary>
+    protected IMainThread? NotificationThread
+    {
+        get => _notificationThread;
+        set => _notificationThread = value;
+    }
 
     /// <summary>
     /// Assigns <paramref name="value"/> and raises changing/changed when the value actually differs.
@@ -68,14 +79,16 @@ public abstract class ObservableModel : INotifyPropertyChanged, INotifyPropertyC
     protected void Notify([CallerMemberName] string? propertyName = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(propertyName);
-        PropertyChanged?.Invoke(this, PropertyEventArgsCache.ForChanged(propertyName));
+        var args = PropertyEventArgsCache.ForChanged(propertyName);
+        NotificationMarshaller.Raise(() => PropertyChanged?.Invoke(this, args), _notificationThread);
     }
 
     /// <summary>Raises <see cref="PropertyChanging"/> for <paramref name="propertyName"/>.</summary>
     protected void NotifyChanging([CallerMemberName] string? propertyName = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(propertyName);
-        PropertyChanging?.Invoke(this, PropertyEventArgsCache.ForChanging(propertyName));
+        var args = PropertyEventArgsCache.ForChanging(propertyName);
+        NotificationMarshaller.Raise(() => PropertyChanging?.Invoke(this, args), _notificationThread);
     }
 
     /// <summary>Raises <see cref="PropertyChanged"/> for each name in <paramref name="dependents"/>.</summary>

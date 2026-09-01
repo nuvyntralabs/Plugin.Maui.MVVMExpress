@@ -20,8 +20,8 @@
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
     <MauiVersion>10.0.90</MauiVersion>
-    <Version>0.5.0-preview</Version>
-    <PackageReleaseNotes>0.5.0-preview: source generators, persist/auth attributes, CommunityToolkit adapter, AOT registration.</PackageReleaseNotes>
+    <Version>0.6.0-preview</Version>
+    <PackageReleaseNotes>0.6.0-preview: UI-thread marshal for commands and dialogs, no-throw Execute, host UseShell/UseDialogs, dirty confirm, auth challenge.</PackageReleaseNotes>
     <PackageTags>dotnet-maui;maui;mvvm;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm-express</PackageTags>
   </PropertyGroup>
 </Project>

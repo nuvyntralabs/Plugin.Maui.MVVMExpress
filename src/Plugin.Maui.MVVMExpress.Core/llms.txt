@@ -1,13 +1,13 @@
 # Plugin.Maui.MVVMExpress.Core
 
-UI-framework-free MVVM: ViewModel, commands, AsyncState, Outcome, INavigator, ICache, IAuthState. No MAUI.
+UI-framework-free MVVM: ViewModel, commands (weak CanExecuteChanged), AsyncState, Outcome, INavigator, ICache, IAuthState. No MAUI.
 
 NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.5.0-preview (`--prerelease`)
+Version: 0.6.0-preview (`--prerelease`)
 
 ## Supported versions
 

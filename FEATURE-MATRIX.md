@@ -8,7 +8,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 
 **Honesty rule:** The [README](README.md) comparison is the **designed product** (Yes = in the architecture). This file tracks **shipping**. `Yes` here means types exist **and** tests exist. `Designed (Pn)` means specified for phase n, not coded yet. This table does not claim superiority. Scale numbers are host-process measurements; see [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md) and [docs/known-limitations.md](docs/known-limitations.md).
 
-Last validated: 2026-09-01 against the public docs and repos linked above.
+Last validated: 2026-09-01 against the public docs and repos linked above. **0.6.0-preview** adds UI-thread marshal, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation trim roots, dirty confirm, auth challenge, and generated module auto-apply.
 
 ## Legend
 
@@ -32,7 +32,7 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | Manual INPC without generators | Yes | Yes | Yes | Yes |
 | Sync commands | Yes | Yes (`RelayCommand`) | Yes (`DelegateCommand`) | Yes |
 | Async commands | Yes | Yes (`AsyncRelayCommand`) | Partial | Yes (`ReactiveCommand`) |
-| Command `CanExecute` refresh | Yes | Yes | Yes | Yes (observable) |
+| Command `CanExecute` refresh | Yes (weak `CanExecuteChanged`) | Yes | Yes | Yes (observable) |
 | Command cancellation | Yes | Yes | Partial | Yes |
 | Command timeout / retry / debounce / throttle | Yes (command options + `SearchQuery` + `IOperationExecutor`) | No | No | Ext (Rx operators) |
 | Concurrency modes (cancel previous, queue) | Yes (prevent, cancel-previous, queue, allow, replace) | Partial (concurrent flag) | No | Partial |
@@ -40,7 +40,7 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | `ObservableValidator` / DataAnnotations | Yes (`IValidator` / `DataAnnotationsValidator`) | Yes | Ext | Ext |
 | Messenger | Yes (weak default) | Yes (`IMessenger`) | Yes (EventAggregator) | Yes (`MessageBus`) |
 | ViewModel base + lifecycle | Yes | No | Yes (`INavigationAware`, `IInitialize`) | Yes (`WhenActivated`) |
-| Memory-leak GC tests | Yes | Partial | Partial | Partial |
+| Memory-leak GC tests | Yes (including Button + command + pop page) | Partial | Partial | Partial |
 | Small / mid / large batch collections | Yes | App code | App code | App / Rx |
 
 ## Navigation and app structure
@@ -56,7 +56,7 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | Navigation stack API | Yes (`Stack`, `ModalStack`, `CanGoBack`, `PopToRoot`, `Replace`, `Reset`) | No | Yes | Yes |
 | Regions | No (v1) | No | Yes | No |
 | Dialogs from ViewModel | Yes (`IDialogs`, `NullDialogs`, `MauiDialogs`) | No (use MAUI / Toolkit) | Yes | Ext |
-| Toast / snackbar abstraction | Yes (`INotifier`) | No | Ext | Ext |
+| Toast / snackbar abstraction | Yes (`INotifier` + `Window.AddOverlay`, no `Content` wrap) | No | Ext | Ext |
 | DI via `Microsoft.Extensions.DependencyInjection` | Yes (`AddMvvmExpress`, `UseMvvmExpress`) | App-level only | Partial (Prism containers; MS.DI adapters exist) | Partial (Splat / `RxAppBuilder`) |
 | Convention View/VM registration | Yes (`[RegisterView]` / generated `AddGeneratedViewModels`) | No | Yes | Partial |
 | ViewModel locator (optional) | Designed (P1) | No | Yes | Yes |
@@ -86,7 +86,7 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | Testing leak/scale helpers | Yes (`LeakProbe`, `ScaleProfile`, `ScopedNavigator`) | Partial | Yes | Yes |
 | Testing fakes package | Yes (`FakeDialogs`, `FakeNavigator`, `FakeMainThread`, `FakeConnectivity`, `FakeMessageHub`, `AppearAsync`) | Partial | Yes | Yes |
 | MAUI page lifecycle behaviors | Yes (`ViewModelLifecycleBehavior`) | No | Yes | Yes (`ReactiveContentPage`) |
-| AOT / trim-friendly registration | Yes (`AddGeneratedViewModels`) | Yes (analyzers in 8.4) | Partial | Partial |
+| AOT / trim-friendly registration | Yes (`AddGeneratedViewModels`; Validation `ILLink.Descriptors.xml`) | Yes (analyzers in 8.4) | Partial | Partial |
 
 ## Differentiating row (design intent, not a claim of current quality)
 

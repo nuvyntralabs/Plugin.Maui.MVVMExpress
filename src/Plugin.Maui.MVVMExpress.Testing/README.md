@@ -24,7 +24,7 @@ Also: `FakeDialogs`, `FakeMainThread`, `FakeConnectivity`, `FakeMessageHub`, `Sc
 dotnet add package Plugin.Maui.MVVMExpress.Testing --prerelease
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Reference from test projects only. Version `0.5.0-preview`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Reference from test projects only. Version `0.6.0-preview`.
 
 ## Related
 

@@ -7,7 +7,7 @@ Modular MVVM application framework for .NET MAUI.
 - Product: MVVMExpress
 - Package prefix: `Plugin.Maui.MVVMExpress`
 - Catalog: https://github.com/nuvyntralabs/MauiEssentials
-- Status: **0.5.0-preview.** Core through Reactive, SourceGenerators, and CommunityToolkit compatibility are packed. Shipped APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See docs/known-limitations.md. LICENSE and CHANGELOG stay at the repo root.
+- Status: **0.6.0-preview.** Command/dialog/property notifications marshal to IMainThread. `CanExecuteChanged` is a weak event. Toasts use `Window.AddOverlay` (never wrap `Page.Content`). Validation ships `ILLink.Descriptors.xml`. Shipped APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See docs/known-limitations.md. LICENSE and CHANGELOG stay at the repo root.
 
 ## When to consider this repository
 

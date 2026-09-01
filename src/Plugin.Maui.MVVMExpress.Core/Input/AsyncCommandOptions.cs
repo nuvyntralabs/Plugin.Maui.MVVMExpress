@@ -1,3 +1,7 @@
+using Plugin.Maui.MVVMExpress.Dialogs;
+using Plugin.Maui.MVVMExpress.Errors;
+using Plugin.Maui.MVVMExpress.Threading;
+
 namespace Plugin.Maui.MVVMExpress.Input;
 
 /// <summary>How an async command treats a second execution while one is running.</summary>
@@ -39,4 +43,19 @@ public sealed class AsyncCommandOptions
 
     /// <summary>Ignore executes that arrive within this window after a start.</summary>
     public TimeSpan? Throttle { get; init; }
+
+    /// <summary>
+    /// When <see langword="true"/> (default), <c>CanExecuteChanged</c> / <c>IsRunning</c> / <c>State</c>
+    /// hop to <see cref="IMainThread"/>. Tests using <see cref="ImmediateMainThread"/> stay inline.
+    /// </summary>
+    public bool MarshalToMainThread { get; init; } = true;
+
+    /// <summary>Optional dispatcher override for this command.</summary>
+    public IMainThread? MainThread { get; init; }
+
+    /// <summary>Receives failures from <c>ICommand.Execute</c> (async void). <c>ExecuteAsync</c> still rethrows.</summary>
+    public IErrorSink? ErrorSink { get; init; }
+
+    /// <summary>Optional dialogs for <c>ICommand.Execute</c> failures.</summary>
+    public IDialogs? Dialogs { get; init; }
 }

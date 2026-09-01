@@ -15,6 +15,7 @@ using Plugin.Maui.MVVMExpress.Generated;
 using Plugin.Maui.MVVMExpress.Samples.Generated;
 using Plugin.Maui.MVVMExpress.Samples.Pagination;
 using Plugin.Maui.MVVMExpress.Samples.Reactive;
+using Plugin.Maui.MVVMExpress.Samples.AuthApp;
 using Plugin.Maui.MVVMExpress.Samples.Services;
 using Plugin.Maui.MVVMExpress.Validation;
 
@@ -27,6 +28,7 @@ public static class SampleServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(services);
         services.AddSingleton<IErrorSink, RecordingErrorSink>();
         services.AddSingleton<IAuthState, InMemoryAuthState>();
+        services.AddSingleton<IAccountService, MemoryAccountService>();
         services.AddSingleton<IValidator>(_ => DataAnnotationsValidator.Instance);
         services.AddMvvmExpress();
 
@@ -73,6 +75,10 @@ public static class SampleServiceCollectionExtensions
         services.AddTransient<EnterpriseShellViewModel>();
         services.AddTransient<ScopedCatalogFlowViewModel>();
         services.AddTransient<GeneratedCatalogViewModel>();
+        services.AddTransient<AuthLoginViewModel>();
+        services.AddTransient<AuthHomeViewModel>();
+        services.AddTransient<AuthRegisterViewModel>();
+        services.AddTransient<AuthForgotViewModel>();
         services.AddGeneratedViewModels();
         return services;
     }

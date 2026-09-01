@@ -2,6 +2,29 @@
 
 All notable changes to Plugin.Maui.MVVMExpress are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [SemVer](https://semver.org/) after 1.0.0.
 
+## [0.6.0-preview] — 2026-09-01
+
+### Fixed
+
+- `AsyncModelCommand` / `ModelCommand` raise `CanExecuteChanged`, `IsRunning`, and `State` on `IMainThread` (Android Button animator crash)
+- `ICommand.Execute` (async void) never throws; failures go to `IErrorSink` / `IDialogs`. `ExecuteAsync` still rethrows
+- `MauiDialogs` hops to `IMainThread` like `MauiNotifier`
+- `ObservableModel` property notifications hop when a dispatcher is present
+- Toast overlay no longer unwraps page content after `ResetAsync`
+- Toast uses `Window.AddOverlay` and never wraps or replaces `Page.Content`
+- `ModelCommand` / `AsyncModelCommand` `CanExecuteChanged` is a weak event (Button + pop page no longer pins the page)
+
+### Added
+
+- `UseMvvmExpress(o => o.UseShell().UseDialogs())`, auto `ViewModelLifecycleBehavior`, `MauiShellNavigator.Map<TViewModel, TPage>` + `CreateContent`
+- `FormViewModel` discard confirm, `SubmitAsync` + `MarkClean`, `FormField.Error` / `HasError`, `MustMatch`
+- `GuardedNavigatorOptions` auth challenge + navigation failure forwarding
+- `IAuthState.Email` / `DisplayName` / `Changed`, `IAccountService`
+- Generated `[ModuleInitializer]` so `[Route]` / `[RequiresAuth]` apply from `UseMvvmExpress`
+- `BusyOverlayBehavior`, `AsyncStateView`, AuthApp first-run sample, SecureSession adapter sketch
+- Mac Catalyst / Windows compile TFMs (catalog-primary remains Android + iOS)
+- Validation `ILLink.Descriptors.xml` roots `Required` / `MinLength` / `MustMatch` and the other 0.6 DataAnnotations
+
 ## [0.5.0-preview] — 2026-09-01
 
 ### Added

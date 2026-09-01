@@ -5,7 +5,7 @@ Roslyn generators for [Notify], commands, routes, persist, auth.
 NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.SourceGenerators
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 License: MIT
-Version: 0.5.0-preview (`--prerelease`)
+Version: 0.6.0-preview (`--prerelease`)
 
 ## Use when
 

@@ -159,6 +159,7 @@ namespace Plugin.Maui.MVVMExpress.Input;
 public sealed class ModelCommand : ICommand
 {
     public ModelCommand(Action execute, Func<bool>? canExecute = null);
+    public event EventHandler? CanExecuteChanged; // weak; does not pin Button / page
     public void NotifyCanExecuteChanged();
 }
 
@@ -450,9 +451,11 @@ public sealed class MauiNotifier : INotifier
 {
     public MauiNotifier(IToastPresenter? presenter = null, IWindowContext? window = null);
 }
+
+public sealed class MauiToastPresenter : IToastPresenter { }
 ```
 
-ViewModels must not call `Page.DisplayAlert`. Prompt, action sheet, loading overlay, snackbar, and banner are **proposed**.
+`MauiToastPresenter` draws on `Window.AddOverlay`. It never wraps or replaces `Page.Content`. ViewModels must not call `Page.DisplayAlert`. Prompt, action sheet, loading overlay, snackbar, and banner are **proposed**.
 
 ---
 

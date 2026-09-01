@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Validation\Plugin.Maui.MVVMExpress.Validation.csproj" />
+    <Content Include="..\..\src\Plugin.Maui.MVVMExpress.Validation\ILLink.Descriptors.xml" Link="ILLink.Descriptors.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

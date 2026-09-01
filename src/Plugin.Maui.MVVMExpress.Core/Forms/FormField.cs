@@ -53,8 +53,21 @@ public sealed class FormField<T> : ObservableModel, IFormField
     public IReadOnlyList<ValidationMessage> Errors
     {
         get => _errors;
-        private set => SetProperty(ref _errors, value);
+        private set
+        {
+            if (SetProperty(ref _errors, value))
+            {
+                Notify(nameof(Error));
+                Notify(nameof(HasError));
+            }
+        }
     }
+
+    /// <inheritdoc />
+    public string? Error => _errors.Count == 0 ? null : _errors[0].Message;
+
+    /// <inheritdoc />
+    public bool HasError => _errors.Count > 0;
 
     /// <inheritdoc />
     public object? BoxedValue => Value;

@@ -50,6 +50,10 @@ public interface INavigator
     /// <summary>Clears the stack and makes <typeparamref name="TViewModel"/> the root.</summary>
     Task<Result> ResetAsync<TViewModel>(CancellationToken cancellationToken = default)
         where TViewModel : class, IViewModel;
+
+    /// <summary>Navigates to a ViewModel type resolved at runtime (auth challenge, generated routes).</summary>
+    Task<Result> NavigateToAsync(Type viewModelType, CancellationToken cancellationToken = default)
+        => Task.FromResult(Result.Failure("E_ROUTE", $"No typed navigation for {viewModelType.Name}."));
 }
 
 /// <summary>One recorded navigation.</summary>

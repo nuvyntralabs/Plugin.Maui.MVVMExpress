@@ -2,7 +2,7 @@
 
 Scenarios covered by `tests/Plugin.Maui.MVVMExpress.Core.Tests` after the 2026-08-31 recheck.
 
-Latest run (2026-09-01): **170 Core** + **60 sample** + **3 generator** + **2 compatibility** + Reactive + Validation + Pagination + Navigation + Dialogs. Phase 4 added notify/command/persist/auth generation and `CommunityToolkitMessageHub`. Phase 5 added Testing fakes, lifecycle driver, ScopedNavigator pop-GC, and sample leak / scale tests.
+Latest run (2026-09-01): **191 Core** + **60 sample** + **3 generator** + **2 compatibility** + Reactive + Validation (5) + Pagination + Navigation + Dialogs (13, including toast overlay + Button pop-GC). Phase 4 added notify/command/persist/auth generation and `CommunityToolkitMessageHub`. Phase 5 added Testing fakes, lifecycle driver, ScopedNavigator pop-GC, and sample leak / scale tests.
 
 ## Properties
 
@@ -47,6 +47,9 @@ Latest run (2026-09-01): **170 Core** + **60 sample** + **3 generator** + **2 co
 | `Cancel()` | `CommandGcTests.AsyncCommand_Cancel_StopsWork` |
 | Generic async parameter / wrong type | `AsyncCommandOfT_PassesParameter`, `AsyncCommandOfT_RejectsWrongType` |
 | Command GC | `CommandGcTests.Command_IsCollectable_WithOwningViewModel` |
+| Weak `CanExecuteChanged` + Button-shaped pop | `CommandGcTests.CommandBoundToButtonThenPopPage_DoesNotPinPage`, `WeakCanExecuteChangedTests` |
+| Real Button + command + pop page | `ButtonCommandGcTests.ButtonBoundToCommand_CanBeCollectedAfterPagePop` (Dialogs) |
+| Toast does not wrap `Page.Content` | `MauiToastOverlayTests.Show_DoesNotWrapOrReplacePageContent` (Dialogs) |
 
 ## State / outcome / busy / thread
 

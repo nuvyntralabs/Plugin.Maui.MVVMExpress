@@ -33,4 +33,17 @@ services.AddSingleton<INotifier, MauiNotifier>();
 await notifier.ToastAsync("Saved");
 ```
 
-Tests inject `FakeDialogs` or an `IToastPresenter`.
+`MauiToastPresenter` draws on `Window.AddOverlay`. It does not wrap or replace `Page.Content` (so `ResetAsync` cannot restore a stale tree). Tests inject `FakeDialogs` or an `IToastPresenter`.
+
+## Auth: push vs replace-root
+
+Flyout **Auth** sample: login **pushes** `secure`, sign-out `GoBackAsync`.
+
+Apps that must not leak a back-stack use **replace-root**. `ResetAsync<HomeViewModel>()` only works when `//home` is a **root** `ShellContent` (see AuthApp):
+
+```csharp
+await Navigator.ResetAsync<AuthHomeViewModel>(); // after sign-in
+await Navigator.ResetAsync<AuthLoginViewModel>(); // after sign-out
+```
+
+`GuardedNavigatorOptions.ChallengeViewModel` opens login on `E_AUTH` and resumes the original route after `IAuthState.Changed`.

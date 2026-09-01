@@ -1,11 +1,23 @@
 using Plugin.Maui.MVVMExpress.ComponentModel;
+using Plugin.Maui.MVVMExpress.Hosting;
 
 namespace Plugin.Maui.MVVMExpress.Lifecycle;
 
 /// <summary>Forwards page appear/disappear to <see cref="IViewModel"/> without code-behind.</summary>
 public sealed class ViewModelLifecycleBehavior : Behavior<Page>
 {
+    private readonly MvvmExpressOptions? _options;
     private bool _initialized;
+
+    /// <summary>Creates a behavior using default host options.</summary>
+    public ViewModelLifecycleBehavior()
+        : this(null)
+    {
+    }
+
+    /// <summary>Creates a behavior that honors <paramref name="options"/>.</summary>
+    public ViewModelLifecycleBehavior(MvvmExpressOptions? options)
+        => _options = options;
 
     /// <inheritdoc />
     protected override void OnAttachedTo(Page bindable)
@@ -54,6 +66,17 @@ public sealed class ViewModelLifecycleBehavior : Behavior<Page>
             return;
         }
 
-        await viewModel.OnDisappearingAsync().ConfigureAwait(true);
+        try
+        {
+            await viewModel.OnDisappearingAsync().ConfigureAwait(true);
+            if (_options?.CancelOperationsOnDisappear == true)
+            {
+                viewModel.CancelPendingOperations();
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex);
+        }
     }
 }

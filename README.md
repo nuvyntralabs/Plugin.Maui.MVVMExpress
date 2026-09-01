@@ -4,7 +4,7 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `0.5.0-preview` — public preview. Core through Reactive, source generators, and CommunityToolkit adapters ship with tests. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [known limitations](docs/known-limitations.md).
+**Status:** `0.6.0-preview` — device-safe preview (UI-thread marshal, no-throw `Execute`, weak `CanExecuteChanged`, `Window.AddOverlay` toasts). **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [known limitations](docs/known-limitations.md).
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
@@ -26,8 +26,8 @@ MVVMExpress is that shell. It is **not** a fork of those libraries. Capability w
 | [`Plugin.Maui.MVVMExpress.Testing`](src/Plugin.Maui.MVVMExpress.Testing/README.md) | `LeakProbe`, `ScaleProfile`, fakes, `AppearAsync`, `ScopedNavigator` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress`](src/Plugin.Maui.MVVMExpress/README.md) | `UseMvvmExpress`, `MauiMainThread`, page lifecycle behavior | **Implemented** |
 | [`Plugin.Maui.MVVMExpress.Navigation`](src/Plugin.Maui.MVVMExpress.Navigation/README.md) | `MauiShellNavigator` + `MauiPageNavigator` (URI stack, dictionary query) | **Implemented + tests** |
-| [`Plugin.Maui.MVVMExpress.Dialogs`](src/Plugin.Maui.MVVMExpress.Dialogs/README.md) | `IDialogs` + `MauiDialogs` + `MauiNotifier` toast | **Implemented + tests** |
-| [`Plugin.Maui.MVVMExpress.Validation`](src/Plugin.Maui.MVVMExpress.Validation/README.md) | DataAnnotations + `IValidator` | **Implemented + tests** |
+| [`Plugin.Maui.MVVMExpress.Dialogs`](src/Plugin.Maui.MVVMExpress.Dialogs/README.md) | `IDialogs` + `MauiDialogs` + `MauiNotifier` (`Window.AddOverlay` toast) | **Implemented + tests** |
+| [`Plugin.Maui.MVVMExpress.Validation`](src/Plugin.Maui.MVVMExpress.Validation/README.md) | DataAnnotations + `IValidator` + trim descriptor | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Pagination`](src/Plugin.Maui.MVVMExpress.Pagination/README.md) | `PagedCollection<T>`, `SearchQuery` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Reactive`](src/Plugin.Maui.MVVMExpress.Reactive/README.md) | `IPropertyObservable` / `CombineLatest` (no Rx required) | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.SourceGenerators`](src/Plugin.Maui.MVVMExpress.SourceGenerators/README.md) | `[Notify]`, commands, register, routes, persist, auth | **Implemented + snapshot tests** |
@@ -84,13 +84,13 @@ Designed product surface, validated 2026-08-31 against CommunityToolkit.Mvvm 8.4
 | Offline / cache abstractions | Yes (adapters; not a database) | No | No | Extensions |
 | Unified `AsyncState<T>` | Yes | No | No | Extensions |
 | Typed navigation `record` args | Yes | No | No (dictionary / URI) | Partial |
-| Memory-leak GC tests (VM, command, messenger) | Yes | Partial | Partial | Partial |
+| Memory-leak GC tests (VM, command, Button pop, messenger) | Yes | Partial | Partial | Partial |
 | Small / mid / large list batching | Yes (`AddRange` one notify) | App code | App code | App / Rx |
 | Testing package | Yes | Partial | Yes | Yes |
 
 This table does not claim MVVMExpress is faster than the others. Measured Core numbers are in [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md).
 
-**Shipped in this repo with tests:** properties, commands (prevent / cancel-previous / queue / allow, timeout, retry, debounce, throttle), ViewModel lifecycle/dispose/`ExecuteAsync`, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, `ObservableRangeCollection<T>`, `INavigator` / `GuardedNavigator` / `MauiShellNavigator` / `IAcceptNavArgs<T>`, `IDialogs`, `ICache` / `ICachedFetcher`, `FormViewModel`, `IOperationExecutor`, `IPropertyObservable`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, `AddMvvmExpress` / `UseMvvmExpress`, leak probes, `ScopedNavigator` pop-GC, Small/Mid/Large scale tests.
+**Shipped in this repo with tests:** properties, commands (prevent / cancel-previous / queue / allow, timeout, retry, debounce, throttle, weak `CanExecuteChanged`), ViewModel lifecycle/dispose/`ExecuteAsync`, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, `ObservableRangeCollection<T>`, `INavigator` / `GuardedNavigator` / `MauiShellNavigator` / `IAcceptNavArgs<T>`, `IDialogs`, `Window.AddOverlay` toasts, `ICache` / `ICachedFetcher`, `FormViewModel`, `IOperationExecutor`, `IPropertyObservable`, `IConnectivityProbe`, `IAuthState`, `IValidator` + Validation trim roots, `PagedCollection<T>`, `SearchQuery`, `AddMvvmExpress` / `UseMvvmExpress`, leak probes (including Button + pop page), `ScopedNavigator` pop-GC, Small/Mid/Large scale tests.
 
 ## Memory, leaks, and scale
 

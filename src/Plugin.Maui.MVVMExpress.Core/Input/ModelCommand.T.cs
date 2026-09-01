@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using Plugin.Maui.MVVMExpress.Threading;
 
 namespace Plugin.Maui.MVVMExpress.Input;
 
@@ -8,6 +9,7 @@ public sealed class ModelCommand<T> : ICommand
 {
     private readonly Action<T?> _execute;
     private readonly Func<T?, bool>? _canExecute;
+    private readonly WeakCanExecuteChanged _canExecuteChanged = new();
 
     /// <summary>Creates a command.</summary>
     public ModelCommand(Action<T?> execute, Func<T?, bool>? canExecute = null)
@@ -18,7 +20,11 @@ public sealed class ModelCommand<T> : ICommand
     }
 
     /// <inheritdoc />
-    public event EventHandler? CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged
+    {
+        add => _canExecuteChanged.Add(value);
+        remove => _canExecuteChanged.Remove(value);
+    }
 
     /// <inheritdoc />
     public bool CanExecute(object? parameter)
@@ -43,7 +49,8 @@ public sealed class ModelCommand<T> : ICommand
     }
 
     /// <summary>Raises <see cref="CanExecuteChanged"/>.</summary>
-    public void NotifyCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    public void NotifyCanExecuteChanged()
+        => NotificationMarshaller.Raise(() => _canExecuteChanged.Raise(this, EventArgs.Empty));
 
     private static bool TryCast(object? parameter, out T? value)
     {

@@ -16,7 +16,7 @@ if (!summary.IsValid)
     await dialogs.AlertAsync("Invalid", summary.ToString());
 ```
 
-FluentValidation stays an optional app-level adapter. This package is not trim-safe (reflection).
+FluentValidation stays an optional app-level adapter. Trim: the package ships `ILLink.Descriptors.xml` for `Required`, `MinLength`, `MaxLength`, `StringLength`, `Range`, `RegularExpression`, `EmailAddress`, `Compare`, and `MustMatch`. Custom attributes need an app-level descriptor.
 
 ## Install
 
@@ -24,7 +24,7 @@ FluentValidation stays an optional app-level adapter. This package is not trim-s
 dotnet add package Plugin.Maui.MVVMExpress.Validation --prerelease
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `0.5.0-preview`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `0.6.0-preview`.
 
 ## Related
 
