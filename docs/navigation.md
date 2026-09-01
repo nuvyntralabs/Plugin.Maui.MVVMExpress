@@ -15,8 +15,8 @@ await navigator.NavigateToAsync("details", new Dictionary<string, object> { ["Pr
 
 ```csharp
 IPageNavigator pages = new MauiPageNavigator(new WindowContext("main"), services)
-    .Map<StackHomeViewModel, StackHomePage>("stack")
-    .Map<StackItemViewModel, StackItemPage>("stack-item");
+    .Map<PageStackViewModel, PageStackPage>("stack")
+    .Map<PageStackItemViewModel, PageStackItemPage>("stack-item");
 
 await pages.NavigateToAsync("stack-item", new Dictionary<string, object> { ["Title"] = "Latte" });
 if (pages.CanGoBack)

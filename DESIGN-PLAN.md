@@ -2,18 +2,18 @@
 
 Work plan for implementing [ARCHITECTURE.md](ARCHITECTURE.md) and [API-DESIGN.md](API-DESIGN.md). This is not a license to generate the entire framework in one change.
 
-**Stop condition:** Core is implemented. Host (`UseMvvmExpress`) still waits on review before more Phase 1 surface area.
+**Stop condition:** Phase 2 is implemented in `0.3.0-preview`. Remaining work is Phase 3+ (Reactive, forms, generators). Do not regenerate the whole framework in one change.
 
 ## 1. Current milestone
 
 | Item | Status |
 | --- | --- |
-| Architecture | Written — awaiting review |
-| API design | Written — awaiting review (header lists what Core ships) |
-| Roadmap / feature matrix | Written — shipping vs designed tracked |
-| Solution skeleton | Created |
-| Core runtime + recheck | Implemented: properties, commands, VM lifecycle, AsyncState, Outcome, BusyGate, MessageHub, range collection. 88 Core tests. Host timings in MEMORY-AND-PERFORMANCE §2.1 |
-| Remainder of Phase 1 (Host, pipeline, DI) | **Blocked on review** |
+| Architecture | Living contract — status banner updated for 0.3.0 |
+| API design | Living contract — shipped vs proposed distinguished in the header |
+| Roadmap / feature matrix | Current — 0.3.0 Phase 2 complete |
+| Solution + packages | Core, Host, Navigation, Dialogs, Validation, Pagination, Testing packed |
+| Core runtime | Implemented + 127 Core tests. Host timings in MEMORY-AND-PERFORMANCE §2.1 |
+| Phase 2 application shell | Shipped: page host, URI stack, dictionary/URI args, multi-window root, toast |
 
 ## 2. Decision log
 

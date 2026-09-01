@@ -205,7 +205,7 @@ Core tests must run on `net10.0` with no MAUI runtime.
 - 1.0 — Core + Host + Navigation + Dialogs + Validation + Testing are stable.
 - SemVer after 1.0. Breaking changes require a major version and a migration note.
 
-## 11. Open questions (resolve before Phase 1 coding)
+## 11. Open questions (historical — Phase 1/2 shipped in 0.3.0; remaining items feed Phase 3+)
 
 1. ~~Confirm package prefix~~ — **MVVMExpress** / `Plugin.Maui.MVVMExpress` (accepted).
 2. Confirm Windows / Mac Catalyst stay as compile TFMs only for v1 samples.

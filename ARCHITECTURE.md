@@ -2,7 +2,7 @@
 
 **Product:** MVVMExpress  
 **Official package family:** `Plugin.Maui.MVVMExpress.*`  
-**Status:** Core runtime is implemented and tested. Host, navigation, and later packages remain design-only. Public APIs may still change before 1.0.
+**Status:** `0.3.0-preview`. Core, host DI, Shell + page navigators, dialogs/toast, validation, pagination, and testing are shipped with tests. Source generators and Reactive remain later. Sections below that describe unshipped surface (generators, full command pipeline, `IOperationExecutor`, scopes) are design intent — see [FEATURE-MATRIX.md](FEATURE-MATRIX.md) and [ROADMAP.md](ROADMAP.md). Public APIs may still change before 1.0.
 
 MVVMExpress is a modular MVVM application framework for .NET MAUI. It is not a fork of CommunityToolkit.Mvvm, Prism.Maui, or ReactiveUI. Those libraries are studied as capability references. This document records the original architecture that delivers equivalent developer outcomes without copying their type graphs, containers, or navigation engines.
 
@@ -44,7 +44,7 @@ MVVMExpress is the application shell. Capability plugins remain optional.
 | NuGet / assembly prefix | `Plugin.Maui.MVVMExpress` |
 | Root namespace | `Plugin.Maui.MVVMExpress` |
 | Host registration | `builder.UseMvvmExpress(...)` / `services.AddMvvmExpress(...)` |
-| Catalog slug | `plugin-maui-mvvm-express` |
+| Catalog slug | `plugin-maui-mvvmexpress` |
 
 Published packages follow the MauiEssentials `Plugin.Maui.*` convention so they sit next to GeoLocator, FormValidation, and the rest of the catalog.
 
@@ -206,25 +206,27 @@ Navigate    →  INavigator  →  guards  →  host (Shell or INavigation)
 `ModelCommand` / `AsyncModelCommand` (and generic variants) sit on an **operation pipeline**:
 
 ```
-CanExecute → debounce/throttle → concurrency gate → timeout → retry → execute
+CanExecute → concurrency gate → timeout → retry → execute
          → progress / IsRunning → error sink → Outcome
+         (debounce/throttle on the command itself remain later; SearchQuery already debounces search)
 ```
 
-Concurrency modes: `Allow`, `Prevent`, `Queue`, `CancelPrevious`, `Replace`.
+Shipped concurrency modes: `Prevent`, `CancelPrevious`. Designed later: `Allow`, `Queue`, `Replace`.
 
 ### 7.3 ViewModel lifecycle
 
 ```
 Construct (DI)
+  → Accept(args) / Accept(query)    when IAcceptNavArgs / IAcceptNavQuery
   → InitializeAsync(token)          once
-  → OnNavigatedToAsync(ctx, token)
+  → OnNavigatedToAsync(token)
   → OnAppearingAsync(token)
   → OnDisappearingAsync(token)
-  → OnNavigatedFromAsync(ctx, token)
-  → Deactivate / Dispose
+  → OnNavigatedFromAsync(token)
+  → Dispose
 ```
 
-Core: `ViewModelCancellationToken` is created in the constructor and cancelled on dispose. The token stays readable after dispose. Host (not shipped) may also cancel or replace it on disappear when `CancelOperationsOnDisappear` is true.
+Core: `ViewModelCancellationToken` is created in the constructor and cancelled on dispose. The token stays readable after dispose. `UseMvvmExpress` accepts `MvvmExpressOptions.CancelOperationsOnDisappear`; the current `ViewModelLifecycleBehavior` calls `OnDisappearingAsync` and does not yet cancel the token on disappear.
 
 ### 7.4 Unified async state
 
@@ -238,11 +240,9 @@ Core: `ViewModelCancellationToken` is created in the constructor and cancelled o
 
 ### 7.6 Operation pipeline
 
-`IOperationExecutor.RunAsync(...)` is the single entry that commands, `ExecuteBusyAsync`, pagination, and search share:
+Designed: `IOperationExecutor.RunAsync(...)` as the single entry that commands, `ExecuteBusyAsync`, pagination, and search share (busy + cancellation + timeout + retry + error sink + logging + telemetry + `Outcome`). **Not shipped in 0.3.0** — commands, `AsyncState`, and `SearchQuery` each own their own slice of that pipeline today.
 
-Busy + cancellation + timeout + retry + error sink + logging + telemetry + `Outcome`.
-
-This is the primary differentiator. It is not a Polly clone and not a ReactiveUI `ReactiveCommand` clone.
+This remains the primary differentiator. It is not a Polly clone and not a ReactiveUI `ReactiveCommand` clone.
 
 ### 7.7 Scopes
 
@@ -262,14 +262,14 @@ Scopes are `IServiceScope` instances owned by `IViewModelScopeFactory`. Navigati
 
 | Host | Package type | When to use |
 | --- | --- | --- |
-| `ShellNavigationHost` | Shell routes, query, deep links | Apps already on Shell |
-| `PageNavigationHost` | `INavigation` / `NavigationPage` | Apps that do not want Shell |
+| `MauiShellNavigator` | Shell routes, query, deep links | Apps already on Shell |
+| `MauiPageNavigator` / `IPageNavigator` | `INavigation` / `NavigationPage` | Apps that do not want Shell |
 
-Prism.Maui (current public docs) does **not** support Shell navigation and uses URI + dictionary parameters. MVVMExpress supports both hosts and prefers `NavigateToAsync<TViewModel, TArgs>(TArgs args)` with `record` parameters.
+Prism.Maui (current public docs) does **not** support Shell navigation and uses URI + dictionary parameters. MVVMExpress supports both hosts and prefers `NavigateToAsync<TViewModel, TArgs>(TArgs args)` with `record` parameters. Dictionary / URI interop is `NavigateToAsync(route, query)` + `IAcceptNavQuery`.
 
-Guards: `CanNavigateAwayAsync`, `OnNavigating` with `NavigationContext.Cancel()`, `[RequiresAuth]`, `[RequiresRole]`.
+Guards: `CanNavigateAwayAsync`. `[RequiresAuth]` / `[RequiresRole]` remain Phase 4.
 
-Stack: `CurrentViewModel`, `Stack`, `ModalStack`, `CanGoBack`. Serialization / restoration is Phase 4.
+Stack (shipped on `INavigator`): `Current` (`Type?`), `Stack`, `ModalStack`, `CanGoBack`, `History`, `GoBackAsync`, `PopToRootAsync`, `ReplaceAsync`, `ResetAsync`. Serialization / restoration is Phase 4. Multi-window: `IWindowContext`, `WindowNavigatorRegistry`, `MauiWindowContext`.
 
 ## 9. What is MAUI-specific vs platform-independent
 
@@ -388,13 +388,11 @@ Library code uses `ConfigureAwait(false)` **except** where the next step must ru
 ```csharp
 builder.UseMvvmExpress(options =>
 {
-    options.EnableNavigation = true;
-    options.EnableLifecycle = true;
-    options.EnableAutoRegistration = false; // true only when generator or trim-safe scan is configured
-    options.EnableDiagnostics = false;      // off in Release
-    options.EnableReactive = false;
+    options.CancelOperationsOnDisappear = true; // option exists; lifecycle behavior does not cancel the token yet
 });
 ```
+
+Shipped `MvvmExpressOptions` has only `CancelOperationsOnDisappear`. Designed flags (`EnableNavigation`, `EnableLifecycle`, `EnableAutoRegistration`, `EnableDiagnostics`, `EnableReactive`) are not on the type yet — register Navigation / Dialogs implementations in the app.
 
 **Minimal mode:** `UseMvvmExpress()` → Core + lifecycle + dispatcher + ViewModel resolve.  
 **Enterprise mode:** add Navigation, Dialogs, Validation, Pagination, and app-supplied adapters for cache / offline / auth / flags.
@@ -428,13 +426,13 @@ MVVMExpress/
 ├── LICENSE
 ├── src/                     packages
 ├── tests/
-├── samples/                 Phase 5
-├── benchmarks/              Phase 5
+├── samples/                 flyout host + shared net10.0 ViewModels
+├── benchmarks/              host-process timings
 └── docs/
 ```
 
-This folder is intended to become its own git repository and MauiEssentials submodule (`Plugin.Maui.MVVMExpress`), matching every other plugin.
+This folder is its own git repository and MauiEssentials submodule (`Plugin.Maui.MVVMExpress`), matching every other plugin.
 
-## 21. What this document is not
+## 21. How to read this document
 
-It is not an implementation. Phase 1 starts only after these design files are reviewed. See [ROADMAP.md](ROADMAP.md) and [DESIGN-PLAN.md](DESIGN-PLAN.md).
+This file is the architecture contract. **0.3.0-preview implements** Core, Host, Navigation (Shell + page), Dialogs/toast, Validation, Pagination, and Testing. Later sections still describe designed surface (generators, Reactive, `IOperationExecutor`, ViewModel scopes, full `MvvmExpressOptions`). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md) for remaining phases.

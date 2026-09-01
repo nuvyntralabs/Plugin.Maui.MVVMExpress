@@ -5,7 +5,7 @@ Canonical design documents live at the repository root so they match the first d
 | Document | Purpose |
 | --- | --- |
 | [ARCHITECTURE.md](../ARCHITECTURE.md) | Packages, layers, dependency graph, conflicts, AOT, leaks, threading |
-| [API-DESIGN.md](../API-DESIGN.md) | Proposed public APIs |
+| [API-DESIGN.md](../API-DESIGN.md) | Public APIs (shipped vs still proposed) |
 | [DESIGN.md](../DESIGN.md) | Product design and developer experience |
 | [DESIGN-PLAN.md](../DESIGN-PLAN.md) | Phased work, acceptance, review checklist |
 | [ROADMAP.md](../ROADMAP.md) | Versions and exit criteria |
@@ -14,4 +14,4 @@ Canonical design documents live at the repository root so they match the first d
 | [getting-started.md](getting-started.md) | Core usage that ships today |
 | [TEST-COVERAGE.md](TEST-COVERAGE.md) | Scenario matrix for Core tests |
 
-Implementation docs (Getting Started, Navigation, Testing, migration) are added when the matching phase ships.
+Getting started and navigation guides ship with 0.3.0. Migration guides remain Phase 5.

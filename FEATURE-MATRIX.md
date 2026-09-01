@@ -94,7 +94,7 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | --- | --- | --- |
 | Single operation pipeline (busy + cancel + timeout + retry + concurrency + `Outcome`) | Designed backbone | Split across app code, Polly, Rx, or not present |
 | `AsyncState<T>` as bindable UI status | Yes | Usually hand-rolled booleans |
-| Shell **or** page host without requiring either | Yes (P2) | Prism: page only; CT: none; RxUI: router |
+| Shell **or** page host without requiring either | Yes | Prism: page only; CT: none; RxUI: router |
 | Typed `record` navigation args as the default | Yes (`IAcceptNavArgs<T>`) | Prism/RxUI are string/URI/dictionary-first |
 | ViewModel scopes (app / window / nav / page / child) | Designed (P3) | Prism container + regions; not the same model |
 | Compose MauiEssentials plugins via adapters | Designed | Out of scope for CT/Prism/RxUI |

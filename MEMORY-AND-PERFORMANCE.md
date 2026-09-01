@@ -28,7 +28,7 @@ Related: [ARCHITECTURE.md](ARCHITECTURE.md) §15–16, [ROADMAP.md](ROADMAP.md) 
 
 | Area | Result |
 | --- | --- |
-| Design-skeleton markers | No subscriptions, no static events — nothing to leak |
+| Runtime (0.3.0-preview) | Real subscriptions exist (MessageHub, lifecycle behavior, navigators). Leak tests cover VM / command / weak hub. |
 | `ObservableModel` | Event args **cached by property name**. Same-value `SetProperty` does not notify |
 | `ViewModel` | `Dispose` cancels `ViewModelCancellationToken`. The token stays readable after dispose (cached at construction). WeakReference tests require collectability |
 | `MessageHub` | Default subscribe is **weak** and uses `(recipient, message)` handlers so the delegate does not capture the subscriber. `Dispose` / `Unsubscribe` remove the slot |
@@ -68,7 +68,7 @@ dotnet run --project benchmarks/Plugin.Maui.MVVMExpress.Benchmarks -c Release
 | Page → Behavior → VM → Page | Behavior holds page; VM holds page for `DisplayAlert` | VM never references `Page`. Lifecycle is a behavior/host hook that **unsubscribes on Unloaded** | Host Phase 1; WeakReference after pop |
 | Strong messenger | Hub stores `Action` that captured `this` | Weak register + `Action<TRecipient, TMessage>` (recipient passed in). Strong is explicit | `MessageHubGcTests` |
 | `ICommand.CanExecuteChanged` | Static command or long-lived service holds command | Commands are instance fields of the VM; die with the VM | `CommandGcTests` |
-| Navigation stack | Popped VM stays in a list | Page scope dispose on pop (Phase 2) | Navigation leak test (Phase 2) |
+| Navigation stack | Popped VM stays in a list | Hosts track `Stack` / pop; page-scope dispose on pop is still the contract | Navigation tests exist; pop-GC device case remains Phase 5 |
 | Child ViewModels | Parent list never cleared | Parent `Dispose` walks children (Phase 3) | Composition GC test |
 | Reactive subscriptions | `Subscribe` without dispose | `ViewModel` trash bag cleared on dispose (Phase 3) | Reactive GC test |
 | Static `Application.Current` | Host event never unhooked | Host registers `IDisposable` on app lifetime (Phase 1 host) | Integration |
@@ -135,8 +135,8 @@ Large apps must use `PagedCollection<T>` (Phase 2) or `CollectionView` virtualiz
 | `AddRange` N items, 1 notify | N=200 cheap | N=5k one Reset | N=50k one Reset; do not measure UI bind here | `ObservableRangeCollection` |
 | Command execute (sync) | < 1 µs overhead | same | same | No reflection |
 | ViewModel create+dispose | < 5 µs + DI | batch 10k in bench | same | No static tables |
-| Navigation (Phase 2) | one serialized op / window | same | queue, never parallel push | `INavigator` |
-| Search (Phase 2) | debounce 300 ms | same | cancel previous | `SearchQuery` |
+| Navigation | one serialized op / window | same | never parallel push | `INavigator` |
+| Search | debounce 300 ms | same | cancel previous | `SearchQuery` |
 
 UI frame budget remains **16 ms**. Library code on the UI thread must not walk 50k items except inside a single `AddRange` that the view virtualizes.
 
@@ -152,7 +152,7 @@ The framework cannot fix:
 - Strong `MessageHub` subscriptions never unsubscribed
 - Calling `.Result` on the UI thread
 
-Samples will show Small (Basic), Mid (CRUD + pagination), Large (Enterprise + virtualized list). Until those samples exist, use `ScaleProfile` in tests.
+Samples show Small (Basic), Mid (CRUD + pagination), Large (Enterprise). Device RSS and 50k CollectionView scroll remain Phase 5. Use `ScaleProfile` in tests.
 
 ## 7. Telemetry hooks (optional)
 
@@ -174,5 +174,5 @@ Never enabled as a default Release cost. Diagnostics off unless `EnableDiagnosti
 | Allocation bound on repeated same-value `SetProperty` | Required now | Required now | Required now |
 | BenchmarkDotNet S/M/L params | Harness now | Harness now | Harness now |
 | Device RSS vs budget | Phase 5 sample | Phase 5 | Phase 5 Enterprise |
-| Navigation pop GC | Phase 2 | Phase 2 | Phase 2 |
+| Navigation pop GC | Tests exist (in-memory / host) | same | Device RSS still Phase 5 |
 | 50k CollectionView scroll | — | Phase 5 Pagination sample | Phase 5 Enterprise |

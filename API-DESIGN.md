@@ -1,6 +1,6 @@
 # MVVMExpress Public API Design
 
-Proposed public surface for **Plugin.Maui.MVVMExpress**. **Shipped in Core (with tests):** `ObservableModel`, `IViewModel`, `ViewModel`, commands (sync/async, generic), `AsyncState<T>`, `Outcome` / `ErrorInfo`, `BusyGate`, `IMessageHub` / `MessageHub`, `ObservableRangeCollection<T>`, `IMainThread` / `ImmediateMainThread`. Hosting, navigation, dialogs, and generators remain design-only. Breaking changes after 1.0 follow SemVer.
+Proposed public surface for **Plugin.Maui.MVVMExpress**. **Shipped in 0.3.0-preview (with tests):** Core (`ObservableModel`, commands, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, range collection) plus `AddMvvmExpress` / `UseMvvmExpress`, `INavigator` / `IPageNavigator` / `MauiShellNavigator` / `MauiPageNavigator`, URI stack, dictionary/URI args, `IWindowContext`, `IDialogs` / `INotifier` / `MauiDialogs` / `MauiNotifier`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, and Testing fakes. Source generators and Reactive remain design-only. Signatures below that are not in FEATURE-MATRIX as Yes are still proposed. Breaking changes after 1.0 follow SemVer.
 
 Default namespace root: `Plugin.Maui.MVVMExpress`.
 
