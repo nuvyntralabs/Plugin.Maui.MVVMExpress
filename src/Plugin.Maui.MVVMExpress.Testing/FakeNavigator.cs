@@ -7,8 +7,9 @@ public sealed class FakeNavigator : InMemoryNavigator
 {
     /// <summary>Creates a fake navigator.</summary>
     /// <param name="canLeave">Optional dirty-page guard.</param>
-    public FakeNavigator(Func<Type, bool>? canLeave = null)
-        : base(canLeave)
+    /// <param name="window">Window this stack belongs to.</param>
+    public FakeNavigator(Func<Type, bool>? canLeave = null, IWindowContext? window = null)
+        : base(canLeave, window)
     {
     }
 }

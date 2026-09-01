@@ -1,10 +1,18 @@
+using Plugin.Maui.MVVMExpress.Hosting;
+using Plugin.Maui.MVVMExpress.Navigation;
 using Plugin.Maui.MVVMExpress.Outcome;
 
 namespace Plugin.Maui.MVVMExpress.Dialogs;
 
-/// <summary>MAUI page alert adapter. Resolves the current page from the app.</summary>
+/// <summary>MAUI page alert adapter. Resolves the current page from the window.</summary>
 public sealed class MauiDialogs : IDialogs
 {
+    private readonly IWindowContext _window;
+
+    /// <summary>Creates dialogs for <paramref name="window"/>.</summary>
+    public MauiDialogs(IWindowContext? window = null)
+        => _window = window ?? WindowContext.Default;
+
     /// <inheritdoc />
     public Task AlertAsync(string title, string message, string cancel = "OK", CancellationToken cancellationToken = default)
     {
@@ -26,16 +34,7 @@ public sealed class MauiDialogs : IDialogs
         return AlertAsync("Error", error.Message, cancellationToken: cancellationToken);
     }
 
-    private static Page CurrentPage()
-    {
-        if (Shell.Current?.CurrentPage is { } shellPage)
-        {
-            return shellPage;
-        }
-
-        return Application.Current?.Windows.Count > 0
-            ? Application.Current.Windows[0].Page
-                ?? throw new InvalidOperationException("No current page.")
-            : throw new InvalidOperationException("No current window.");
-    }
+    private Page CurrentPage()
+        => MauiVisualTree.CurrentPage(_window)
+            ?? throw new InvalidOperationException("No current page for this window.");
 }

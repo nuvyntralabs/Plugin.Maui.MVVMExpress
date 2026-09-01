@@ -20,8 +20,8 @@
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
     <MauiVersion>10.0.90</MauiVersion>
-    <Version>0.1.1-preview</Version>
-    <PackageReleaseNotes>0.1.1-preview: RepositoryUrl is https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress.</PackageReleaseNotes>
+    <Version>0.3.0-preview</Version>
+    <PackageReleaseNotes>0.3.0-preview: page host, URI stack, dictionary/URI args, multi-window root, MauiNotifier toast.</PackageReleaseNotes>
     <PackageTags>dotnet-maui;maui;mvvm;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm-express</PackageTags>
   </PropertyGroup>
 </Project>

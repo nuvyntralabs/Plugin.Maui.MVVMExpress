@@ -70,4 +70,4 @@ services.AddMvvmExpress();          // tests / net10.0
 builder.UseMvvmExpress();           // MAUI app
 ```
 
-`INavigator`, `MauiShellNavigator`, `IDialogs`, `ICache`, `IConnectivityProbe`, `IAuthState`, `IValidator`, and `PagedCollection<T>` ship with tests. Source generators remain a later phase. Samples: [samples/README.md](../samples/README.md).
+`INavigator`, `MauiShellNavigator`, `MauiPageNavigator`, `IDialogs`, `INotifier` / `MauiNotifier`, `ICache`, `IConnectivityProbe`, `IAuthState`, `IValidator`, and `PagedCollection<T>` ship with tests. Source generators remain a later phase. Navigation hosts: [docs/navigation.md](navigation.md). Samples: [samples/README.md](../samples/README.md).

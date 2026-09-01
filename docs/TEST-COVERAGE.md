@@ -2,7 +2,7 @@
 
 Scenarios covered by `tests/Plugin.Maui.MVVMExpress.Core.Tests` after the 2026-08-31 recheck.
 
-Latest run (2026-08-31): **103 Core** + **37 sample** + **3 Validation** + **4 Pagination** + **2 Navigation** + **2 Dialogs** + identity facts for Reactive / Generators / Integration. Generators and Reactive remain identity-only until those packages ship APIs.
+Latest run (2026-09-01): **127 Core** + **45 sample** + **3 Validation** + **4 Pagination** + **13 Navigation** + **8 Dialogs** + identity facts for Reactive / Generators / Integration. Generators and Reactive remain identity-only until those packages ship APIs.
 
 ## Properties
 
@@ -89,7 +89,7 @@ Latest run (2026-08-31): **103 Core** + **37 sample** + **3 Validation** + **4 P
 | --- | --- |
 | Basic counter | increment / decrement `CanExecute` / reset / dependent `Label` |
 | CRUD | load, empty, error, delete + hub, save, validation `CanExecute`, appear-once |
-| Navigation | typed args, missing product empty, dirty guard |
+| Navigation | typed args, URI query, toast, missing product empty, dirty guard, page-stack push/pop/replace/reset, DI Home URI |
 | Auth | bad password, success, `CanExecute`, anonymous block, sign-out |
 | Offline | cache-first fallback, no-cache failure |
 | Pagination | page `AddRange` Resets, load-more exhaust, refresh |
@@ -99,4 +99,4 @@ Latest run (2026-08-31): **103 Core** + **37 sample** + **3 Validation** + **4 P
 
 ## Not covered here (later phases)
 
-Framework Host (`UseMvvmExpress`), Navigation/Dialogs/Validation/Pagination/Reactive **packages**, generators, MAUI behaviors, device RSS, CollectionView virtualization, command timeout/retry, `PageViewModel`. Sample-local adapters cover those *scenarios* until the packages ship.
+Device RSS, CollectionView virtualization, generators, and Reactive APIs. Navigation/Dialogs/Validation/Pagination packages now have unit tests (page host and toast without a window).

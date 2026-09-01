@@ -29,12 +29,18 @@ public static class SampleServiceCollectionExtensions
         services.AddMvvmExpress();
 
         services.RemoveAll<INavigator>();
-        services.AddSingleton<InMemoryNavigator>();
+        services.RemoveAll<IPageNavigator>();
+        services.AddSingleton<InMemoryNavigator>(_ => new InMemoryNavigator()
+            .Map<ProductListViewModel>("products")
+            .Map<ProductDetailsViewModel>("details"));
         services.AddSingleton<INavigator>(sp => new GuardedNavigator(
             sp.GetRequiredService<InMemoryNavigator>(),
             sp.GetRequiredService<IAuthState>(),
             typeof(SecureHomeViewModel),
             typeof(EnterpriseShellViewModel)));
+        services.AddSingleton<IPageNavigator>(_ => new InMemoryNavigator(window: new WindowContext("page-stack"))
+            .Map<PageStackViewModel>("stack")
+            .Map<PageStackItemViewModel>("stack-item"));
 
         services.AddSingleton<InMemoryProductCatalog>();
         services.AddSingleton<IProductCatalog>(sp =>
@@ -49,6 +55,8 @@ public static class SampleServiceCollectionExtensions
         services.AddTransient<ProductEditViewModel>();
         services.AddTransient<HomeViewModel>();
         services.AddTransient<ProductDetailsViewModel>();
+        services.AddTransient<PageStackViewModel>();
+        services.AddTransient<PageStackItemViewModel>();
         services.AddTransient<LoginViewModel>();
         services.AddTransient<SecureHomeViewModel>();
         services.AddTransient<OfflineCatalogViewModel>();

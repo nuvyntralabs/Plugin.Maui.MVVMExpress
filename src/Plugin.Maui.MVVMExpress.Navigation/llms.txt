@@ -1,13 +1,13 @@
 # Plugin.Maui.MVVMExpress.Navigation
 
-MauiShellNavigator maps ViewModel types to Shell routes. INavigator is in Core.
+MauiShellNavigator maps ViewModel types to Shell routes. MauiPageNavigator maps ViewModel types to Pages on INavigation. INavigator and the URI stack live in Core.
 
 NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Navigation
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.1.1-preview (`--prerelease`)
+Version: 0.3.0-preview (`--prerelease`)
 
 ## Supported versions
 
@@ -21,13 +21,15 @@ Depends on Plugin.Maui.MVVMExpress (host).
 
 ## Use this package when
 
-- The MAUI app uses Shell and wants ViewModel → route navigation with typed query args
+- The MAUI app uses Shell and wants ViewModel → route navigation with typed or dictionary query args
+- The MAUI app uses NavigationPage / INavigation and wants a page-stack host
+- The app needs per-window navigators (`IWindowContext`)
 
 ## Do not use when
 
-- They need Prism-style page stack / regions — not shipped
+- They need Prism-style regions — not in v1
 - Tests only — use Core `InMemoryNavigator` or Testing `FakeNavigator`
 
 ## Alternatives
 
-Prism.Maui (page navigation, no Shell), MAUI `Shell.GoToAsync` directly.
+Prism.Maui (page navigation, no Shell), MAUI `Shell.GoToAsync` / `INavigation` directly.

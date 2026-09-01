@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:nav="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Navigation;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.PageStackItemPage"
+    x:DataType="nav:PageStackItemViewModel"
+    Title="Stack item">
+
+    <VerticalStackLayout Padding="20" Spacing="8">
+        <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="20" />
+        <Label Text="{Binding Depth, StringFormat='Depth: {0}'}" />
+        <Label Text="{Binding WindowId, StringFormat='Window: {0}'}" />
+        <Label Text="{Binding StackCount, StringFormat='Stack count: {0}'}" />
+        <Button Text="Push deeper" Command="{Binding PushDeeperCommand}" />
+        <Button Text="Go back" Command="{Binding GoBackCommand}" />
+    </VerticalStackLayout>
+</pages:SampleContentPage>

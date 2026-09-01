@@ -21,7 +21,7 @@ dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
 dotnet add package Plugin.Maui.MVVMExpress --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Version `0.1.1-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Version `0.3.0-preview`.
 
 ## What this package is
 
@@ -29,7 +29,7 @@ Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15
 - `MauiMainThread` (`IMainThread`)
 - `ViewModelLifecycleBehavior` for page appear / disappear
 
-It is not a navigator or dialog implementation. Add [Navigation](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Navigation) and [Dialogs](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Dialogs) when you need Shell routes or `DisplayAlert`.
+It is not a navigator or dialog implementation. Add [Navigation](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Navigation) and [Dialogs](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Dialogs) when you need Shell/page routes, toasts, or `DisplayAlert`. `MauiWindowContext` and `MauiVisualTree` resolve the current window/page.
 
 Shared / test code can stay on Core + `AddMvvmExpress()` without this package.
 

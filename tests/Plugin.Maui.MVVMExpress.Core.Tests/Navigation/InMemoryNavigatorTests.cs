@@ -50,6 +50,19 @@ public sealed class InMemoryNavigatorTests
         Assert.Equal(typeof(ProbeViewModel), inner.History[0].ViewModelType);
     }
 
+    [Fact]
+    public async Task Guarded_Route_BlocksUntilAuthenticated()
+    {
+        var inner = new InMemoryNavigator().Map<ProbeViewModel>("secure");
+        var auth = new MemoryAuth();
+        var guarded = new GuardedNavigator(inner, auth, typeof(ProbeViewModel));
+        var blocked = await guarded.NavigateToAsync("secure");
+        Assert.Equal("E_AUTH", blocked.Error?.Code);
+        auth.IsAuthenticated = true;
+        Assert.True((await guarded.NavigateToAsync("secure")).IsSuccess);
+        Assert.True(guarded.CanGoBack is false || guarded.Stack.Count == 1);
+    }
+
     private sealed class MemoryAuth : IAuthState
     {
         public bool IsAuthenticated { get; set; }

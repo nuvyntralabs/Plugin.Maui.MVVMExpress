@@ -30,6 +30,8 @@ public static class MauiProgram
         builder.Services.AddMvvmExpressSamples();
         builder.Services.RemoveAll<IDialogs>();
         builder.Services.AddSingleton<IDialogs, MauiDialogs>();
+        builder.Services.RemoveAll<INotifier>();
+        builder.Services.AddSingleton<INotifier, MauiNotifier>();
         builder.Services.RemoveAll<INavigator>();
         builder.Services.AddSingleton<INavigator>(sp =>
         {
@@ -43,11 +45,20 @@ public static class MauiProgram
                 typeof(SecureHomeViewModel),
                 typeof(EnterpriseShellViewModel));
         });
+        builder.Services.RemoveAll<IPageNavigator>();
+        builder.Services.AddSingleton<IPageNavigator>(sp => new MauiPageNavigator(
+                new WindowContext("page-stack"),
+                sp,
+                () => Shell.Current?.CurrentPage?.Navigation)
+            .Map<PageStackViewModel, PageStackPage>("stack")
+            .Map<PageStackItemViewModel, PageStackItemPage>("stack-item"));
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddTransient<CounterPage>();
         builder.Services.AddTransient<ProductListPage>();
         builder.Services.AddTransient<ProductEditPage>();
         builder.Services.AddTransient<HomePage>();
+        builder.Services.AddTransient<PageStackPage>();
+        builder.Services.AddTransient<PageStackItemPage>();
         builder.Services.AddTransient<ProductDetailsPage>();
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<SecureHomePage>();

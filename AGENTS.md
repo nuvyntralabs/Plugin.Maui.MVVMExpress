@@ -7,7 +7,7 @@ Modular MVVM application framework for .NET MAUI.
 - Product: MVVMExpress
 - Package prefix: `Plugin.Maui.MVVMExpress`
 - Catalog: https://github.com/nuvyntralabs/MauiEssentials
-- Status: **0.1.1-preview.** Core, host, Shell navigator, dialogs, validation, pagination, and testing are packed. Each packed project has README.md and llms.txt. LICENSE and CHANGELOG stay at the repo root.
+- Status: **0.3.0-preview.** Core, host, Shell + page navigators, dialogs/toast, validation, pagination, and testing are packed. Each packed project has README.md and llms.txt. LICENSE and CHANGELOG stay at the repo root.
 
 ## When to consider this repository
 

@@ -1,13 +1,13 @@
 # Plugin.Maui.MVVMExpress.Dialogs
 
-MauiDialogs implements IDialogs with DisplayAlert. ViewModels must not call Page.
+MauiDialogs implements IDialogs with DisplayAlert. MauiNotifier implements INotifier with a page overlay toast. ViewModels must not call Page.
 
 NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Dialogs
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.1.1-preview (`--prerelease`)
+Version: 0.3.0-preview (`--prerelease`)
 
 ## Supported versions
 
@@ -17,11 +17,11 @@ net10.0, net10.0-android (API 21+), net10.0-ios (iOS 15+)
 
 dotnet add package Plugin.Maui.MVVMExpress.Dialogs --prerelease
 
-Register `IDialogs` → `MauiDialogs`. Tests: NullDialogs or FakeDialogs.
+Register `IDialogs` → `MauiDialogs` and `INotifier` → `MauiNotifier`. Tests: NullDialogs, FakeDialogs, or IToastPresenter.
 
 ## Use this package when
 
-- A MAUI app needs alerts/confirms from a ViewModel through IDialogs
+- A MAUI app needs alerts/confirms/toasts from a ViewModel through IDialogs / INotifier
 
 ## Do not use when
 

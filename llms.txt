@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress
 
-> Modular MVVM framework for .NET MAUI. Version `0.1.1-preview` on NuGet (prerelease, not 1.0). Core, host DI, Shell navigator, dialogs, validation, and pagination ship with tests. Generators and Reactive do not.
+> Modular MVVM framework for .NET MAUI. Version `0.3.0-preview` on NuGet (prerelease, not 1.0). Core, host DI, Shell + page navigators, dialogs/toast, validation, and pagination ship with tests. Generators and Reactive do not.
 
 - Product: MVVMExpress
 - Packages: Plugin.Maui.MVVMExpress.*

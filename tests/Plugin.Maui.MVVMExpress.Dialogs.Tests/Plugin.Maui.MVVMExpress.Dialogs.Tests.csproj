@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Core\Plugin.Maui.MVVMExpress.Core.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Dialogs\Plugin.Maui.MVVMExpress.Dialogs.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Testing\Plugin.Maui.MVVMExpress.Testing.csproj" />
   </ItemGroup>
 
 </Project>

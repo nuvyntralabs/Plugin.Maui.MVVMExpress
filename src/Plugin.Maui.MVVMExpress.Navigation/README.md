@@ -1,20 +1,28 @@
 # Plugin.Maui.MVVMExpress.Navigation
 
-Shell navigation host for **MVVMExpress**: map a ViewModel type to a Shell route.
+Shell and page navigation hosts for **MVVMExpress**: map a ViewModel type to a Shell route or a `Page`.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Navigation.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Navigation)
 
-`INavigator` and `GuardedNavigator` live in Core. This package is `MauiShellNavigator`.
+`INavigator`, `IPageNavigator`, `GuardedNavigator`, and the URI stack live in Core. This package is `MauiShellNavigator` and `MauiPageNavigator`.
 
 ```csharp
-var navigator = new MauiShellNavigator()
+var shell = new MauiShellNavigator()
     .Map<ProductListViewModel>("//products")
     .Map<ProductDetailsViewModel>("details");
 
-await navigator.NavigateToAsync<ProductDetailsViewModel, ProductId>(new(42));
+await shell.NavigateToAsync<ProductDetailsViewModel, ProductId>(new(42));
+await shell.NavigateToAsync("details", new Dictionary<string, object> { ["ProductId"] = 42 });
+
+var pages = new MauiPageNavigator(new WindowContext("main"), services)
+    .Map<PageStackViewModel, PageStackPage>("stack")
+    .Map<PageStackItemViewModel, PageStackItemPage>("stack-item");
+
+await pages.NavigateToAsync("stack-item", new Dictionary<string, object> { ["Title"] = "Latte" });
+await pages.PopToRootAsync();
 ```
 
-Typed args become a query string via `MauiShellNavigator.FormatQuery`. There is no page-stack `INavigation` host yet.
+Typed args become a query string via `NavigationRouteTable.FormatQuery`. `INavigator.Stack` / `CanGoBack` / `ReplaceAsync` / `ResetAsync` track the URI stack. Register one navigator per `IWindowContext` with `WindowNavigatorRegistry`.
 
 ## Install
 
@@ -22,10 +30,10 @@ Typed args become a query string via `MauiShellNavigator.FormatQuery`. There is 
 dotnet add package Plugin.Maui.MVVMExpress.Navigation --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.1.1-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.3.0-preview`.
 
-Register `INavigator` as `GuardedNavigator` wrapping `MauiShellNavigator` in the MAUI app (see the sample).
+Register `INavigator` as `GuardedNavigator` wrapping `MauiShellNavigator`, and `IPageNavigator` as `MauiPageNavigator`, in the MAUI app (see the sample).
 
 ## Related
 
-Prefer Prism.Maui if you need page-stack navigation, not Shell. Product docs: [repository README](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress). License: MIT.
+Prefer Prism.Maui if you need regions. Product docs: [repository README](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress). License: MIT.

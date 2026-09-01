@@ -9,6 +9,7 @@ public partial class AppShell : Shell
         ProductListPage products,
         ProductEditPage edit,
         HomePage home,
+        PageStackPage pageStack,
         LoginPage login,
         OfflinePage offline,
         PaginationPage pagination,
@@ -21,6 +22,7 @@ public partial class AppShell : Shell
         Items.Add(Create("CRUD", "products", products));
         Items.Add(Create("Edit", "edit", edit));
         Items.Add(Create("Navigation", "home", home));
+        Items.Add(Create("Page stack", "stack", pageStack));
         Items.Add(Create("Auth", "login", login));
         Items.Add(Create("Offline", "offline", offline));
         Items.Add(Create("Pagination", "pagination", pagination));

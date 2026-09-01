@@ -18,8 +18,12 @@ public sealed class AddMvvmExpressTests
         Assert.IsType<MessageHub>(provider.GetRequiredService<IMessageHub>());
         Assert.IsType<MemoryCache>(provider.GetRequiredService<ICache>());
         Assert.IsType<InMemoryConnectivityProbe>(provider.GetRequiredService<IConnectivityProbe>());
-        Assert.IsType<InMemoryNavigator>(provider.GetRequiredService<INavigator>());
+        var navigator = Assert.IsType<InMemoryNavigator>(provider.GetRequiredService<INavigator>());
+        Assert.Same(navigator, provider.GetRequiredService<IPageNavigator>());
         Assert.Same(ImmediateMainThread.Instance, provider.GetRequiredService<IMainThread>());
         Assert.IsType<NullDialogs>(provider.GetRequiredService<IDialogs>());
+        Assert.Same(NullDialogs.Instance, provider.GetRequiredService<INotifier>());
+        Assert.Equal("default", provider.GetRequiredService<IWindowContext>().WindowId);
+        Assert.IsType<WindowNavigatorRegistry>(provider.GetRequiredService<IWindowNavigatorRegistry>());
     }
 }

@@ -9,8 +9,8 @@ Implementation is incremental. Do not implement a later phase in the same change
 | Version | Meaning |
 | --- | --- |
 | 0.1.0-design | Documents + solution skeleton |
-| 0.1.0-preview | Core + Host + Shell navigator + dialogs + validation + pagination (current) |
-| 0.3.x | Remaining Phase 2 (page host, URI stack) |
+| 0.1.0-preview | Core + Host + Shell navigator + dialogs + validation + pagination |
+| 0.3.0-preview | Phase 2 complete (page host, URI stack, toast, multi-window) (current) |
 | 0.4.x | Phase 3 — Reactive, forms, offline abstractions |
 | 0.5.x | Phase 4 — Generators, restoration, compatibility |
 | 1.0.0 | Phase 5 complete: tests, samples, docs, NuGet, AOT |
@@ -48,21 +48,25 @@ After 1.0.0: SemVer. Breaking API changes require a major version.
 
 **Exit (Core):** a test constructs a ViewModel, runs lifecycle, executes an async command into `AsyncState<T>`, cancels on dispose, and the VM is collected — **met**.
 
-## Phase 2 — Application shell (partial in 0.1.0-preview)
+## Phase 2 — Application shell (shipped in 0.3.0-preview)
 
 **Packages:** Navigation, Dialogs, Validation, Pagination
 
 - [x] INavigator, typed args (`IAcceptNavArgs<T>`)
-- [x] Shell host (`MauiShellNavigator`); page host still open
+- [x] Shell host (`MauiShellNavigator`)
+- [x] Page host (`MauiPageNavigator` / `IPageNavigator`)
+- [x] URI stack (`Stack`, `ModalStack`, `CanGoBack`, `PopToRoot`, `Replace`, `Reset`)
+- [x] Dictionary / URI parameters (`NavigateToAsync(route, query)`, `IAcceptNavQuery`)
+- [x] Multi-window root (`IWindowContext`, `WindowNavigatorRegistry`)
 - [x] Guards (`GuardedNavigator`, `CanNavigateAwayAsync`)
-- [x] IDialogs, INotifier (`MauiDialogs` alerts; toast is Null/Fake)
+- [x] IDialogs, INotifier (`MauiDialogs` alerts; `MauiNotifier` toast overlay)
 - [x] DataAnnotations + IValidator
 - [x] PagedCollection, refresh, SearchQuery debounce
 - [x] IConnectivityProbe (in-memory; NetworkMonitor adapter documented)
 - [x] FakeNavigator / FakeDialogs in Testing
-- [x] Navigation tests (in-memory + Shell route/query without a window)
+- [x] Navigation tests (in-memory + Shell/page route/query without a window)
 
-**Exit:** a net10.0 test navigates `Home → Details(args)` with a fake host and blocks navigation when `CanNavigateAwayAsync` returns false — **met**.
+**Exit:** a net10.0 test navigates `Home → Details(args)` with a fake host and blocks navigation when `CanNavigateAwayAsync` returns false — **met**. Stack / URI / page-host / toast tests also pass.
 
 ## Phase 3 — Depth
 

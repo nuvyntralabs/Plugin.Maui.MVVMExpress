@@ -5,7 +5,7 @@ using Result = Plugin.Maui.MVVMExpress.Outcome.Outcome;
 namespace Plugin.Maui.MVVMExpress.Navigation;
 
 /// <summary>Blocks navigation to selected ViewModel types until <see cref="IAuthState.IsAuthenticated"/>.</summary>
-public sealed class GuardedNavigator : INavigator
+public sealed class GuardedNavigator : IPageNavigator
 {
     private readonly INavigator _inner;
     private readonly IAuthState _auth;
@@ -22,7 +22,19 @@ public sealed class GuardedNavigator : INavigator
     }
 
     /// <inheritdoc />
+    public IWindowContext Window => _inner is IPageNavigator page ? page.Window : WindowContext.Default;
+
+    /// <inheritdoc />
     public Type? Current => _inner.Current;
+
+    /// <inheritdoc />
+    public IReadOnlyList<Type> Stack => _inner.Stack;
+
+    /// <inheritdoc />
+    public IReadOnlyList<Type> ModalStack => _inner.ModalStack;
+
+    /// <inheritdoc />
+    public bool CanGoBack => _inner.CanGoBack;
 
     /// <inheritdoc />
     public IReadOnlyList<NavigationRequest> History => _inner.History;
@@ -30,21 +42,50 @@ public sealed class GuardedNavigator : INavigator
     /// <inheritdoc />
     public Task<Result> NavigateToAsync<TViewModel>(CancellationToken cancellationToken = default)
         where TViewModel : class, IViewModel
-        => Gate<TViewModel>(() => _inner.NavigateToAsync<TViewModel>(cancellationToken));
+        => Gate(typeof(TViewModel), () => _inner.NavigateToAsync<TViewModel>(cancellationToken));
 
     /// <inheritdoc />
     public Task<Result> NavigateToAsync<TViewModel, TArgs>(TArgs args, CancellationToken cancellationToken = default)
         where TViewModel : class, IViewModel
         where TArgs : notnull
-        => Gate<TViewModel>(() => _inner.NavigateToAsync<TViewModel, TArgs>(args, cancellationToken));
+        => Gate(typeof(TViewModel), () => _inner.NavigateToAsync<TViewModel, TArgs>(args, cancellationToken));
+
+    /// <inheritdoc />
+    public Task<Result> NavigateToAsync(
+        string route,
+        IReadOnlyDictionary<string, object>? query = null,
+        NavOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (_inner is IRouteResolver resolver && resolver.TryResolve(route, out var type))
+        {
+            return Gate(type, () => _inner.NavigateToAsync(route, query, options, cancellationToken));
+        }
+
+        return _inner.NavigateToAsync(route, query, options, cancellationToken);
+    }
 
     /// <inheritdoc />
     public Task<Result> GoBackAsync(CancellationToken cancellationToken = default)
         => _inner.GoBackAsync(cancellationToken);
 
-    private Task<Result> Gate<TViewModel>(Func<Task<Result>> next)
+    /// <inheritdoc />
+    public Task<Result> PopToRootAsync(CancellationToken cancellationToken = default)
+        => _inner.PopToRootAsync(cancellationToken);
+
+    /// <inheritdoc />
+    public Task<Result> ReplaceAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel
+        => Gate(typeof(TViewModel), () => _inner.ReplaceAsync<TViewModel>(cancellationToken));
+
+    /// <inheritdoc />
+    public Task<Result> ResetAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel
+        => Gate(typeof(TViewModel), () => _inner.ResetAsync<TViewModel>(cancellationToken));
+
+    private Task<Result> Gate(Type viewModelType, Func<Task<Result>> next)
     {
-        if (_protectedTypes.Contains(typeof(TViewModel)) && !_auth.IsAuthenticated)
+        if (_protectedTypes.Contains(viewModelType) && !_auth.IsAuthenticated)
         {
             return Task.FromResult(Result.Failure("E_AUTH", "Sign in required"));
         }

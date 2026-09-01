@@ -8,7 +8,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 
 **Honesty rule:** The [README](README.md) comparison is the **designed product** (Yes = in the architecture). This file tracks **shipping**. `Yes` here means types exist **and** tests exist. `Designed (Pn)` means specified for phase n, not coded yet. This table does not claim superiority. Device RSS numbers are budgets until Phase 5 samples.
 
-Last validated: 2026-08-31 against the public docs and repos linked above.
+Last validated: 2026-09-01 against the public docs and repos linked above.
 
 ## Legend
 
@@ -48,19 +48,19 @@ Last validated: 2026-08-31 against the public docs and repos linked above.
 | Feature | MVVMExpress | CommunityToolkit.Mvvm | Prism.Maui | ReactiveUI |
 | --- | --- | --- | --- | --- |
 | ViewModel navigation service | Yes (`INavigator`, `InMemoryNavigator`) | No | Yes | Yes (`IScreen` / `RoutingState`) |
-| Shell navigation host | Partial (`MauiShellNavigator` routes; no URI stack API) | No | No (docs: Shell not supported) | Partial |
-| Page / `INavigation` host | Designed (P2) | No | Yes (primary) | Partial |
+| Shell navigation host | Yes (`MauiShellNavigator` routes + URI stack) | No | No (docs: Shell not supported) | Partial |
+| Page / `INavigation` host | Yes (`MauiPageNavigator` / `IPageNavigator`) | No | Yes (primary) | Partial |
 | Typed navigation parameters | Yes (`IAcceptNavArgs<T>`, `record` args) | No | No (dictionary / URI query) | Partial |
-| Dictionary / URI parameters | Designed (P2) | No | Yes | Partial |
+| Dictionary / URI parameters | Yes (`NavigateToAsync(route, query)`, `IAcceptNavQuery`) | No | Yes | Partial |
 | Navigation guards / cancel | Yes (`CanNavigateAwayAsync`, dirty `InMemoryNavigator` guard) | No | Partial (`IConfirmNavigation`) | Partial |
-| Navigation stack API | Designed (P2) | No | Yes | Yes |
+| Navigation stack API | Yes (`Stack`, `ModalStack`, `CanGoBack`, `PopToRoot`, `Replace`, `Reset`) | No | Yes | Yes |
 | Regions | No (v1) | No | Yes | No |
 | Dialogs from ViewModel | Yes (`IDialogs`, `NullDialogs`, `MauiDialogs`) | No (use MAUI / Toolkit) | Yes | Ext |
 | Toast / snackbar abstraction | Yes (`INotifier`) | No | Ext | Ext |
 | DI via `Microsoft.Extensions.DependencyInjection` | Yes (`AddMvvmExpress`, `UseMvvmExpress`) | App-level only | Partial (Prism containers; MS.DI adapters exist) | Partial (Splat / `RxAppBuilder`) |
 | Convention View/VM registration | Designed (P4) | No | Yes | Partial |
 | ViewModel locator (optional) | Designed (P1) | No | Yes | Yes |
-| Multi-window navigation root | Designed (P2) | No | Partial (`PrismWindow`) | Partial |
+| Multi-window navigation root | Yes (`IWindowContext`, `WindowNavigatorRegistry`) | No | Partial (`PrismWindow`) | Partial |
 
 ## State, data, and MAUI productivity
 
@@ -94,7 +94,7 @@ Last validated: 2026-08-31 against the public docs and repos linked above.
 | --- | --- | --- |
 | Single operation pipeline (busy + cancel + timeout + retry + concurrency + `Outcome`) | Designed backbone | Split across app code, Polly, Rx, or not present |
 | `AsyncState<T>` as bindable UI status | Yes | Usually hand-rolled booleans |
-| Shell **or** page host without requiring either | Designed (P2) | Prism: page only; CT: none; RxUI: router |
+| Shell **or** page host without requiring either | Yes (P2) | Prism: page only; CT: none; RxUI: router |
 | Typed `record` navigation args as the default | Yes (`IAcceptNavArgs<T>`) | Prism/RxUI are string/URI/dictionary-first |
 | ViewModel scopes (app / window / nav / page / child) | Designed (P3) | Prism container + regions; not the same model |
 | Compose MauiEssentials plugins via adapters | Designed | Out of scope for CT/Prism/RxUI |

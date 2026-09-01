@@ -4,11 +4,11 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `0.1.1-preview` — public preview, not a 1.0. Core, host DI, `MauiShellNavigator`, dialogs, validation, and pagination are implemented and tested. Generators, Rx, and a page-stack host remain later. Public APIs may still change.
+**Status:** `0.3.0-preview` — public preview, not a 1.0. Core, host DI, Shell + page navigators, dialogs/toast, validation, and pagination are implemented and tested. Generators and Rx remain later. Public APIs may still change.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
-[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
+[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Navigation](docs/navigation.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
 
 Author: [Niladri Prasad Padhy](https://github.com/NiladriPadhy) · Catalog: [MauiEssentials](https://github.com/nuvyntralabs/MauiEssentials) · License: MIT
 
@@ -25,8 +25,8 @@ MVVMExpress is that shell. It is **not** a fork of those libraries. Capability w
 | [`Plugin.Maui.MVVMExpress.Core`](src/Plugin.Maui.MVVMExpress.Core/README.md) | Observable model, commands, ViewModel, navigator/cache/auth/connectivity abstractions, state, outcome, messaging | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Testing`](src/Plugin.Maui.MVVMExpress.Testing/README.md) | `LeakProbe`, `ScaleProfile`, `FakeDialogs`, `FakeNavigator` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress`](src/Plugin.Maui.MVVMExpress/README.md) | `UseMvvmExpress`, `MauiMainThread`, page lifecycle behavior | **Implemented** |
-| [`Plugin.Maui.MVVMExpress.Navigation`](src/Plugin.Maui.MVVMExpress.Navigation/README.md) | `MauiShellNavigator` (map ViewModel → Shell route) | **Preview** — no page-stack host yet |
-| [`Plugin.Maui.MVVMExpress.Dialogs`](src/Plugin.Maui.MVVMExpress.Dialogs/README.md) | `IDialogs` + `MauiDialogs` | **Implemented** |
+| [`Plugin.Maui.MVVMExpress.Navigation`](src/Plugin.Maui.MVVMExpress.Navigation/README.md) | `MauiShellNavigator` + `MauiPageNavigator` (URI stack, dictionary query) | **Implemented + tests** |
+| [`Plugin.Maui.MVVMExpress.Dialogs`](src/Plugin.Maui.MVVMExpress.Dialogs/README.md) | `IDialogs` + `MauiDialogs` + `MauiNotifier` toast | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Validation`](src/Plugin.Maui.MVVMExpress.Validation/README.md) | DataAnnotations + `IValidator` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Pagination`](src/Plugin.Maui.MVVMExpress.Pagination/README.md) | `PagedCollection<T>`, `SearchQuery` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Reactive`](src/Plugin.Maui.MVVMExpress.Reactive/README.md) | Derived state; System.Reactive optional | Phase 3 (not packed) |
@@ -74,7 +74,7 @@ Designed product surface, validated 2026-08-31 against CommunityToolkit.Mvvm 8.4
 | Observable properties | Yes | Yes | Yes | Yes |
 | Commands / async commands | Yes | Yes | Yes / Partial | Yes |
 | Source generators | Designed (not shipped) | Yes | No | Yes |
-| Navigation (Shell **or** page) | Partial (Shell routes shipped; page host later) | No | Yes (page only; no Shell) | Yes |
+| Navigation (Shell **or** page) | Yes (`MauiShellNavigator` + `MauiPageNavigator`) | No | Yes (page only; no Shell) | Yes |
 | Lifecycle + cancellation | Yes | No | Yes | Yes |
 | Dialogs / in-app notifications | Yes | Separate | Yes | Extensions |
 | Validation | Yes | Yes | Extensions | Yes |

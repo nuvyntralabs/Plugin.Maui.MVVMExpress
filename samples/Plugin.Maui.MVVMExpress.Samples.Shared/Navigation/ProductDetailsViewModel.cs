@@ -9,7 +9,7 @@ namespace Plugin.Maui.MVVMExpress.Samples.Navigation;
 
 public sealed record ProductDetailsArgs(int ProductId);
 
-public sealed class ProductDetailsViewModel : PageViewModel, IAcceptNavArgs<ProductDetailsArgs>
+public sealed class ProductDetailsViewModel : PageViewModel, IAcceptNavArgs<ProductDetailsArgs>, IAcceptNavQuery
 {
     private readonly IProductCatalog _catalog;
     private int _productId;
@@ -31,6 +31,16 @@ public sealed class ProductDetailsViewModel : PageViewModel, IAcceptNavArgs<Prod
     {
         ArgumentNullException.ThrowIfNull(args);
         _productId = args.ProductId;
+    }
+
+    public void Accept(IReadOnlyDictionary<string, object> query)
+    {
+        ArgumentNullException.ThrowIfNull(query);
+        if (query.TryGetValue(nameof(ProductDetailsArgs.ProductId), out var raw)
+            && int.TryParse(Convert.ToString(raw), out var id))
+        {
+            _productId = id;
+        }
     }
 
     public override Task InitializeAsync(CancellationToken cancellationToken = default)

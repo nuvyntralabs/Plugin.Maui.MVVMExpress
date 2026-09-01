@@ -24,9 +24,14 @@ public static class MVVMExpressServiceCollectionExtensions
         services.TryAddSingleton<IErrorSink, NullErrorSink>();
         services.TryAddSingleton<ICache, MemoryCache>();
         services.TryAddSingleton<IConnectivityProbe, InMemoryConnectivityProbe>();
-        services.TryAddSingleton<INavigator, InMemoryNavigator>();
+        services.TryAddSingleton<IWindowContext>(_ => WindowContext.Default);
+        services.TryAddSingleton<IWindowNavigatorRegistry, WindowNavigatorRegistry>();
+        services.TryAddSingleton<InMemoryNavigator>();
+        services.TryAddSingleton<INavigator>(sp => sp.GetRequiredService<InMemoryNavigator>());
+        services.TryAddSingleton<IPageNavigator>(sp => sp.GetRequiredService<InMemoryNavigator>());
         services.TryAddSingleton<IMainThread>(_ => ImmediateMainThread.Instance);
         services.TryAddSingleton<IDialogs, NullDialogs>();
+        services.TryAddSingleton<INotifier>(_ => NullDialogs.Instance);
         return services;
     }
 }

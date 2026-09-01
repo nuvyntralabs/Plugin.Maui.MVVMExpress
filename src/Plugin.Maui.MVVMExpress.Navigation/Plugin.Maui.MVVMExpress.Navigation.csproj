@@ -16,9 +16,9 @@
     <RootNamespace>Plugin.Maui.MVVMExpress.Navigation</RootNamespace>
     <AssemblyName>Plugin.Maui.MVVMExpress.Navigation</AssemblyName>
     <PackageId>Plugin.Maui.MVVMExpress.Navigation</PackageId>
-    <Title>.NET MAUI MVVMExpress — Shell navigation host</Title>
-    <Description>MauiShellNavigator maps ViewModel types to Shell routes with typed query args. INavigator and GuardedNavigator live in Core; this package is the MAUI Shell adapter.</Description>
-    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm;mvvm-express;navigation;shell</PackageTags>
+    <Title>.NET MAUI MVVMExpress — Shell and page navigation hosts</Title>
+    <Description>MauiShellNavigator and MauiPageNavigator map ViewModel types to Shell routes or Pages with typed and dictionary URI args. INavigator and GuardedNavigator live in Core.</Description>
+    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm;mvvm-express;navigation;shell;page-stack</PackageTags>
     <Authors>Niladri</Authors>
     <Company>MauiEssentials</Company>
     <Copyright>Copyright © 2026 Niladri</Copyright>
@@ -27,8 +27,8 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.1.1-preview</Version>
-    <PackageReleaseNotes>0.1.1-preview: RepositoryUrl is https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress.</PackageReleaseNotes>
+    <Version>0.3.0-preview</Version>
+    <PackageReleaseNotes>0.3.0-preview: page host, URI stack, dictionary/URI args, multi-window root, MauiNotifier toast.</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

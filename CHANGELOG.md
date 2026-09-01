@@ -2,6 +2,21 @@
 
 All notable changes to Plugin.Maui.MVVMExpress are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [SemVer](https://semver.org/) after 1.0.0.
 
+## [0.3.0-preview] — 2026-09-01
+
+### Added
+
+- `MauiPageNavigator` / `IPageNavigator` — page-stack host on `INavigation` / `NavigationPage`
+- URI stack on `INavigator`: `Stack`, `ModalStack`, `CanGoBack`, `PopToRootAsync`, `ReplaceAsync`, `ResetAsync`
+- Dictionary / URI navigation: `NavigateToAsync(route, query)`, `IAcceptNavQuery`, `NavigationRouteTable`
+- Multi-window root: `IWindowContext`, `WindowNavigatorRegistry`, `MauiWindowContext`
+- `MauiNotifier` toast overlay (`IToastPresenter` for tests)
+- Sample flyout **Page stack** plus Home URI query and toast buttons
+
+### Changed
+
+- Version is `0.3.0-preview`. Phase 2 leftovers (page host, URI stack, toast, multi-window) are shipped with tests.
+
 ## [0.1.1-preview] — 2026-08-31
 
 ### Changed

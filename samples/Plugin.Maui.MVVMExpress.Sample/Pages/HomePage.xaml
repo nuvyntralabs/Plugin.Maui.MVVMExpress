@@ -10,11 +10,13 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="8">
-            <Label Text="Open products switches the CRUD flyout. Open details pushes a Shell page with typed ProductId args." />
+            <Label Text="Open products switches the CRUD flyout. Open details pushes a Shell page with typed ProductId args. Route + query uses the dictionary URI API. Toast uses INotifier." />
             <Button Text="Open products" Command="{Binding OpenProductsCommand}" />
             <Button Text="Open Latte details"
                     Command="{Binding OpenDetailsCommand}"
                     CommandParameter="{x:Int32 2}" />
+            <Button Text="Open Latte via URI query" Command="{Binding OpenDetailsByRouteCommand}" />
+            <Button Text="Show toast" Command="{Binding ShowToastCommand}" />
         </VerticalStackLayout>
     </ScrollView>
 </pages:SampleContentPage>

@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress.Dialogs
 
-MAUI `DisplayAlert` adapter for **MVVMExpress**. ViewModels depend on `IDialogs`, not `Page`.
+MAUI `DisplayAlert` and toast adapter for **MVVMExpress**. ViewModels depend on `IDialogs` / `INotifier`, not `Page`.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Dialogs.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Dialogs)
 
@@ -8,17 +8,23 @@ MAUI `DisplayAlert` adapter for **MVVMExpress**. ViewModels depend on `IDialogs`
 public sealed class EditViewModel : ViewModel
 {
     private readonly IDialogs _dialogs;
-    public EditViewModel(IDialogs dialogs) => _dialogs = dialogs;
+    private readonly INotifier _notifier;
+    public EditViewModel(IDialogs dialogs, INotifier notifier)
+    {
+        _dialogs = dialogs;
+        _notifier = notifier;
+    }
 
     public async Task ConfirmDeleteAsync()
     {
         if (await _dialogs.ConfirmAsync("Delete", "Remove this item?"))
             await DeleteAsync();
+        await _notifier.ToastAsync("Deleted");
     }
 }
 ```
 
-Register `MauiDialogs` as `IDialogs` in the MAUI host. Tests use `NullDialogs` (Core) or `FakeDialogs` ([Testing](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Testing)).
+Register `MauiDialogs` as `IDialogs` and `MauiNotifier` as `INotifier` in the MAUI host. Tests use `NullDialogs` (Core) or `FakeDialogs` ([Testing](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Testing)). Inject `IToastPresenter` to record toasts without a window.
 
 ## Install
 
@@ -26,9 +32,9 @@ Register `MauiDialogs` as `IDialogs` in the MAUI host. Tests use `NullDialogs` (
 dotnet add package Plugin.Maui.MVVMExpress.Dialogs --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.1.1-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.3.0-preview`.
 
-`MauiDialogs` prefers `Shell.Current.CurrentPage`.
+`MauiDialogs` and `MauiNotifier` resolve the current page from `IWindowContext` (Shell first, then the window's page).
 
 ## Related
 
