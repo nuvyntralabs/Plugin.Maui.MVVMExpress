@@ -12,6 +12,8 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 Author: [Niladri Prasad Padhy](https://github.com/NiladriPadhy) · Catalog: [MauiEssentials](https://github.com/nuvyntralabs/MauiEssentials) · License: MIT
 
+Sample: [WhatsApp clone using MVVMExpress](https://github.com/nuvyntralabs/WhatsAppUIClone)
+
 ## Why this exists
 
 CommunityToolkit.Mvvm covers properties, commands, and messaging. Prism.Maui covers page navigation and dialogs (not Shell). ReactiveUI covers observable pipelines. A production MAUI app often needs all three *plus* bindable async state, lifecycle-aware cancellation, and typed navigation — without taking three overlapping frameworks.
@@ -147,4 +149,4 @@ Publish (requires a nuget.org API key; siblings are packed and pushed this way, 
 dotnet nuget push artifacts/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY --skip-duplicate
 ```
 
-Samples: [samples/README.md](samples/README.md).
+Samples: [samples/README.md](samples/README.md) · [WhatsApp clone using MVVMExpress](https://github.com/nuvyntralabs/WhatsAppUIClone)
