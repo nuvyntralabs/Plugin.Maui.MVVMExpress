@@ -64,13 +64,7 @@ public sealed class FormViewModelTests
         public ProbeForm()
         {
             _title = Field("Title", "");
-            _title.PropertyChanged += (_, e) =>
-            {
-                if (e.PropertyName == nameof(FormField<string>.Value))
-                {
-                    Notify(nameof(Title));
-                }
-            };
+            Bind(_title, nameof(Title));
         }
 
         public string Title

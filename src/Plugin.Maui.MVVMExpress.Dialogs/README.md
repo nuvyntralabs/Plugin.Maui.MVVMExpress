@@ -32,7 +32,7 @@ Register `MauiDialogs` as `IDialogs` and `MauiNotifier` as `INotifier` in the MA
 dotnet add package Plugin.Maui.MVVMExpress.Dialogs --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile TFMs are present and compile-only. Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.6.0-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile TFMs are present and compile-only. Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.6.1-preview`.
 
 `MauiNotifier` toasts use `Window.AddOverlay` and never wrap `Page.Content`.
 

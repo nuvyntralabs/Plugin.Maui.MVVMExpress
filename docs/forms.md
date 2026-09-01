@@ -10,6 +10,7 @@ public sealed class ProductEditViewModel : FormViewModel
     public ProductEditViewModel()
     {
         _name = Field("Name", "");
+        Bind(_name, nameof(Name)); // public property + optional () => SaveCommand.NotifyCanExecuteChanged()
     }
 
     public string Name

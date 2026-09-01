@@ -43,6 +43,25 @@ public sealed class FormFieldAndSubmitTests
     }
 
     [Fact]
+    public void Bind_NotifiesProperty_AndCanExecute()
+    {
+        var form = new BoundForm();
+        var notified = 0;
+        form.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(BoundForm.Draft))
+            {
+                notified++;
+            }
+        };
+
+        form.Draft = "hello";
+        Assert.Equal("hello", form.Draft);
+        Assert.True(notified > 0);
+        Assert.Equal(1, form.CanExecuteRefresh);
+    }
+
+    [Fact]
     public void MustMatch_ReturnsMessage_WhenDifferent()
     {
         var form = new ConfirmForm(new FakeDialogs());
@@ -71,5 +90,24 @@ public sealed class FormFieldAndSubmitTests
 
         public ValidationMessage? Compare(FormField<string> left, FormField<string> right)
             => MustMatch(left, right);
+    }
+
+    private sealed class BoundForm : FormViewModel
+    {
+        private readonly FormField<string> _draft;
+
+        public BoundForm()
+        {
+            _draft = Field("Draft", "");
+            Bind(_draft, nameof(Draft), () => CanExecuteRefresh++);
+        }
+
+        public int CanExecuteRefresh { get; private set; }
+
+        public string Draft
+        {
+            get => _draft.Value ?? "";
+            set => _draft.Value = value;
+        }
     }
 }

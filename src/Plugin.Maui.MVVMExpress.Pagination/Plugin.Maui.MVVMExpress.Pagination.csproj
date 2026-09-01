@@ -21,8 +21,8 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.6.0-preview</Version>
-    <PackageReleaseNotes>0.6.0-preview: UI-thread marshal for commands and dialogs, no-throw Execute, host UseShell/UseDialogs, dirty confirm, auth challenge.</PackageReleaseNotes>
+    <Version>0.6.1-preview</Version>
+    <PackageReleaseNotes>0.6.1-preview: UI-thread-safe navigator, UseNavigationPage + replace-root. ResetAsync now replaces window.Page with a NavigationPage (no longer PopToRoot+Push). SectionHostViewModel, SnapshotCollection, SearchQuery.CommittedText, FormViewModel.Bind.</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

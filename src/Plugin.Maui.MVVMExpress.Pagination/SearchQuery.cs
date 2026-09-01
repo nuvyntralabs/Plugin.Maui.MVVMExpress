@@ -6,6 +6,7 @@ namespace Plugin.Maui.MVVMExpress.Pagination;
 public sealed class SearchQuery : ObservableModel
 {
     private string _text = "";
+    private string _committed = "";
     private CancellationTokenSource? _debounce;
 
     /// <summary>Creates a query.</summary>
@@ -23,7 +24,10 @@ public sealed class SearchQuery : ObservableModel
     /// <summary>Minimum text length to search.</summary>
     public int MinimumLength { get; }
 
-    /// <summary>Current search text.</summary>
+    /// <summary>
+    /// Live input. Bind an <c>Entry</c> to this (not Android <c>SearchBar</c> — <c>TextChanged</c> during layout loops).
+    /// Filter collections from <see cref="CommittedText"/> after debounce.
+    /// </summary>
     public string Text
     {
         get => _text;
@@ -34,6 +38,13 @@ public sealed class SearchQuery : ObservableModel
                 RestartDebounce();
             }
         }
+    }
+
+    /// <summary>Debounced <see cref="Text"/>. Watch this for filtering; do not two-way bind it.</summary>
+    public string CommittedText
+    {
+        get => _committed;
+        private set => SetProperty(ref _committed, value);
     }
 
     /// <summary>Gets a value indicating whether <see cref="Text"/> meets <see cref="MinimumLength"/>.</summary>
@@ -72,6 +83,24 @@ public sealed class SearchQuery : ObservableModel
     private void RestartDebounce()
     {
         Cancel();
-        _debounce = new CancellationTokenSource();
+        var source = new CancellationTokenSource();
+        _debounce = source;
+        _ = CommitAfterDebounceAsync(source);
+    }
+
+    private async Task CommitAfterDebounceAsync(CancellationTokenSource source)
+    {
+        try
+        {
+            await Task.Delay(Debounce, source.Token).ConfigureAwait(false);
+            if (!source.IsCancellationRequested)
+            {
+                CommittedText = Text;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // A newer keystroke replaced this wait.
+        }
     }
 }

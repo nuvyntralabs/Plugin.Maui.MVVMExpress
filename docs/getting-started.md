@@ -79,7 +79,8 @@ The handler must use the recipient argument so a weak subscribe does not pin the
 
 ```csharp
 services.AddMvvmExpress();          // tests / net10.0
-builder.UseMvvmExpress(o => o.UseShell().UseDialogs()); // MAUI app
+builder.UseMvvmExpress(o => o.UseNavigationPage().UseDialogs()); // login → replace-root → push
+builder.UseMvvmExpress(o => o.UseShell().UseDialogs());          // optional Shell path
 ```
 
-`INavigator`, `MauiShellNavigator`, `MauiPageNavigator`, `IDialogs`, `INotifier` / `MauiNotifier`, `ICache` / `ICachedFetcher`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `FormViewModel`, `IOperationExecutor`, and `PagedCollection<T>` ship with tests. Optional `[Notify]` / `[ModelCommand]` / `[RegisterViewModel]` generation: `Plugin.Maui.MVVMExpress.SourceGenerators` plus `services.AddGeneratedViewModels()`. Navigation hosts: [navigation.md](navigation.md). Samples: [samples/README.md](../samples/README.md). Known limits: [known-limitations.md](known-limitations.md).
+`INavigator`, `MauiShellNavigator`, `MauiPageNavigator`, `IDialogs`, `INotifier` / `MauiNotifier`, `ICache` / `ICachedFetcher`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `FormViewModel`, `IOperationExecutor`, `PagedCollection<T>`, and `SnapshotCollection<T>` ship with tests. Optional `[Notify]` / `[ModelCommand]` / `[RegisterViewModel]` generation: `Plugin.Maui.MVVMExpress.SourceGenerators` plus `services.AddGeneratedViewModels()`. Navigation hosts: [navigation.md](navigation.md). Chat host: [chat-host.md](chat-host.md). Android lists: [maui-android.md](maui-android.md). Samples: [samples/README.md](../samples/README.md). Known limits: [known-limitations.md](known-limitations.md).

@@ -326,6 +326,8 @@ public interface INavigator
 public interface IPageNavigator : INavigator
 {
     IWindowContext Window { get; }
+    Task<Outcome> ReplaceRootAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel; // default → ResetAsync
 }
 
 public interface IAcceptNavArgs<TArgs> where TArgs : notnull
@@ -546,11 +548,23 @@ public sealed class SearchQuery : ObservableModel
 
     public TimeSpan Debounce { get; }          // default 300 ms
     public int MinimumLength { get; }
-    public string Text { get; set; }
+    public string Text { get; set; }           // bind Entry, not SearchBar
+    public string CommittedText { get; }       // filter after debounce
     public bool IsReady { get; }
 
     public Task<bool> WhenReadyAsync(CancellationToken cancellationToken = default);
     public void Cancel();
+}
+
+public sealed class SnapshotCollection<T> : ObservableModel
+{
+    public SnapshotCollection(Func<CancellationToken, Task<IReadOnlyList<T>>> fetch);
+    public AsyncState<IReadOnlyList<T>> State { get; }
+    public ObservableRangeCollection<T> Items { get; }
+    public bool IsLoaded { get; }
+    public Task LoadAsync(bool force = false, CancellationToken cancellationToken = default);
+    public void Replace(IEnumerable<T> items);
+    public void AddLocal(T item);
 }
 
 namespace Plugin.Maui.MVVMExpress.Collections;
@@ -688,7 +702,10 @@ namespace Plugin.Maui.MVVMExpress.Forms;
 
 public interface IDirtyState { bool IsDirty { get; } void MarkClean(); void Reset(); }
 public sealed class FormField<T> : ObservableModel, IFormField { }
-public abstract class FormViewModel : PageViewModel, IDirtyState { }
+public abstract class FormViewModel : PageViewModel, IDirtyState
+{
+    protected void Bind<T>(FormField<T> field, string propertyName, Action? notifyCanExecute = null);
+}
 public sealed class UndoStack : ObservableModel { }
 
 namespace Plugin.Maui.MVVMExpress.Caching;
@@ -706,6 +723,8 @@ namespace Plugin.Maui.MVVMExpress.Composition;
 
 public interface IViewModelComposer { TChild Attach<TChild>(TChild child); }
 public interface IViewModelScopeFactory { IViewModelScope CreatePageScope(); }
+public interface ISectionHost { string CurrentKey { get; } IViewModel? Current { get; } Task SelectAsync(string key, CancellationToken cancellationToken = default); }
+public class SectionHostViewModel : PageViewModel, ISectionHost { }
 
 namespace Plugin.Maui.MVVMExpress.Reactive;
 

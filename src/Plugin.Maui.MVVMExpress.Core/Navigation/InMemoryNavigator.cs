@@ -144,6 +144,11 @@ public class InMemoryNavigator : IPageNavigator, IRouteResolver
         return Task.FromResult(Result.Success());
     }
 
+    /// <inheritdoc />
+    public Task<Result> ReplaceRootAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel
+        => ResetAsync<TViewModel>(cancellationToken);
+
     private Task<Result> NavigateCore(
         Type viewModelType,
         object? args,

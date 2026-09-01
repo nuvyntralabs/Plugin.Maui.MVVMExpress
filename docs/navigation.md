@@ -1,6 +1,22 @@
 # Navigation and dialogs
 
-Phase 2 hosts. ViewModels depend on `INavigator` / `IPageNavigator` / `IDialogs` / `INotifier` — never on `Shell` or `Page`.
+Phase 2 hosts. ViewModels depend on `INavigator` / `IPageNavigator` / `IDialogs` / `INotifier` — never on `Shell` or `Page`. Shell is **optional**. Chat-style apps should use [UseNavigationPage](#navigationpage-host) + [chat-host.md](chat-host.md).
+
+Both hosts hop to `IMainThread` **before** constructing a `Page` or calling `Shell.GoToAsync`. Off-thread `new Page()` throws `Page factory must run on the main thread.`
+
+## NavigationPage host
+
+```csharp
+builder.UseMvvmExpress(o => o.UseNavigationPage((nav, _) => nav
+    .Map<LoginViewModel, LoginPage>("login")
+    .Map<ChatHostViewModel, ChatHostPage>("chats")
+    .Map<ChatThreadViewModel, ChatThreadPage>("thread")).UseDialogs());
+
+await Navigator.ResetAsync<ChatHostViewModel>(); // replace-root after login
+await Navigator.NavigateToAsync<ChatThreadViewModel, ChatNavArgs>(new(id));
+```
+
+`ResetAsync` / `ReplaceRootAsync` replace `window.Page` with a `NavigationPage`. Tabs belong on `SectionHostViewModel`, not four routes.
 
 ## Shell
 

@@ -47,7 +47,11 @@ public abstract class PagedCollection<T> : ObservableModel
         HasMore = page.Count == PageSize;
     }
 
-    /// <summary>Clears and reloads from the first page.</summary>
+    /// <summary>
+    /// Clears and reloads from the first page.
+    /// Do not call from <c>OnAppearingAsync</c> for a live list — use <see cref="SnapshotCollection{T}"/> instead.
+    /// Do not pair a sync / instant fetch with <c>CollectionView.RemainingItemsThreshold</c> or <c>RefreshView</c>.
+    /// </summary>
     public async Task RefreshAsync(CancellationToken cancellationToken = default)
     {
         _skip = 0;

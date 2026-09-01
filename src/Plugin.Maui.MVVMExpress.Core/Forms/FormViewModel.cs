@@ -32,6 +32,7 @@ public abstract class FormViewModel : PageViewModel, IDirtyState
     private readonly List<IFormField> _fields = [];
     private readonly UndoStack _history = new();
     private readonly Dictionary<IFormField, object?> _changing = [];
+    private readonly List<(INotifyPropertyChanged Source, PropertyChangedEventHandler Handler)> _binds = [];
     private bool _suppressHistory;
     private bool _isDirty;
 
@@ -233,6 +234,32 @@ public abstract class FormViewModel : PageViewModel, IDirtyState
     protected FormField<T> Field<T>(string name, T? original = default)
         => Track(new FormField<T>(name, original));
 
+    /// <summary>
+    /// Forwards <see cref="FormField{T}.Value"/> changes to a public property and optional <c>CanExecute</c> refresh.
+    /// Use this instead of a manual <c>PropertyChanged</c> wrapper around one text box.
+    /// </summary>
+    /// <param name="field">Tracked field.</param>
+    /// <param name="propertyName">Public property to notify (for example <c>nameof(Draft)</c>).</param>
+    /// <param name="notifyCanExecute">Optional command refresh (<c>() => SendCommand.NotifyCanExecuteChanged()</c>).</param>
+    protected void Bind<T>(FormField<T> field, string propertyName, Action? notifyCanExecute = null)
+    {
+        ArgumentNullException.ThrowIfNull(field);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
+        void OnChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is not nameof(FormField<T>.Value))
+            {
+                return;
+            }
+
+            Notify(propertyName);
+            notifyCanExecute?.Invoke();
+        }
+
+        field.PropertyChanged += OnChanged;
+        _binds.Add((field, OnChanged));
+    }
+
     /// <inheritdoc />
     protected override void Dispose(bool disposing)
     {
@@ -244,6 +271,13 @@ public abstract class FormViewModel : PageViewModel, IDirtyState
                 field.PropertyChanging -= OnFieldChanging;
                 field.PropertyChanged -= OnFieldChanged;
             }
+
+            foreach (var (source, handler) in _binds)
+            {
+                source.PropertyChanged -= handler;
+            }
+
+            _binds.Clear();
         }
 
         base.Dispose(disposing);

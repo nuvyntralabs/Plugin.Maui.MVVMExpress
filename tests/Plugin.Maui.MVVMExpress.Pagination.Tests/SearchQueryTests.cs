@@ -23,4 +23,15 @@ public sealed class SearchQueryTests
         query.Text = "x";
         Assert.True(await query.WhenReadyAsync());
     }
+
+    [Fact]
+    public async Task CommittedText_Updates_AfterDebounce()
+    {
+        var query = new SearchQuery(TimeSpan.FromMilliseconds(30));
+        query.Text = "ab";
+        Assert.Equal("", query.CommittedText);
+        await query.WhenReadyAsync();
+        await Task.Delay(40);
+        Assert.Equal("ab", query.CommittedText);
+    }
 }

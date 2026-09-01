@@ -1,6 +1,12 @@
-# Known limitations (0.6.0-preview)
+# Known limitations (0.6.1-preview)
 
 **Open gate (blocks 1.0.0):** design review sign-off (Phase 0). That is a human decision, not remaining product work.
+
+**Host footguns (lists / MAUI 10 Android):**
+
+1. **Do not** pair `DelegatePagedCollection` with `CollectionView` + `RemainingItemsThreshold` when the fetch is sync. Use `SnapshotCollection<T>`. See [maui-android.md](maui-android.md).
+2. Bind `SearchQuery.Text` to `Entry`, not Android `SearchBar`.
+3. `OnAppearingAsync` does not refresh. Chat lists load once and mutate locally.
 
 **Host footguns (0.5.0-preview consumers):**
 

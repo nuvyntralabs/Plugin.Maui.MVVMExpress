@@ -1,12 +1,15 @@
 using System.Diagnostics.CodeAnalysis;
 using Plugin.Maui.MVVMExpress.ComponentModel;
+using Plugin.Maui.MVVMExpress.Diagnostics;
 using Plugin.Maui.MVVMExpress.Hosting;
+using Plugin.Maui.MVVMExpress.Threading;
 using Result = Plugin.Maui.MVVMExpress.Outcome.Outcome;
 
 namespace Plugin.Maui.MVVMExpress.Navigation;
 
 /// <summary>
 /// <see cref="IPageNavigator"/> that pushes pages onto <c>INavigation</c> / <c>NavigationPage</c>.
+/// Page construction and stack changes always run on <see cref="IMainThread"/>.
 /// </summary>
 public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
 {
@@ -15,19 +18,31 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
     private readonly NavigationStack _stack = new();
     private readonly IServiceProvider? _services;
     private readonly Func<INavigation?>? _navigation;
+    private readonly IMainThread _mainThread;
+    private readonly IMvvmExpressDiagnostics? _diagnostics;
+    private readonly Func<Window?>? _resolveWindow;
 
     /// <summary>Creates a page-stack navigator for <paramref name="window"/>.</summary>
     /// <param name="window">Window this stack belongs to.</param>
     /// <param name="services">Optional DI used to construct pages and ViewModels.</param>
     /// <param name="navigation">Optional <see cref="INavigation"/> resolver; defaults to the window's current page.</param>
+    /// <param name="mainThread">UI dispatcher. Defaults to <see cref="NavigationThread.Resolve"/>.</param>
+    /// <param name="diagnostics">Optional off-thread breadcrumbs.</param>
+    /// <param name="resolveWindow">Optional window resolver used by <see cref="ResetAsync{TViewModel}"/>.</param>
     public MauiPageNavigator(
         IWindowContext? window = null,
         IServiceProvider? services = null,
-        Func<INavigation?>? navigation = null)
+        Func<INavigation?>? navigation = null,
+        IMainThread? mainThread = null,
+        IMvvmExpressDiagnostics? diagnostics = null,
+        Func<Window?>? resolveWindow = null)
     {
         Window = window ?? WindowContext.Default;
         _services = services;
         _navigation = navigation;
+        _mainThread = NavigationThread.Resolve(mainThread);
+        _diagnostics = diagnostics;
+        _resolveWindow = resolveWindow;
     }
 
     /// <inheritdoc />
@@ -121,6 +136,11 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
         where TViewModel : class, IViewModel
         => GoAsync(typeof(TViewModel), null, null, null, cancellationToken, reset: true);
 
+    /// <inheritdoc />
+    public Task<Result> ReplaceRootAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel
+        => ResetAsync<TViewModel>(cancellationToken);
+
     private async Task<Result> GoAsync(
         Type viewModelType,
         object? args,
@@ -136,12 +156,36 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
             return Result.Failure("E_ROUTE", $"No page mapped for {viewModelType.Name}.");
         }
 
-        var navigation = ResolveNavigation();
-        if (navigation is null)
-        {
-            return Result.Failure("E_PAGE", "No INavigation host is available for this window.");
-        }
+        NavigationThread.TraceOffThread(
+            _mainThread,
+            _diagnostics,
+            "Hopping page navigation onto IMainThread before constructing the page.");
 
+        Result? outcome = null;
+        await _mainThread.InvokeAsync(
+            async () => outcome = await GoOnUiAsync(
+                viewModelType,
+                pageType,
+                args,
+                route,
+                query,
+                options,
+                reset,
+                cancellationToken).ConfigureAwait(true),
+            cancellationToken).ConfigureAwait(false);
+        return outcome ?? Result.Failure("E_NAV", "Navigation did not complete.");
+    }
+
+    private async Task<Result> GoOnUiAsync(
+        Type viewModelType,
+        Type pageType,
+        object? args,
+        string? route,
+        IReadOnlyDictionary<string, object>? query,
+        NavOptions? options,
+        bool reset,
+        CancellationToken cancellationToken)
+    {
         var currentPage = MauiVisualTree.CurrentPage(Window);
         if (currentPage?.BindingContext is INavigable leaving
             && !await leaving.CanNavigateAwayAsync(cancellationToken).ConfigureAwait(true))
@@ -152,6 +196,7 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
         Page page;
         try
         {
+            NavigationThread.EnsurePageFactoryOnMainThread(_mainThread);
             page = CreatePage(pageType, viewModelType, args, query);
         }
         catch (Exception ex)
@@ -159,17 +204,24 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
             return Result.Failure("E_PAGE", ex.Message, ex);
         }
 
-        try
+        if (reset)
         {
-            await MainThread.InvokeOnMainThreadAsync(async () =>
+            var root = ApplyRoot(page);
+            if (!root.IsSuccess)
             {
-                if (reset)
-                {
-                    await navigation.PopToRootAsync(options?.Animated ?? false).ConfigureAwait(true);
-                    await navigation.PushAsync(page, options?.Animated ?? true).ConfigureAwait(true);
-                    return;
-                }
+                return root;
+            }
+        }
+        else
+        {
+            var navigation = ResolveNavigation();
+            if (navigation is null)
+            {
+                return Result.Failure("E_PAGE", "No INavigation host is available for this window.");
+            }
 
+            try
+            {
                 if (options?.Replace == true && navigation.NavigationStack.Count > 1)
                 {
                     await navigation.PopAsync(false).ConfigureAwait(true);
@@ -183,11 +235,11 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
                 {
                     await navigation.PushAsync(page, options?.Animated ?? true).ConfigureAwait(true);
                 }
-            }).ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            return Result.Failure("E_NAV", ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure("E_NAV", ex.Message, ex);
+            }
         }
 
         if (currentPage?.BindingContext is INavigable from)
@@ -220,6 +272,20 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
     private async Task<Result> PopCore(bool toRoot, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        NavigationThread.TraceOffThread(
+            _mainThread,
+            _diagnostics,
+            "Hopping GoBackAsync onto IMainThread.");
+
+        Result? outcome = null;
+        await _mainThread.InvokeAsync(
+            async () => outcome = await PopOnUiAsync(toRoot, cancellationToken).ConfigureAwait(true),
+            cancellationToken).ConfigureAwait(false);
+        return outcome ?? Result.Failure("E_NAV", "Navigation did not complete.");
+    }
+
+    private async Task<Result> PopOnUiAsync(bool toRoot, CancellationToken cancellationToken)
+    {
         var navigation = ResolveNavigation();
         if (navigation is null)
         {
@@ -235,21 +301,18 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
 
         try
         {
-            await MainThread.InvokeOnMainThreadAsync(async () =>
+            if (toRoot)
             {
-                if (toRoot)
-                {
-                    await navigation.PopToRootAsync().ConfigureAwait(true);
-                }
-                else if (navigation.ModalStack.Count > 0)
-                {
-                    await navigation.PopModalAsync().ConfigureAwait(true);
-                }
-                else
-                {
-                    await navigation.PopAsync().ConfigureAwait(true);
-                }
-            }).ConfigureAwait(true);
+                await navigation.PopToRootAsync().ConfigureAwait(true);
+            }
+            else if (navigation.ModalStack.Count > 0)
+            {
+                await navigation.PopModalAsync().ConfigureAwait(true);
+            }
+            else
+            {
+                await navigation.PopAsync().ConfigureAwait(true);
+            }
         }
         catch (Exception ex)
         {
@@ -270,6 +333,19 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
             _stack.Pop();
         }
 
+        return Result.Success();
+    }
+
+    private Result ApplyRoot(Page page)
+    {
+        var window = _resolveWindow?.Invoke()
+            ?? (Application.Current is { Windows.Count: > 0 } app ? app.Windows[0] : null);
+        if (window is null)
+        {
+            return Result.Failure("E_PAGE", "No window is available to replace the root.");
+        }
+
+        window.Page = page is NavigationPage ? page : new NavigationPage(page);
         return Result.Success();
     }
 

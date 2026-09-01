@@ -1,13 +1,13 @@
 # Plugin.Maui.MVVMExpress.Pagination
 
-PagedCollection, DelegatePagedCollection, SearchQuery debounce. Uses AddRange (one notify).
+PagedCollection, DelegatePagedCollection, SnapshotCollection (load once), SearchQuery debounce + CommittedText. Bind search to Entry, not SearchBar. Uses AddRange (one notify).
 
 NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Pagination
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.6.0-preview (`--prerelease`)
+Version: 0.6.1-preview (`--prerelease`)
 
 ## Supported versions
 

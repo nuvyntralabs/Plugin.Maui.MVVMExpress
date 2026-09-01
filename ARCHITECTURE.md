@@ -2,7 +2,7 @@
 
 **Product:** MVVMExpress  
 **Official package family:** `Plugin.Maui.MVVMExpress.*`  
-**Status:** `0.6.0-preview`. Device-safe marshal, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation `ILLink.Descriptors.xml`, host/auth/forms UX, and Phase 5 productization are shipped with tests. Shipped public APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
+**Status:** `0.6.1-preview`. Device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection`, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation `ILLink.Descriptors.xml`, host/auth/forms UX, and Phase 5 productization are shipped with tests. Shipped public APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
 
 MVVMExpress is a modular MVVM application framework for .NET MAUI. It is not a fork of CommunityToolkit.Mvvm, Prism.Maui, or ReactiveUI. Those libraries are studied as capability references. This document records the original architecture that delivers equivalent developer outcomes without copying their type graphs, containers, or navigation engines.
 
@@ -381,7 +381,7 @@ Until generators ship, all of the above is handwritten. Attributes may exist in 
 | `ObservableRangeCollection<T>` | Same-thread as the bound view unless `IMainThread` marshal option is on |
 | Messaging | Handlers invoked on the publishing thread unless `IMainThread` is requested |
 
-Library code uses `ConfigureAwait(false)` **except** where the next step must run on the captured UI context (navigation host, dialog host, property notification marshal).
+Library code uses `ConfigureAwait(false)` **except** where the next step must run on the captured UI context (navigation host, dialog host, property notification marshal). Navigators hop to `IMainThread` **before** constructing a `Page`. `IMainThread` is the only marshal API — do not mix MAUI `MainThread` statics in ViewModels.
 
 ## 17. Configuration
 
@@ -435,4 +435,4 @@ This folder is its own git repository and MauiEssentials submodule (`Plugin.Maui
 
 ## 21. How to read this document
 
-This file is the architecture contract. **0.6.0-preview implements** Core through Reactive, device-safe marshal, weak command events, window-overlay toasts, Validation trim roots, source generators, persist/auth attributes, CommunityToolkit compatibility, and Phase 5 productization. Remaining 1.0.0 work is design-review sign-off; accepted scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).
+This file is the architecture contract. **0.6.1-preview implements** Core through Reactive, device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + `SectionHostViewModel` + `SnapshotCollection`, weak command events, window-overlay toasts, Validation trim roots, source generators, persist/auth attributes, CommunityToolkit compatibility, and Phase 5 productization. Remaining 1.0.0 work is design-review sign-off; accepted scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).

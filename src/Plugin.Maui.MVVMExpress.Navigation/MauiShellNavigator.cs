@@ -1,19 +1,24 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Plugin.Maui.MVVMExpress.ComponentModel;
+using Plugin.Maui.MVVMExpress.Diagnostics;
 using Plugin.Maui.MVVMExpress.Hosting;
+using Plugin.Maui.MVVMExpress.Threading;
 using Result = Plugin.Maui.MVVMExpress.Outcome.Outcome;
 
 namespace Plugin.Maui.MVVMExpress.Navigation;
 
 /// <summary>
 /// <see cref="INavigator"/> that calls <c>Shell.GoToAsync</c>. Map each ViewModel type to a Shell route.
+/// <c>GoToAsync</c> always runs on <see cref="IMainThread"/>.
 /// </summary>
 public sealed class MauiShellNavigator : INavigator, IRouteResolver
 {
     private readonly NavigationRouteTable _routes = new();
     private readonly NavigationStack _stack = new();
     private readonly IServiceCollection? _services;
+    private readonly IMainThread _mainThread;
+    private readonly IMvvmExpressDiagnostics? _diagnostics;
 
     /// <inheritdoc />
     public Type? Current => _stack.Current;
@@ -31,8 +36,15 @@ public sealed class MauiShellNavigator : INavigator, IRouteResolver
     public IReadOnlyList<NavigationRequest> History => _stack.History;
 
     /// <summary>Creates a Shell navigator. Pass <paramref name="services"/> so <see cref="Map{TViewModel,TPage}"/> can register DI.</summary>
-    public MauiShellNavigator(IServiceCollection? services = null)
-        => _services = services;
+    public MauiShellNavigator(
+        IServiceCollection? services = null,
+        IMainThread? mainThread = null,
+        IMvvmExpressDiagnostics? diagnostics = null)
+    {
+        _services = services;
+        _mainThread = NavigationThread.Resolve(mainThread);
+        _diagnostics = diagnostics;
+    }
 
     /// <summary>Maps <typeparamref name="TViewModel"/> to a Shell route (<c>details</c> or <c>//products</c>).</summary>
     public MauiShellNavigator Map<TViewModel>(string route)
@@ -137,28 +149,39 @@ public sealed class MauiShellNavigator : INavigator, IRouteResolver
     public async Task<Result> PopToRootAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        var shell = Shell.Current;
-        if (shell is null)
-        {
-            return Result.Failure("E_SHELL", "Shell.Current is not available.");
-        }
+        NavigationThread.TraceOffThread(_mainThread, _diagnostics, "Hopping Shell PopToRootAsync onto IMainThread.");
+        Result? outcome = null;
+        await _mainThread.InvokeAsync(
+            async () =>
+            {
+                var shell = Shell.Current;
+                if (shell is null)
+                {
+                    outcome = Result.Failure("E_SHELL", "Shell.Current is not available.");
+                    return;
+                }
 
-        if (await IsBlockedAsync(cancellationToken).ConfigureAwait(true))
-        {
-            return Result.Failure("E_GUARD", "Navigation blocked");
-        }
+                if (await IsBlockedAsync(cancellationToken).ConfigureAwait(true))
+                {
+                    outcome = Result.Failure("E_GUARD", "Navigation blocked");
+                    return;
+                }
 
-        try
-        {
-            await MainThread.InvokeOnMainThreadAsync(() => shell.Navigation.PopToRootAsync()).ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            return Result.Failure("E_NAV", ex.Message, ex);
-        }
+                try
+                {
+                    await shell.Navigation.PopToRootAsync().ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    outcome = Result.Failure("E_NAV", ex.Message, ex);
+                    return;
+                }
 
-        _stack.PopToRoot();
-        return Result.Success();
+                _stack.PopToRoot();
+                outcome = Result.Success();
+            },
+            cancellationToken).ConfigureAwait(false);
+        return outcome ?? Result.Failure("E_NAV", "Navigation did not complete.");
     }
 
     /// <inheritdoc />
@@ -217,45 +240,56 @@ public sealed class MauiShellNavigator : INavigator, IRouteResolver
         bool reset = false)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        var shell = Shell.Current;
-        if (shell is null)
-        {
-            return Result.Failure("E_SHELL", "Shell.Current is not available.");
-        }
+        NavigationThread.TraceOffThread(_mainThread, _diagnostics, "Hopping Shell.GoToAsync onto IMainThread.");
+        Result? outcome = null;
+        await _mainThread.InvokeAsync(
+            async () =>
+            {
+                var shell = Shell.Current;
+                if (shell is null)
+                {
+                    outcome = Result.Failure("E_SHELL", "Shell.Current is not available.");
+                    return;
+                }
 
-        if (await IsBlockedAsync(cancellationToken).ConfigureAwait(true))
-        {
-            return Result.Failure("E_GUARD", "Navigation blocked");
-        }
+                if (await IsBlockedAsync(cancellationToken).ConfigureAwait(true))
+                {
+                    outcome = Result.Failure("E_GUARD", "Navigation blocked");
+                    return;
+                }
 
-        try
-        {
-            await MainThread.InvokeOnMainThreadAsync(() => shell.GoToAsync(uri)).ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            return Result.Failure("E_NAV", ex.Message, ex);
-        }
+                try
+                {
+                    await shell.GoToAsync(uri).ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    outcome = Result.Failure("E_NAV", ex.Message, ex);
+                    return;
+                }
 
-        var frame = new NavigationRequest(viewModelType, args, route, query, options?.Modal == true);
-        if (pop)
-        {
-            _stack.Pop();
-        }
-        else if (reset)
-        {
-            _stack.Reset(frame);
-        }
-        else if (options?.Replace == true)
-        {
-            _stack.Replace(frame);
-        }
-        else
-        {
-            _stack.Push(frame, options);
-        }
+                var frame = new NavigationRequest(viewModelType, args, route, query, options?.Modal == true);
+                if (pop)
+                {
+                    _stack.Pop();
+                }
+                else if (reset)
+                {
+                    _stack.Reset(frame);
+                }
+                else if (options?.Replace == true)
+                {
+                    _stack.Replace(frame);
+                }
+                else
+                {
+                    _stack.Push(frame, options);
+                }
 
-        return Result.Success();
+                outcome = Result.Success();
+            },
+            cancellationToken).ConfigureAwait(false);
+        return outcome ?? Result.Failure("E_NAV", "Navigation did not complete.");
     }
 
     private static async Task<bool> IsBlockedAsync(CancellationToken cancellationToken)

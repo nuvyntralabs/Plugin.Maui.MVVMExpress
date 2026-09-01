@@ -57,7 +57,10 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
         }
     }
 
-    /// <summary>Replaces the entire contents and raises a single reset.</summary>
+    /// <summary>
+    /// Replaces the entire contents and raises a single reset.
+    /// Unsafe on a visible Android <c>BindableLayout</c> after appear — seed before bind, or mutate with <c>Add</c>.
+    /// </summary>
     public void ReplaceRange(IEnumerable<T> items)
     {
         ArgumentNullException.ThrowIfNull(items);

@@ -1,13 +1,13 @@
 # Plugin.Maui.MVVMExpress.Navigation
 
-MauiShellNavigator maps ViewModel types to Shell routes. MauiPageNavigator maps ViewModel types to Pages on INavigation. INavigator and the URI stack live in Core.
+MauiShellNavigator maps ViewModel types to Shell routes. MauiPageNavigator maps ViewModel types to Pages on INavigation. Both hop to IMainThread before constructing a Page. UseNavigationPage() is the chat-host path; UseShell() is optional. INavigator and the URI stack live in Core.
 
 NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Navigation
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.6.0-preview (`--prerelease`)
+Version: 0.6.1-preview (`--prerelease`)
 
 ## Supported versions
 

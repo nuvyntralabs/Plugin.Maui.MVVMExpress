@@ -13,7 +13,7 @@ await page.RefreshAsync();
 await page.LoadMoreAsync();
 ```
 
-`PagedCollection<T>` uses `ObservableRangeCollection<T>` so each page is one collection reset. `SearchQuery` debounces text before `WhenReadyAsync`.
+`PagedCollection<T>` uses `ObservableRangeCollection<T>` so each page is one collection reset. For a live inbox use `SnapshotCollection<T>` (load once, no threshold). `SearchQuery.Text` binds to an `Entry`; filter from `CommittedText`. Do not two-way bind Android `SearchBar`.
 
 ## Install
 
@@ -21,7 +21,7 @@ await page.LoadMoreAsync();
 dotnet add package Plugin.Maui.MVVMExpress.Pagination --prerelease
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `0.6.0-preview`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `0.6.1-preview`.
 
 ## Related
 

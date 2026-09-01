@@ -44,4 +44,8 @@ public sealed class PagedProductViewModel : PageViewModel
 
     public override Task InitializeAsync(CancellationToken cancellationToken = default)
         => RefreshCommand.ExecuteAsync(cancellationToken);
+
+    /// <summary>Load once in <see cref="InitializeAsync"/>. Do not refresh from appear.</summary>
+    public override Task OnAppearingAsync(CancellationToken cancellationToken = default)
+        => Task.CompletedTask;
 }

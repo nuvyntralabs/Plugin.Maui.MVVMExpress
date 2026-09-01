@@ -2,7 +2,7 @@
 
 Scenarios covered by `tests/Plugin.Maui.MVVMExpress.Core.Tests` after the 2026-08-31 recheck.
 
-Latest run (2026-09-01): **191 Core** + **60 sample** + **3 generator** + **2 compatibility** + Reactive + Validation (5) + Pagination + Navigation + Dialogs (13, including toast overlay + Button pop-GC). Phase 4 added notify/command/persist/auth generation and `CommunityToolkitMessageHub`. Phase 5 added Testing fakes, lifecycle driver, ScopedNavigator pop-GC, and sample leak / scale tests.
+Latest run (2026-09-02): **200 Core** (includes `NavigationThread`, `CoalescingDispatcher`, `SectionHostViewModel`, `FormViewModel.Bind`) + sample ChatHost + Pagination `SnapshotCollection` + Navigation UI-thread hop. Phase 4 added notify/command/persist/auth generation and `CommunityToolkitMessageHub`. Phase 5 added Testing fakes, lifecycle driver, ScopedNavigator pop-GC, and sample leak / scale tests.
 
 ## Properties
 

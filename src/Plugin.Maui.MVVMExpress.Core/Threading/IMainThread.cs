@@ -1,6 +1,10 @@
 namespace Plugin.Maui.MVVMExpress.Threading;
 
-/// <summary>UI-thread marshal. ViewModels depend on this instead of MAUI <c>MainThread</c> statics.</summary>
+/// <summary>
+/// UI-thread marshal. This is the only dispatcher ViewModels and hosts should use.
+/// Do not call MAUI <c>MainThread</c> statics from ViewModels — after <c>ConfigureAwait(false)</c>
+/// navigation and dialogs must hop here or they construct pages off-thread.
+/// </summary>
 public interface IMainThread
 {
     /// <summary>Gets a value indicating whether the caller is on the main thread.</summary>

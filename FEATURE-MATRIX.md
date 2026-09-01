@@ -8,7 +8,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 
 **Honesty rule:** The [README](README.md) comparison is the **designed product** (Yes = in the architecture). This file tracks **shipping**. `Yes` here means types exist **and** tests exist. `Designed (Pn)` means specified for phase n, not coded yet. This table does not claim superiority. Scale numbers are host-process measurements; see [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md) and [docs/known-limitations.md](docs/known-limitations.md).
 
-Last validated: 2026-09-01 against the public docs and repos linked above. **0.6.0-preview** adds UI-thread marshal, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation trim roots, dirty confirm, auth challenge, and generated module auto-apply.
+Last validated: 2026-09-02 against the public docs and repos linked above. **0.6.1-preview** adds UI-thread-safe page construction, `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection<T>`, and `SearchQuery.CommittedText`.
 
 ## Legend
 
@@ -49,7 +49,8 @@ Last validated: 2026-09-01 against the public docs and repos linked above. **0.6
 | --- | --- | --- | --- | --- |
 | ViewModel navigation service | Yes (`INavigator`, `InMemoryNavigator`) | No | Yes | Yes (`IScreen` / `RoutingState`) |
 | Shell navigation host | Yes (`MauiShellNavigator` routes + URI stack) | No | No (docs: Shell not supported) | Partial |
-| Page / `INavigation` host | Yes (`MauiPageNavigator` / `IPageNavigator`) | No | Yes (primary) | Partial |
+| Page / `INavigation` host | Yes (`MauiPageNavigator` / `UseNavigationPage`) | No | Yes (primary) | Partial |
+| In-place tab / section host | Yes (`SectionHostViewModel`) | No | Partial (regions) | Partial |
 | Typed navigation parameters | Yes (`IAcceptNavArgs<T>`, `record` args) | No | No (dictionary / URI query) | Partial |
 | Dictionary / URI parameters | Yes (`NavigateToAsync(route, query)`, `IAcceptNavQuery`) | No | Yes | Partial |
 | Navigation guards / cancel | Yes (`CanNavigateAwayAsync`, dirty `InMemoryNavigator` guard) | No | Partial (`IConfirmNavigation`) | Partial |
@@ -70,6 +71,7 @@ Last validated: 2026-09-01 against the public docs and repos linked above. **0.6
 | Explicit state machine | Designed (P4) | No | No | Ext |
 | Result / `Outcome` type | Yes | No | `INavigationResult` only | No |
 | Pagination / infinite scroll | Yes (`PagedCollection<T>`, `DelegatePagedCollection<T>`) | No | Ext | Ext |
+| Load-once snapshot list | Yes (`SnapshotCollection<T>`) | No | Ext | Ext |
 | Pull-to-refresh abstraction | Yes (`PagedCollection.RefreshAsync`) | No | No | Ext |
 | Search debounce + cancel | Yes (`SearchQuery`) | No | No | Yes (Rx) |
 | Reactive derived state | Yes (`IPropertyObservable` / `CombineLatest`; Rx optional) | No | No | Yes |
@@ -113,6 +115,8 @@ MVVMExpress does **not** replace these packages. Use them when the requirement m
 | App Links / Universal Links | Plugin.Maui.DeepLinks | https://www.nuget.org/packages/Plugin.Maui.DeepLinks |
 | Permission UX | Plugin.Maui.PermissionFlow | https://www.nuget.org/packages/Plugin.Maui.PermissionFlow |
 | Tokens / session | Plugin.Maui.SecureSession | https://www.nuget.org/packages/Plugin.Maui.SecureSession |
+| ANR / crash breadcrumbs | Plugin.Maui.Diagnostics | https://www.nuget.org/packages/Plugin.Maui.Diagnostics |
+| Keyboard pan / dismiss | Plugin.Maui.KeyboardManager | https://www.nuget.org/packages/Plugin.Maui.KeyboardManager |
 
 GitHub hub: https://github.com/nuvyntralabs/MauiEssentials
 

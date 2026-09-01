@@ -1,14 +1,14 @@
 # Plugin.Maui.MVVMExpress
 
-A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell navigation, dialogs, validation, pagination).
+A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell **or** NavigationPage, dialogs, validation, pagination).
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `0.6.0-preview` — device-safe preview (UI-thread marshal, no-throw `Execute`, weak `CanExecuteChanged`, `Window.AddOverlay` toasts). **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [known limitations](docs/known-limitations.md).
+**Status:** `0.6.1-preview` — host-safe preview (pages constructed on `IMainThread`, `UseNavigationPage` + replace-root, section host, snapshot lists). **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [known limitations](docs/known-limitations.md). [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
-[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Navigation](docs/navigation.md) · [Forms](docs/forms.md) · [Reactive](docs/reactive.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
+[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Navigation](docs/navigation.md) · [Chat host](docs/chat-host.md) · [Forms](docs/forms.md) · [Reactive](docs/reactive.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
 
 Author: [Niladri Prasad Padhy](https://github.com/NiladriPadhy) · Catalog: [MauiEssentials](https://github.com/nuvyntralabs/MauiEssentials) · License: MIT
 
@@ -25,10 +25,10 @@ MVVMExpress is that shell. It is **not** a fork of those libraries. Capability w
 | [`Plugin.Maui.MVVMExpress.Core`](src/Plugin.Maui.MVVMExpress.Core/README.md) | Observable model, commands, ViewModel, navigator/cache/auth/connectivity abstractions, state, outcome, messaging | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Testing`](src/Plugin.Maui.MVVMExpress.Testing/README.md) | `LeakProbe`, `ScaleProfile`, fakes, `AppearAsync`, `ScopedNavigator` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress`](src/Plugin.Maui.MVVMExpress/README.md) | `UseMvvmExpress`, `MauiMainThread`, page lifecycle behavior | **Implemented** |
-| [`Plugin.Maui.MVVMExpress.Navigation`](src/Plugin.Maui.MVVMExpress.Navigation/README.md) | `MauiShellNavigator` + `MauiPageNavigator` (URI stack, dictionary query) | **Implemented + tests** |
+| [`Plugin.Maui.MVVMExpress.Navigation`](src/Plugin.Maui.MVVMExpress.Navigation/README.md) | `UseShell` **or** `UseNavigationPage`; pages constructed on `IMainThread` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Dialogs`](src/Plugin.Maui.MVVMExpress.Dialogs/README.md) | `IDialogs` + `MauiDialogs` + `MauiNotifier` (`Window.AddOverlay` toast) | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Validation`](src/Plugin.Maui.MVVMExpress.Validation/README.md) | DataAnnotations + `IValidator` + trim descriptor | **Implemented + tests** |
-| [`Plugin.Maui.MVVMExpress.Pagination`](src/Plugin.Maui.MVVMExpress.Pagination/README.md) | `PagedCollection<T>`, `SearchQuery` | **Implemented + tests** |
+| [`Plugin.Maui.MVVMExpress.Pagination`](src/Plugin.Maui.MVVMExpress.Pagination/README.md) | `PagedCollection<T>`, `SnapshotCollection<T>`, `SearchQuery` (`CommittedText`) | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Reactive`](src/Plugin.Maui.MVVMExpress.Reactive/README.md) | `IPropertyObservable` / `CombineLatest` (no Rx required) | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.SourceGenerators`](src/Plugin.Maui.MVVMExpress.SourceGenerators/README.md) | `[Notify]`, commands, register, routes, persist, auth | **Implemented + snapshot tests** |
 | [`Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit`](src/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit/README.md) | `IMessenger` → `IMessageHub` adapter | **Implemented + tests** |
@@ -111,6 +111,8 @@ dotnet run --project benchmarks/Plugin.Maui.MVVMExpress.Benchmarks -c Release
 - [Plugin.Maui.FormValidation](https://www.nuget.org/packages/Plugin.Maui.FormValidation) — `Validation.For` XAML
 - [Plugin.Maui.OfflineSync](https://www.nuget.org/packages/Plugin.Maui.OfflineSync) / [Plugin.Maui.ApiCache](https://www.nuget.org/packages/Plugin.Maui.ApiCache)
 - [Plugin.Maui.FeatureFlags](https://www.nuget.org/packages/Plugin.Maui.FeatureFlags), [Plugin.Maui.DeepLinks](https://www.nuget.org/packages/Plugin.Maui.DeepLinks), [Plugin.Maui.SecureSession](https://www.nuget.org/packages/Plugin.Maui.SecureSession)
+- [Plugin.Maui.Diagnostics](https://www.nuget.org/packages/Plugin.Maui.Diagnostics) — ANR / crash breadcrumbs
+- [Plugin.Maui.KeyboardManager](https://www.nuget.org/packages/Plugin.Maui.KeyboardManager) — composer keyboard pan / dismiss
 
 These are Niladri Padhy / MauiEssentials / Nuvyntra Labs packages. Usual alternatives: MAUI `Connectivity`, CommunityToolkit.Maui, Polly.
 

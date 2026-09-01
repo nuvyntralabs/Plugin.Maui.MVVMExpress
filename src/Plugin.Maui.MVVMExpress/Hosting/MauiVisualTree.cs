@@ -38,8 +38,12 @@ public static class MauiVisualTree
     public static INavigation? CurrentNavigation(IWindowContext? window = null)
         => CurrentPage(window)?.Navigation;
 
-    private static Page? Unwrap(Page? page)
-        => page is Shell shell ? shell.CurrentPage ?? shell : page;
+    private static Page? Unwrap(Page? page) => page switch
+    {
+        Shell shell => shell.CurrentPage ?? shell,
+        NavigationPage navigation => navigation.CurrentPage ?? navigation,
+        _ => page
+    };
 
     private static bool Matches(Window? mauiWindow, IWindowContext window)
         => mauiWindow is not null && MauiWindowContext.For(mauiWindow).WindowId == window.WindowId;

@@ -34,3 +34,30 @@ public sealed class PagedCollectionTests
         Assert.True(pages.HasMore);
     }
 }
+
+public sealed class SnapshotCollectionTests
+{
+    [Fact]
+    public async Task LoadAsync_IsIdempotent_UntilForced()
+    {
+        var fetches = 0;
+        var snapshot = new SnapshotCollection<int>(_ =>
+        {
+            fetches++;
+            return Task.FromResult<IReadOnlyList<int>>([1, 2, 3]);
+        });
+
+        await snapshot.LoadAsync();
+        await snapshot.LoadAsync();
+        Assert.Equal(1, fetches);
+        Assert.Equal([1, 2, 3], snapshot.Items.ToArray());
+        Assert.True(snapshot.IsLoaded);
+
+        snapshot.AddLocal(4);
+        Assert.Equal([1, 2, 3, 4], snapshot.Items.ToArray());
+
+        await snapshot.LoadAsync(force: true);
+        Assert.Equal(2, fetches);
+        Assert.Equal([1, 2, 3], snapshot.Items.ToArray());
+    }
+}

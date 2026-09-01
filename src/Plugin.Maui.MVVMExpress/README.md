@@ -9,10 +9,16 @@ Depends on [Plugin.Maui.MVVMExpress.Core](https://www.nuget.org/packages/Plugin.
 ```csharp
 builder
     .UseMauiApp<App>()
-    .UseMvvmExpress(o => o.UseShell().UseDialogs());
+    .UseMvvmExpress(o => o.UseNavigationPage().UseDialogs()); // login → replace-root → push
 ```
 
-`UseMvvmExpress` calls `AddMvvmExpress()`, replaces `IMainThread` with `MauiMainThread`, and marshals command/property notifications. `UseShell` / `UseDialogs` are in the Navigation and Dialogs packages.
+Shell is optional:
+
+```csharp
+builder.UseMvvmExpress(o => o.UseShell().UseDialogs());
+```
+
+`UseMvvmExpress` calls `AddMvvmExpress()`, replaces `IMainThread` with `MauiMainThread`, and marshals command/property/navigation work. `UseNavigationPage` / `UseShell` / `UseDialogs` live in the Navigation and Dialogs packages. Chat-style apps: [chat-host cookbook](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress/blob/main/docs/chat-host.md).
 
 ## Install
 
@@ -21,7 +27,7 @@ dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
 dotnet add package Plugin.Maui.MVVMExpress --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Version `0.6.0-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Version `0.6.1-preview`.
 
 ## What this package is
 
@@ -29,7 +35,7 @@ Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15
 - `MauiMainThread` (`IMainThread`)
 - `ViewModelLifecycleBehavior` for page appear / disappear
 
-It is not a navigator or dialog implementation. Add [Navigation](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Navigation) and [Dialogs](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Dialogs) when you need Shell/page routes, toasts, or `DisplayAlert`. `MauiWindowContext` and `MauiVisualTree` resolve the current window/page.
+It is not a navigator or dialog implementation. Add [Navigation](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Navigation) and [Dialogs](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Dialogs) when you need page or Shell routes, toasts, or `DisplayAlert`. `MauiWindowContext` and `MauiVisualTree` resolve the current window/page.
 
 Shared / test code can stay on Core + `AddMvvmExpress()` without this package.
 

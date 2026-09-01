@@ -2,6 +2,30 @@
 
 All notable changes to Plugin.Maui.MVVMExpress are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [SemVer](https://semver.org/) after 1.0.0.
 
+## [0.6.1-preview] — 2026-09-02
+
+### Fixed
+
+- `MauiPageNavigator` / `MauiShellNavigator` hop to `IMainThread` **before** resolving Shell or constructing a `Page`. Off-thread `new Page()` after `ConfigureAwait(false)` was the login/chat ANR path
+- `MauiPageNavigator.ResetAsync` replaces `window.Page` with a `NavigationPage` (true replace-root after login). It no longer `PopToRoot` + `Push` onto the old root
+- `MauiVisualTree` unwraps `NavigationPage.CurrentPage` so guards see the visible page BindingContext
+
+### Added
+
+- `UseNavigationPage()` — first-class `NavigationPage` host; Shell is optional
+- `IPageNavigator.ReplaceRootAsync<TViewModel>()` (alias of `ResetAsync`)
+- `SectionHostViewModel` / `ISectionHost` — in-place tabs without `GoToAsync`
+- `SnapshotCollection<T>` — load once, no threshold, no refresh-on-appear
+- `SearchQuery.CommittedText` — debounce then filter; bind `Text` to `Entry`, not `SearchBar`
+- `FormViewModel.Bind(field, propertyName, notifyCanExecute)` — public property + `CanExecute`
+- `NavigationThread.EnsurePageFactoryOnMainThread` — throws when a page factory runs off-thread
+- `CoalescingDispatcher` — marshal + coalesce for inbox / hub handlers
+- Chat-host cookbook + MAUI 10 Android do/don't + Shared `ChatHost` sample ViewModels
+
+### Changed
+
+- `IMainThread` is the only marshal API for navigation, dialogs, and notifications. Do not mix MAUI `MainThread` statics in ViewModels
+
 ## [0.6.0-preview] — 2026-09-01
 
 ### Fixed

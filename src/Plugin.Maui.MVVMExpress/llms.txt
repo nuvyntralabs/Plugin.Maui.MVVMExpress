@@ -7,7 +7,7 @@ GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.6.0-preview (`--prerelease`)
+Version: 0.6.1-preview (`--prerelease`)
 
 ## Supported versions
 
@@ -17,7 +17,7 @@ net10.0, net10.0-android (API 21+), net10.0-ios (iOS 15+). Mac Catalyst / Window
 
 dotnet add package Plugin.Maui.MVVMExpress --prerelease
 
-Registration: `builder.UseMvvmExpress()`.
+Registration: `builder.UseMvvmExpress(o => o.UseNavigationPage().UseDialogs())`. `UseShell()` is optional.
 
 ## Use this package when
 
