@@ -1,7 +1,7 @@
 namespace Plugin.Maui.MVVMExpress.Testing;
 
 /// <summary>
-/// Testing-package identity. Includes <c>LeakProbe</c>, <c>ScaleProfile</c>, <c>FakeDialogs</c>, and <c>FakeNavigator</c>.
+/// Testing-package identity. Includes leak probes, scale profiles, fakes, lifecycle driver, and <see cref="ScopedNavigator"/>.
 /// </summary>
 public static class TestingMarker
 {

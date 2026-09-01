@@ -66,6 +66,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PaginationPage>();
         builder.Services.AddTransient<SearchPage>();
         builder.Services.AddTransient<EnterprisePage>();
+        builder.Services.AddTransient<ScopesPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

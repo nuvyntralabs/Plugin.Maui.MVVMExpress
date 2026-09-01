@@ -30,7 +30,7 @@ Typed args become a query string via `NavigationRouteTable.FormatQuery`. `INavig
 dotnet add package Plugin.Maui.MVVMExpress.Navigation --prerelease
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.4.0-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.5.0-preview`.
 
 Register `INavigator` as `GuardedNavigator` wrapping `MauiShellNavigator`, and `IPageNavigator` as `MauiPageNavigator`, in the MAUI app (see the sample).
 

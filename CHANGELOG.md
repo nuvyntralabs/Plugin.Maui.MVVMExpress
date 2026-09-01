@@ -2,6 +2,22 @@
 
 All notable changes to Plugin.Maui.MVVMExpress are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [SemVer](https://semver.org/) after 1.0.0.
 
+## [0.5.0-preview] — 2026-09-01
+
+### Added
+
+- `[Notify]`, `[NotifyAlso]`, `[ModelCommand]`, `[AsyncModelCommand]`, `[RegisterView]` / `[RegisterViewModel]` / `[Route]`, `[PersistState]`, `[RequiresAuth]` / `[RequiresRole]`
+- Source generator emits properties, commands, persist methods, and `MvvmExpressGeneratedRegistrations` (no reflection scan)
+- `IStateStore` / `MemoryStateStore`, `INavigationAuthPolicy`, `IRoleState`, `IMvvmExpressDiagnostics` (Release-off)
+- `Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit` (`CommunityToolkitMessageHub`)
+- Sample `GeneratedCatalogViewModel`, `DeepLinkRouteMap`, and `AddGeneratedViewModels()`
+- Migration guides (CommunityToolkit, Prism, ReactiveUI), AOT/trim notes, known limitations
+- Testing fakes, `ViewModelLifecycle`, `ScopedNavigator`, page-scope sample, pop-GC tests, remaining BenchmarkDotNet jobs
+
+### Changed
+
+- Version is `0.5.0-preview`. Phases 4–5 ship on top of released `0.4.0-preview`. Shipped APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off.
+
 ## [0.4.0-preview] — 2026-09-01
 
 ### Added

@@ -2,18 +2,19 @@
 
 Work plan for implementing [ARCHITECTURE.md](ARCHITECTURE.md) and [API-DESIGN.md](API-DESIGN.md). This is not a license to generate the entire framework in one change.
 
-**Stop condition:** Phase 3 is implemented in `0.4.0-preview`. Remaining work is Phase 4+ (generators, restoration). Do not regenerate the whole framework in one change.
+**Stop condition:** Phase 3 is released as `0.4.0-preview`. Phases 4–5 ship in `0.5.0-preview`. The only remaining 1.0.0 item is design-review sign-off. Accepted 1.0 scope is in [docs/known-limitations.md](docs/known-limitations.md). Do not regenerate the whole framework in one change.
 
 ## 1. Current milestone
 
 | Item | Status |
 | --- | --- |
-| Architecture | Living contract — status banner updated for 0.4.0 |
+| Architecture | Living contract — status banner updated for 0.5.0 |
 | API design | Living contract — shipped vs proposed distinguished in the header |
-| Roadmap / feature matrix | Current — 0.4.0 Phase 3 complete |
-| Solution + packages | Core, Host, Navigation, Dialogs, Validation, Pagination, Reactive, Testing packed |
-| Core runtime | Implemented + forms / pipeline / scopes tests. Host timings in MEMORY-AND-PERFORMANCE §2.1 |
-| Phase 3 depth | Shipped: FormViewModel, CombineLatest, FetchPolicy, IOperationExecutor, child scopes |
+| Roadmap / feature matrix | Current — 0.5.0-preview (Phases 4–5). 1.0.0 waits on design review |
+| Solution + packages | Core, Host, Navigation, Dialogs, Validation, Pagination, Reactive, Testing, SourceGenerators, Compatibility packed |
+| Core runtime | Implemented + generators / persist / auth / diagnostics tests. Host timings in MEMORY-AND-PERFORMANCE §2.1 |
+| Phase 4 generators | Shipped: `[Notify]`, commands, registration, persist, auth, `AddGeneratedViewModels` |
+| Phase 5 productization | Migration guides, AOT/trim sample, Testing fakes, hub catalog, NuGet polish |
 
 ## 2. Decision log
 

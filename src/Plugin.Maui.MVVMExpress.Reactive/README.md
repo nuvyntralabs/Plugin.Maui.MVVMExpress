@@ -15,6 +15,6 @@ var fullName = PropertyObservable.CombineLatest(
 dotnet add package Plugin.Maui.MVVMExpress.Reactive --prerelease
 ```
 
-Target framework: `net10.0`. Version `0.4.0-preview`. Prefer [ReactiveUI](https://www.nuget.org/packages/ReactiveUI) when the app already wants Rx operators.
+Target framework: `net10.0`. Version `0.5.0-preview`. Prefer [ReactiveUI](https://www.nuget.org/packages/ReactiveUI) when the app already wants Rx operators.
 
 Product docs: [repository README](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress). License: MIT.

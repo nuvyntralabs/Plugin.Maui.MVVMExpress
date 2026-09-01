@@ -4,7 +4,7 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `0.4.0-preview` — public preview, not a 1.0. Core through Reactive (forms, cache policies, pipeline, CombineLatest) ship with tests. Source generators remain later. Public APIs may still change.
+**Status:** `0.5.0-preview` — public preview. Core through Reactive, source generators, and CommunityToolkit adapters ship with tests. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [known limitations](docs/known-limitations.md).
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
@@ -23,14 +23,15 @@ MVVMExpress is that shell. It is **not** a fork of those libraries. Capability w
 | Package | Purpose | Status |
 | --- | --- | --- |
 | [`Plugin.Maui.MVVMExpress.Core`](src/Plugin.Maui.MVVMExpress.Core/README.md) | Observable model, commands, ViewModel, navigator/cache/auth/connectivity abstractions, state, outcome, messaging | **Implemented + tests** |
-| [`Plugin.Maui.MVVMExpress.Testing`](src/Plugin.Maui.MVVMExpress.Testing/README.md) | `LeakProbe`, `ScaleProfile`, `FakeDialogs`, `FakeNavigator` | **Implemented + tests** |
+| [`Plugin.Maui.MVVMExpress.Testing`](src/Plugin.Maui.MVVMExpress.Testing/README.md) | `LeakProbe`, `ScaleProfile`, fakes, `AppearAsync`, `ScopedNavigator` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress`](src/Plugin.Maui.MVVMExpress/README.md) | `UseMvvmExpress`, `MauiMainThread`, page lifecycle behavior | **Implemented** |
 | [`Plugin.Maui.MVVMExpress.Navigation`](src/Plugin.Maui.MVVMExpress.Navigation/README.md) | `MauiShellNavigator` + `MauiPageNavigator` (URI stack, dictionary query) | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Dialogs`](src/Plugin.Maui.MVVMExpress.Dialogs/README.md) | `IDialogs` + `MauiDialogs` + `MauiNotifier` toast | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Validation`](src/Plugin.Maui.MVVMExpress.Validation/README.md) | DataAnnotations + `IValidator` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Pagination`](src/Plugin.Maui.MVVMExpress.Pagination/README.md) | `PagedCollection<T>`, `SearchQuery` | **Implemented + tests** |
 | [`Plugin.Maui.MVVMExpress.Reactive`](src/Plugin.Maui.MVVMExpress.Reactive/README.md) | `IPropertyObservable` / `CombineLatest` (no Rx required) | **Implemented + tests** |
-| [`Plugin.Maui.MVVMExpress.SourceGenerators`](src/Plugin.Maui.MVVMExpress.SourceGenerators/README.md) | `[Notify]`, commands, register, routes | Phase 4 (not packed) |
+| [`Plugin.Maui.MVVMExpress.SourceGenerators`](src/Plugin.Maui.MVVMExpress.SourceGenerators/README.md) | `[Notify]`, commands, register, routes, persist, auth | **Implemented + snapshot tests** |
+| [`Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit`](src/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit/README.md) | `IMessenger` → `IMessageHub` adapter | **Implemented + tests** |
 
 Each packed package ships its own README on nuget.org. This file is the product index. License and changelog stay at the repo root.
 
@@ -73,7 +74,7 @@ Designed product surface, validated 2026-08-31 against CommunityToolkit.Mvvm 8.4
 | --- | --- | --- | --- | --- |
 | Observable properties | Yes | Yes | Yes | Yes |
 | Commands / async commands | Yes | Yes | Yes / Partial | Yes |
-| Source generators | Designed (not shipped) | Yes | No | Yes |
+| Source generators | Yes (`[Notify]`, commands, register, routes) | Yes | No | Yes |
 | Navigation (Shell **or** page) | Yes (`MauiShellNavigator` + `MauiPageNavigator`) | No | Yes (page only; no Shell) | Yes |
 | Lifecycle + cancellation | Yes | No | Yes | Yes |
 | Dialogs / in-app notifications | Yes | Separate | Yes | Extensions |
@@ -89,7 +90,7 @@ Designed product surface, validated 2026-08-31 against CommunityToolkit.Mvvm 8.4
 
 This table does not claim MVVMExpress is faster than the others. Measured Core numbers are in [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md).
 
-**Shipped in this repo with tests:** properties, commands (prevent / cancel-previous / queue / allow, timeout, retry, debounce, throttle), ViewModel lifecycle/dispose/`ExecuteAsync`, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, `ObservableRangeCollection<T>`, `INavigator` / `GuardedNavigator` / `MauiShellNavigator` / `IAcceptNavArgs<T>`, `IDialogs`, `ICache` / `ICachedFetcher`, `FormViewModel`, `IOperationExecutor`, `IPropertyObservable`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, `AddMvvmExpress` / `UseMvvmExpress`, leak probes, Small/Mid/Large scale tests.
+**Shipped in this repo with tests:** properties, commands (prevent / cancel-previous / queue / allow, timeout, retry, debounce, throttle), ViewModel lifecycle/dispose/`ExecuteAsync`, `AsyncState<T>`, `Outcome`, `BusyGate`, `MessageHub`, `ObservableRangeCollection<T>`, `INavigator` / `GuardedNavigator` / `MauiShellNavigator` / `IAcceptNavArgs<T>`, `IDialogs`, `ICache` / `ICachedFetcher`, `FormViewModel`, `IOperationExecutor`, `IPropertyObservable`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `PagedCollection<T>`, `SearchQuery`, `AddMvvmExpress` / `UseMvvmExpress`, leak probes, `ScopedNavigator` pop-GC, Small/Mid/Large scale tests.
 
 ## Memory, leaks, and scale
 
@@ -134,6 +135,8 @@ dotnet pack src/Plugin.Maui.MVVMExpress.Validation/Plugin.Maui.MVVMExpress.Valid
 dotnet pack src/Plugin.Maui.MVVMExpress.Pagination/Plugin.Maui.MVVMExpress.Pagination.csproj -c Release -o artifacts
 dotnet pack src/Plugin.Maui.MVVMExpress.Testing/Plugin.Maui.MVVMExpress.Testing.csproj -c Release -o artifacts
 dotnet pack src/Plugin.Maui.MVVMExpress.Reactive/Plugin.Maui.MVVMExpress.Reactive.csproj -c Release -o artifacts
+dotnet pack src/Plugin.Maui.MVVMExpress.SourceGenerators/Plugin.Maui.MVVMExpress.SourceGenerators.csproj -c Release -o artifacts
+dotnet pack src/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit.csproj -c Release -o artifacts
 ```
 
 Publish (requires a nuget.org API key; siblings are packed and pushed this way, not via a workflow in-repo):

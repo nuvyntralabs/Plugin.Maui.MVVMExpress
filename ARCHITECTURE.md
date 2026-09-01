@@ -2,7 +2,7 @@
 
 **Product:** MVVMExpress  
 **Official package family:** `Plugin.Maui.MVVMExpress.*`  
-**Status:** `0.4.0-preview`. Core, host, Shell + page navigators, dialogs/toast, validation, pagination, Reactive, forms, cache policies, operation pipeline, and ViewModel scopes are shipped with tests. Source generators remain later. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md) and [ROADMAP.md](ROADMAP.md). Public APIs may still change before 1.0.
+**Status:** `0.5.0-preview`. Core through Reactive, source generators, persist/auth attributes, CommunityToolkit adapter, and Phase 5 productization (samples, Testing fakes, migration guides, AOT/trim notes) are shipped with tests. Shipped public APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
 
 MVVMExpress is a modular MVVM application framework for .NET MAUI. It is not a fork of CommunityToolkit.Mvvm, Prism.Maui, or ReactiveUI. Those libraries are studied as capability references. This document records the original architecture that delivers equivalent developer outcomes without copying their type graphs, containers, or navigation engines.
 
@@ -64,7 +64,7 @@ Core type names **must not collide** with CommunityToolkit.Mvvm or Prism when bo
 | Parameters | `NavArgs` / typed records | `INavigationParameters` |
 | Result | `Outcome` / `Outcome<T>` | competing `Result<T>` packages |
 
-Compatibility adapters (Phase 4) map CommunityToolkit types onto MVVMExpress types. They do not type-forward the same names.
+Compatibility adapters (shipped in `0.5.0-preview`) map CommunityToolkit types onto MVVMExpress types. They do not type-forward the same names.
 
 ## 4. Package architecture
 
@@ -267,9 +267,9 @@ Scopes are `IServiceScope` instances owned by `IViewModelScopeFactory`. Navigati
 
 Prism.Maui (current public docs) does **not** support Shell navigation and uses URI + dictionary parameters. MVVMExpress supports both hosts and prefers `NavigateToAsync<TViewModel, TArgs>(TArgs args)` with `record` parameters. Dictionary / URI interop is `NavigateToAsync(route, query)` + `IAcceptNavQuery`.
 
-Guards: `CanNavigateAwayAsync`. `[RequiresAuth]` / `[RequiresRole]` remain Phase 4.
+Guards: `CanNavigateAwayAsync`. `[RequiresAuth]` / `[RequiresRole]` and `[PersistState]` ship in `0.5.0-preview`.
 
-Stack (shipped on `INavigator`): `Current` (`Type?`), `Stack`, `ModalStack`, `CanGoBack`, `History`, `GoBackAsync`, `PopToRootAsync`, `ReplaceAsync`, `ResetAsync`. Serialization / restoration is Phase 4. Multi-window: `IWindowContext`, `WindowNavigatorRegistry`, `MauiWindowContext`.
+Stack (shipped on `INavigator`): `Current` (`Type?`), `Stack`, `ModalStack`, `CanGoBack`, `History`, `GoBackAsync`, `PopToRootAsync`, `ReplaceAsync`, `ResetAsync`. Multi-window: `IWindowContext`, `WindowNavigatorRegistry`, `MauiWindowContext`.
 
 ## 9. What is MAUI-specific vs platform-independent
 
@@ -435,4 +435,4 @@ This folder is its own git repository and MauiEssentials submodule (`Plugin.Maui
 
 ## 21. How to read this document
 
-This file is the architecture contract. **0.4.0-preview implements** Core, Host, Navigation (Shell + page), Dialogs/toast, Validation, Pagination, and Testing. Later sections still describe designed surface (generators, Reactive, `IOperationExecutor`, ViewModel scopes, full `MvvmExpressOptions`). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md) for remaining phases.
+This file is the architecture contract. **0.5.0-preview implements** Core through Reactive, source generators, persist/auth attributes, CommunityToolkit compatibility, and Phase 5 productization. Remaining 1.0.0 work is design-review sign-off; accepted scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).

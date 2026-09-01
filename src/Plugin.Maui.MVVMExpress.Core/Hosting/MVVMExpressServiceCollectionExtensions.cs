@@ -13,6 +13,8 @@ using Plugin.Maui.MVVMExpress.Messaging;
 using Plugin.Maui.MVVMExpress.Navigation;
 using Plugin.Maui.MVVMExpress.Operations;
 using Plugin.Maui.MVVMExpress.Permissions;
+using Plugin.Maui.MVVMExpress.Diagnostics;
+using Plugin.Maui.MVVMExpress.State;
 using Plugin.Maui.MVVMExpress.Threading;
 
 namespace Plugin.Maui.MVVMExpress.Hosting;
@@ -47,6 +49,8 @@ public static class MVVMExpressServiceCollectionExtensions
         services.TryAddSingleton<IPermissionGate>(_ => AllowAllPermissionGate.Instance);
         services.TryAddSingleton<IFileStore, MemoryFileStore>();
         services.TryAddSingleton<IMediaPicker>(_ => NullMediaPicker.Instance);
+        services.TryAddSingleton<IStateStore, MemoryStateStore>();
+        services.TryAddSingleton<IMvvmExpressDiagnostics>(_ => NullDiagnostics.Instance);
         return services;
     }
 }

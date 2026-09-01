@@ -131,6 +131,12 @@ public sealed class InMemoryProductCatalog : IProductCatalog
         }
     }
 
+    public void SeedScale(int count)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
+        Seed(Enumerable.Range(1, count).Select(i => new Product { Id = i, Name = $"P{i}", Price = i }));
+    }
+
     private async Task<T> RunAsync<T>(Func<T> work, CancellationToken cancellationToken)
     {
         if (Delay > TimeSpan.Zero)

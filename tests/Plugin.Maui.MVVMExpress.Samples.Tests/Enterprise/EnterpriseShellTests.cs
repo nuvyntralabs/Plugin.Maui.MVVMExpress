@@ -72,6 +72,8 @@ public sealed class EnterpriseShellTests
         Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Samples.Basic.CounterViewModel)));
         Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Samples.Crud.ProductListViewModel)));
         Assert.NotNull(provider.GetService(typeof(EnterpriseShellViewModel)));
+        Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Samples.Navigation.ScopedCatalogFlowViewModel)));
+        Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Samples.Generated.GeneratedCatalogViewModel)));
         Assert.NotNull(provider.GetService(typeof(INavigator)));
         Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Caching.ICache)));
         Assert.NotNull(provider.GetService(typeof(Plugin.Maui.MVVMExpress.Validation.IValidator)));

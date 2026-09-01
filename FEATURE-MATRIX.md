@@ -6,7 +6,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 - [Prism.Maui](https://prismlibrary.github.io/docs/maui/navigation/index.html) 9 (page + region navigation, `INavigationService`, `IDialogService`; **Shell not supported**)
 - [ReactiveUI](https://www.reactiveui.net/documentation/getting-started/installation/maui/) + [ReactiveUI.SourceGenerators](https://github.com/reactiveui/ReactiveUI.SourceGenerators) (`ReactiveObject`, `ReactiveCommand`, `WhenAnyValue`, `WhenActivated`, `IScreen`)
 
-**Honesty rule:** The [README](README.md) comparison is the **designed product** (Yes = in the architecture). This file tracks **shipping**. `Yes` here means types exist **and** tests exist. `Designed (Pn)` means specified for phase n, not coded yet. This table does not claim superiority. Device RSS numbers are budgets until Phase 5 samples.
+**Honesty rule:** The [README](README.md) comparison is the **designed product** (Yes = in the architecture). This file tracks **shipping**. `Yes` here means types exist **and** tests exist. `Designed (Pn)` means specified for phase n, not coded yet. This table does not claim superiority. Scale numbers are host-process measurements; see [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md) and [docs/known-limitations.md](docs/known-limitations.md).
 
 Last validated: 2026-09-01 against the public docs and repos linked above.
 
@@ -27,8 +27,8 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | --- | --- | --- | --- | --- |
 | Observable properties | Yes | Yes | Yes (`BindableBase`) | Yes |
 | `INotifyPropertyChanging` | Yes | Yes | Partial | Yes |
-| Dependent / computed properties | Yes (`NotifyDependsOn`; generators P4) | Partial (`NotifyPropertyChangedFor`) | No | Yes (OAPH) |
-| Source generators for properties | Designed (P4) | Yes (`[ObservableProperty]`, partial properties in 8.4) | No | Yes (`[Reactive]`) |
+| Dependent / computed properties | Yes (`NotifyDependsOn`; `[NotifyAlso]`) | Partial (`NotifyPropertyChangedFor`) | No | Yes (OAPH) |
+| Source generators for properties | Yes (`[Notify]`) | Yes (`[ObservableProperty]`, partial properties in 8.4) | No | Yes (`[Reactive]`) |
 | Manual INPC without generators | Yes | Yes | Yes | Yes |
 | Sync commands | Yes | Yes (`RelayCommand`) | Yes (`DelegateCommand`) | Yes |
 | Async commands | Yes | Yes (`AsyncRelayCommand`) | Partial | Yes (`ReactiveCommand`) |
@@ -58,7 +58,7 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | Dialogs from ViewModel | Yes (`IDialogs`, `NullDialogs`, `MauiDialogs`) | No (use MAUI / Toolkit) | Yes | Ext |
 | Toast / snackbar abstraction | Yes (`INotifier`) | No | Ext | Ext |
 | DI via `Microsoft.Extensions.DependencyInjection` | Yes (`AddMvvmExpress`, `UseMvvmExpress`) | App-level only | Partial (Prism containers; MS.DI adapters exist) | Partial (Splat / `RxAppBuilder`) |
-| Convention View/VM registration | Designed (P4) | No | Yes | Partial |
+| Convention View/VM registration | Yes (`[RegisterView]` / generated `AddGeneratedViewModels`) | No | Yes | Partial |
 | ViewModel locator (optional) | Designed (P1) | No | Yes | Yes |
 | Multi-window navigation root | Yes (`IWindowContext`, `WindowNavigatorRegistry`) | No | Partial (`PrismWindow`) | Partial |
 
@@ -79,14 +79,14 @@ Last validated: 2026-09-01 against the public docs and repos linked above.
 | Undo / redo | Yes (`UndoStack` on `FormViewModel`) | No | No | Ext |
 | Connectivity abstraction | Yes (`IConnectivityProbe`) | No | No | Ext |
 | Lifecycle-aware cancellation | Yes (dispose cancels token) | No | Partial | Partial (`WhenActivated`) |
-| State restoration (`[PersistState]`) | Designed (P4) | No | Partial | Partial |
-| Deep linking | Designed (P4) | No | Yes (URI) | Yes |
+| State restoration (`[PersistState]`) | Yes | No | Partial | Partial |
+| Deep linking | Yes (sample `DeepLinkRouteMap`; compose Plugin.Maui.DeepLinks) | No | Yes (URI) | Yes |
 | Auth navigation guards | Yes (`IAuthState`, `GuardedNavigator`) | No | Ext | Ext |
 | Feature-flag abstraction | Yes (`IFeatureSwitch`) | No | No | No |
-| Testing leak/scale helpers | Yes (`LeakProbe`, `ScaleProfile`) | Partial | Yes | Yes |
-| Testing fakes package | Yes (`FakeDialogs`, `FakeNavigator`) | Partial | Yes | Yes |
+| Testing leak/scale helpers | Yes (`LeakProbe`, `ScaleProfile`, `ScopedNavigator`) | Partial | Yes | Yes |
+| Testing fakes package | Yes (`FakeDialogs`, `FakeNavigator`, `FakeMainThread`, `FakeConnectivity`, `FakeMessageHub`, `AppearAsync`) | Partial | Yes | Yes |
 | MAUI page lifecycle behaviors | Yes (`ViewModelLifecycleBehavior`) | No | Yes | Yes (`ReactiveContentPage`) |
-| AOT / trim-friendly registration | Designed (P4) | Yes (analyzers in 8.4) | Partial | Partial |
+| AOT / trim-friendly registration | Yes (`AddGeneratedViewModels`) | Yes (analyzers in 8.4) | Partial | Partial |
 
 ## Differentiating row (design intent, not a claim of current quality)
 

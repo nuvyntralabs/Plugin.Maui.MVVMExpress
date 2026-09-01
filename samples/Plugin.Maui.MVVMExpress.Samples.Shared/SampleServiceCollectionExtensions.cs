@@ -11,6 +11,8 @@ using Plugin.Maui.MVVMExpress.Samples.Crud;
 using Plugin.Maui.MVVMExpress.Samples.Enterprise;
 using Plugin.Maui.MVVMExpress.Samples.Navigation;
 using Plugin.Maui.MVVMExpress.Samples.Offline;
+using Plugin.Maui.MVVMExpress.Generated;
+using Plugin.Maui.MVVMExpress.Samples.Generated;
 using Plugin.Maui.MVVMExpress.Samples.Pagination;
 using Plugin.Maui.MVVMExpress.Samples.Reactive;
 using Plugin.Maui.MVVMExpress.Samples.Services;
@@ -30,12 +32,18 @@ public static class SampleServiceCollectionExtensions
 
         services.RemoveAll<INavigator>();
         services.RemoveAll<IPageNavigator>();
-        services.AddSingleton<InMemoryNavigator>(_ => new InMemoryNavigator()
-            .Map<ProductListViewModel>("products")
-            .Map<ProductDetailsViewModel>("details"));
+        services.AddSingleton<InMemoryNavigator>(_ =>
+        {
+            var navigator = new InMemoryNavigator()
+                .Map<ProductListViewModel>("products")
+                .Map<ProductDetailsViewModel>("details");
+            MvvmExpressGeneratedRegistrations.ApplyRoutes((type, route) => navigator.Map(type, route));
+            return navigator;
+        });
         services.AddSingleton<INavigator>(sp => new GuardedNavigator(
             sp.GetRequiredService<InMemoryNavigator>(),
             sp.GetRequiredService<IAuthState>(),
+            MvvmExpressGeneratedRegistrations.AuthPolicy,
             typeof(SecureHomeViewModel),
             typeof(EnterpriseShellViewModel)));
         services.AddSingleton<IPageNavigator>(_ => new InMemoryNavigator(window: new WindowContext("page-stack"))
@@ -63,6 +71,9 @@ public static class SampleServiceCollectionExtensions
         services.AddTransient<PagedProductViewModel>();
         services.AddTransient<SearchViewModel>();
         services.AddTransient<EnterpriseShellViewModel>();
+        services.AddTransient<ScopedCatalogFlowViewModel>();
+        services.AddTransient<GeneratedCatalogViewModel>();
+        services.AddGeneratedViewModels();
         return services;
     }
 }

@@ -10,6 +10,7 @@
     <Project Path="src/Plugin.Maui.MVVMExpress.Reactive/Plugin.Maui.MVVMExpress.Reactive.csproj" />
     <Project Path="src/Plugin.Maui.MVVMExpress.SourceGenerators/Plugin.Maui.MVVMExpress.SourceGenerators.csproj" />
     <Project Path="src/Plugin.Maui.MVVMExpress.Testing/Plugin.Maui.MVVMExpress.Testing.csproj" />
+    <Project Path="src/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit.csproj" />
     <Project Path="src/Plugin.Maui.MVVMExpress.Validation/Plugin.Maui.MVVMExpress.Validation.csproj" />
     <Project Path="src/Plugin.Maui.MVVMExpress/Plugin.Maui.MVVMExpress.csproj" />
   </Folder>
@@ -23,6 +24,7 @@
     <Project Path="tests/Plugin.Maui.MVVMExpress.Pagination.Tests/Plugin.Maui.MVVMExpress.Pagination.Tests.csproj" />
     <Project Path="tests/Plugin.Maui.MVVMExpress.Validation.Tests/Plugin.Maui.MVVMExpress.Validation.Tests.csproj" />
     <Project Path="tests/Plugin.Maui.MVVMExpress.Samples.Tests/Plugin.Maui.MVVMExpress.Samples.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.MVVMExpress.Compatibility.Tests/Plugin.Maui.MVVMExpress.Compatibility.Tests.csproj" />
   </Folder>
   <Folder Name="/samples/">
     <Project Path="samples/Plugin.Maui.MVVMExpress.Samples.Shared/Plugin.Maui.MVVMExpress.Samples.Shared.csproj" />

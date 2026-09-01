@@ -5,7 +5,7 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IsRoslynComponent>true</IsRoslynComponent>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);CA1416;RS2008</NoWarn>
+    <NoWarn>$(NoWarn);CA1416;RS2008;NU5128;NU5127</NoWarn>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 
@@ -13,7 +13,7 @@
     <AssemblyName>Plugin.Maui.MVVMExpress.SourceGenerators</AssemblyName>
     <PackageId>Plugin.Maui.MVVMExpress.SourceGenerators</PackageId>
     <Title>.NET MAUI MVVMExpress — source generators</Title>
-    <Description>Roslyn generators for [Notify], commands, view registration, and routes. Phase 4. Not packed yet.</Description>
+    <Description>Roslyn generators for [Notify], commands, view registration, routes, persist, and auth attributes.</Description>
     <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm;mvvm-express;source-generators;roslyn</PackageTags>
     <Authors>Niladri</Authors>
     <Company>MauiEssentials</Company>
@@ -23,13 +23,14 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.4.0-preview</Version>
-    <PackageReleaseNotes>0.4.0-preview: page host, URI stack, dictionary/URI args, multi-window root, MauiNotifier toast.</PackageReleaseNotes>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Version>0.5.0-preview</Version>
+    <PackageReleaseNotes>0.5.0-preview: source generators, persist/auth attributes, CommunityToolkit adapter, AOT registration.</PackageReleaseNotes>
+    <IncludeSymbols>false</IncludeSymbols>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IsPackable>false</IsPackable>
+    <IsPackable>true</IsPackable>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>
   </PropertyGroup>
 
@@ -39,6 +40,12 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Plugin.Maui.MVVMExpress.Generator.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 
 </Project>

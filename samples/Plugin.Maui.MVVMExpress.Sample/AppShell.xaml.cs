@@ -14,7 +14,8 @@ public partial class AppShell : Shell
         OfflinePage offline,
         PaginationPage pagination,
         SearchPage search,
-        EnterprisePage enterprise)
+        EnterprisePage enterprise,
+        ScopesPage scopes)
     {
         InitializeComponent();
         FlyoutBehavior = FlyoutBehavior.Flyout;
@@ -23,6 +24,7 @@ public partial class AppShell : Shell
         Items.Add(Create("Edit", "edit", edit));
         Items.Add(Create("Navigation", "home", home));
         Items.Add(Create("Page stack", "stack", pageStack));
+        Items.Add(Create("Page scopes", "scopes", scopes));
         Items.Add(Create("Auth", "login", login));
         Items.Add(Create("Offline", "offline", offline));
         Items.Add(Create("Pagination", "pagination", pagination));

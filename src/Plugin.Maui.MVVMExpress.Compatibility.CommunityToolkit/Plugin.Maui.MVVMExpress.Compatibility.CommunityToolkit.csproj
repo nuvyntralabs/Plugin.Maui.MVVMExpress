@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsAotCompatible>true</IsAotCompatible>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+    <RootNamespace>Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit</RootNamespace>
+    <AssemblyName>Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit</AssemblyName>
+    <PackageId>Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit</PackageId>
+    <Title>.NET MAUI MVVMExpress — CommunityToolkit adapters</Title>
+    <Description>Optional adapters from CommunityToolkit.Mvvm (IMessenger) onto MVVMExpress IMessageHub. Not a type-forwarding fork.</Description>
+    <PackageTags>dotnet-maui;maui;mvvm;communitytoolkit;mauiessentials;mvvm-express</PackageTags>
+    <Version>0.5.0-preview</Version>
+    <PackageReleaseNotes>0.5.0-preview: CommunityToolkit IMessenger adapter for IMessageHub.</PackageReleaseNotes>
+    <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <ProjectReference Include="..\Plugin.Maui.MVVMExpress.Core\Plugin.Maui.MVVMExpress.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

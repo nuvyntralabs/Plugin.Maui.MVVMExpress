@@ -190,12 +190,13 @@ Binding diagnostics (missing path, null BindingContext, resolve failure) are Hos
 
 `Plugin.Maui.MVVMExpress.Testing` exists so a ViewModel test has:
 
-- `FakeNavigator` (records `NavigateToAsync` calls, returns configured `Outcome`)
+- `FakeNavigator` (records `NavigateToAsync` calls)
 - `FakeDialogs`
 - `FakeMainThread` (runs inline)
 - `FakeConnectivity`
 - `FakeMessageHub`
 - Lifecycle driver: `await vm.AppearAsync()` / `DisappearAsync()`
+- `ScopedNavigator` (page-scope push/pop; pop disposes the ViewModel)
 
 Core tests must run on `net10.0` with no MAUI runtime.
 

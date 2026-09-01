@@ -72,4 +72,4 @@ services.AddMvvmExpress();          // tests / net10.0
 builder.UseMvvmExpress();           // MAUI app
 ```
 
-`INavigator`, `MauiShellNavigator`, `MauiPageNavigator`, `IDialogs`, `INotifier` / `MauiNotifier`, `ICache` / `ICachedFetcher`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `FormViewModel`, `IOperationExecutor`, and `PagedCollection<T>` ship with tests. Source generators remain a later phase. Navigation hosts: [navigation.md](navigation.md). Samples: [samples/README.md](../samples/README.md).
+`INavigator`, `MauiShellNavigator`, `MauiPageNavigator`, `IDialogs`, `INotifier` / `MauiNotifier`, `ICache` / `ICachedFetcher`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `FormViewModel`, `IOperationExecutor`, and `PagedCollection<T>` ship with tests. Optional `[Notify]` / `[ModelCommand]` / `[RegisterViewModel]` generation: `Plugin.Maui.MVVMExpress.SourceGenerators` plus `services.AddGeneratedViewModels()`. Navigation hosts: [navigation.md](navigation.md). Samples: [samples/README.md](../samples/README.md). Known limits: [known-limitations.md](known-limitations.md).

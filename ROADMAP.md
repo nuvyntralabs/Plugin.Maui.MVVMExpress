@@ -11,10 +11,9 @@ Implementation is incremental. Do not implement a later phase in the same change
 | 0.1.0-design | Documents + solution skeleton |
 | 0.1.0-preview | Core + Host + Shell navigator + dialogs + validation + pagination |
 | 0.3.0-preview | Phase 2 complete (page host, URI stack, toast, multi-window) |
-| 0.4.0-preview | Phase 3 complete (forms, reactive, cache policies, pipeline, scopes) (current) |
-| 0.4.x | Phase 3 patches |
-| 0.5.x | Phase 4 — Generators, restoration, compatibility |
-| 1.0.0 | Phase 5 complete: tests, samples, docs, NuGet, AOT |
+| 0.4.0-preview | Phase 3 released (forms, reactive, cache policies, pipeline, scopes) |
+| 0.5.0-preview | Phases 4–5 (current). Generators, persist/auth, productization |
+| 1.0.0 | SemVer lock after design-review sign-off only. Accepted scope: [known-limitations.md](docs/known-limitations.md) |
 
 After 1.0.0: SemVer. Breaking API changes require a major version.
 
@@ -82,30 +81,31 @@ After 1.0.0: SemVer. Breaking API changes require a major version.
 
 **Exit:** form with dirty guard + search-with-debounce tests pass without MAUI — **met**.
 
-## Phase 4 — Generators and restoration
+## Phase 4 — Generators and restoration (shipped in 0.5.0-preview)
 
 **Package:** SourceGenerators + optional Compatibility
 
-- [Notify], command attributes
-- [RegisterView] / [RegisterViewModel] / [Route]
-- Deep-link mapping (sample uses Plugin.Maui.DeepLinks)
-- [PersistState]
-- Diagnostics (Release-off)
-- CommunityToolkit adapters
-- [RequiresAuth] / [RequiresRole]
+- [x] [Notify], command attributes
+- [x] [RegisterView] / [RegisterViewModel] / [Route]
+- [x] Deep-link mapping (`DeepLinkRouteMap` sample; compose Plugin.Maui.DeepLinks in production)
+- [x] [PersistState]
+- [x] Diagnostics (Release-off; `EnableDiagnostics` is Debug-only)
+- [x] CommunityToolkit adapters (`CommunityToolkitMessageHub`)
+- [x] [RequiresAuth] / [RequiresRole]
 
-**Exit:** generator snapshot tests; a trimmed sample registers views without reflection scan.
+**Exit:** generator snapshot tests; Shared sample calls `AddGeneratedViewModels()` — **met**.
 
-## Phase 5 — Productization
+## Phase 5 — Productization (shipped in 0.5.0-preview)
 
-- [x] Samples: Basic, CRUD, Navigation, Auth, Offline, Pagination, Reactive, Enterprise (shared ViewModels + MAUI host; adapters are sample-local)
-- BenchmarkDotNet (notify, command, collection, state, VM create)
-- Full docs + migration guides (CommunityToolkit, Prism, ReactiveUI)
-- AOT + trim of Enterprise sample
-- Memory leak tests for navigation + messenger + behaviors
-- NuGet: README, license, SourceLink, snupkg, tags
+- [x] Samples: Basic, CRUD, Navigation, Auth, Offline, Pagination, Reactive, Enterprise, page-scope flow (shared ViewModels + MAUI host; adapters are sample-local)
+- [x] Testing package: `FakeMainThread`, `FakeConnectivity`, `FakeMessageHub`, `ViewModelLifecycle`, `ScopedNavigator`
+- [x] BenchmarkDotNet (notify, command, collection, state, VM create)
+- [x] Full docs + migration guides (CommunityToolkit, Prism, ReactiveUI)
+- [x] AOT + trim settings on the MAUI / Enterprise sample (`docs/aot.md`)
+- [x] Memory leak tests for navigation pop + messenger + sample reactive (MAUI-window detach is accepted 1.0 scope; see known-limitations)
+- [x] NuGet: README, license, SourceLink, snupkg, tags on packed projects (including SourceGenerators + Compatibility)
 - GitHub repo, issue/PR templates already in tree
-- Hub submodule + catalog row on MauiEssentials
+- [x] Hub submodule + catalog row on MauiEssentials (version / llms.txt refreshed)
 
 **Exit:** Definition of Done in the master prompt — minus any item explicitly deferred in a 1.0 known-limitations section.
 

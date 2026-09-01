@@ -8,12 +8,15 @@ Test fakes and leak probes for **MVVMExpress** ViewModels.
 var nav = new FakeNavigator();
 await nav.NavigateToAsync<HomeViewModel>();
 
+await viewModel.AppearAsync();
+await viewModel.DisappearAsync();
+
 var leak = LeakProbe.Track(viewModel);
 viewModel.Dispose();
 Assert.True(LeakProbe.IsCollected(leak));
 ```
 
-Also: `FakeDialogs`, `ScaleProfile` (Small / Mid / Large list sizes).
+Also: `FakeDialogs`, `FakeMainThread`, `FakeConnectivity`, `FakeMessageHub`, `ScopedNavigator` (page-scope push/pop + dispose), `ScaleProfile` (Small / Mid / Large list sizes).
 
 ## Install
 
@@ -21,7 +24,7 @@ Also: `FakeDialogs`, `ScaleProfile` (Small / Mid / Large list sizes).
 dotnet add package Plugin.Maui.MVVMExpress.Testing --prerelease
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Reference from test projects only. Version `0.4.0-preview`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Reference from test projects only. Version `0.5.0-preview`.
 
 ## Related
 

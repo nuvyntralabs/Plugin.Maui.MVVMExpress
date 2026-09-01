@@ -1,10 +1,14 @@
 using Plugin.Maui.MVVMExpress.Auth;
 using Plugin.Maui.MVVMExpress.ComponentModel;
+using Plugin.Maui.MVVMExpress.Hosting;
 using Plugin.Maui.MVVMExpress.Input;
 using Plugin.Maui.MVVMExpress.Navigation;
 
 namespace Plugin.Maui.MVVMExpress.Samples.Auth;
 
+[RegisterViewModel]
+[Route("secure")]
+[RequiresAuth]
 public sealed class SecureHomeViewModel : PageViewModel
 {
     public SecureHomeViewModel(IAuthState auth, INavigator navigator)

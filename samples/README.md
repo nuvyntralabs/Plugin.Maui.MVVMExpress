@@ -10,12 +10,14 @@ Each sample integrates **library** types. In-memory implementations (`InMemoryNa
 | --- | --- | --- |
 | [Basic](Plugin.Maui.MVVMExpress.Samples.Shared/Basic/) | `CounterViewModel` | `ViewModel`, `SetProperty`, `NotifyDependsOn`, `ModelCommand` |
 | [CRUD](Plugin.Maui.MVVMExpress.Samples.Shared/Crud/) | `ProductListViewModel`, `ProductEditViewModel` | `FormViewModel` dirty / undo / redo, `AsyncState<T>`, `IValidator` / DataAnnotations |
-| [Navigation](Plugin.Maui.MVVMExpress.Samples.Shared/Navigation/) | `HomeViewModel`, `ProductDetailsViewModel`, `PageStackViewModel`, `PageStackItemViewModel` | `PageViewModel`, `INavigator` / `IPageNavigator`, typed + URI query, stack APIs, `INotifier` toast, dirty guard |
+| [Navigation](Plugin.Maui.MVVMExpress.Samples.Shared/Navigation/) | `HomeViewModel`, `ProductDetailsViewModel`, `PageStackViewModel`, `PageStackItemViewModel`, `ScopedCatalogFlowViewModel` | `PageViewModel`, `INavigator` / `IPageNavigator`, typed + URI query, stack APIs, `INotifier` toast, dirty guard, page-scope push/pop (`IViewModelScopeFactory`) |
 | [Auth](Plugin.Maui.MVVMExpress.Samples.Shared/Auth/) | `LoginViewModel`, `SecureHomeViewModel` | `IAuthState`, `GuardedNavigator` — adapt [Plugin.Maui.SecureSession](https://www.nuget.org/packages/Plugin.Maui.SecureSession) in production |
 | [Offline](Plugin.Maui.MVVMExpress.Samples.Shared/Offline/) | `OfflineCatalogViewModel` | `ICachedFetcher` + `FetchPolicy`, `IConnectivityProbe` — adapt [Plugin.Maui.ApiCache](https://www.nuget.org/packages/Plugin.Maui.ApiCache) / [Plugin.Maui.OfflineSync](https://www.nuget.org/packages/Plugin.Maui.OfflineSync) |
 | [Pagination](Plugin.Maui.MVVMExpress.Samples.Shared/Pagination/) | `PagedProductViewModel` | `DelegatePagedCollection<T>` load-more + refresh |
 | [Reactive](Plugin.Maui.MVVMExpress.Samples.Shared/Reactive/) | `SearchViewModel` | `SearchQuery` debounce + `PropertyObservable.CombineLatest` `FullName` |
 | [Enterprise](Plugin.Maui.MVVMExpress.Samples.Shared/Enterprise/) | `EnterpriseShellViewModel`, `CatalogStatusViewModel` | Child composition, `IFeatureSwitch`, hub, busy, probe, auth gate — adapt [Plugin.Maui.NetworkMonitor](https://www.nuget.org/packages/Plugin.Maui.NetworkMonitor) / [Plugin.Maui.FeatureFlags](https://www.nuget.org/packages/Plugin.Maui.FeatureFlags) |
+| [Generated](Plugin.Maui.MVVMExpress.Samples.Shared/Generated/) | `GeneratedCatalogViewModel` | `[Notify]`, `[ModelCommand]`, `[PersistState]`, `[RegisterViewModel]`, `[Route]`, `[RequiresAuth]` — AOT `AddGeneratedViewModels()` |
+| Deep links | `DeepLinkRouteMap` | URI → `INavigator` route/query — compose [Plugin.Maui.DeepLinks](https://www.nuget.org/packages/Plugin.Maui.DeepLinks) in production |
 
 ```bash
 dotnet test tests/Plugin.Maui.MVVMExpress.Samples.Tests

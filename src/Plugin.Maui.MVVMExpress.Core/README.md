@@ -26,7 +26,7 @@ public sealed class HomeViewModel : ViewModel
 dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
 ```
 
-Target framework: `net10.0`. Version `0.4.0-preview` — forms, cache policies, and the operation pipeline ship; APIs may still change.
+Target framework: `net10.0`. Version `0.5.0-preview` — generators, persist/auth, and the operation pipeline ship. Shipped APIs are the 1.0 contract.
 
 ```csharp
 services.AddMvvmExpress(); // tests and shared libraries

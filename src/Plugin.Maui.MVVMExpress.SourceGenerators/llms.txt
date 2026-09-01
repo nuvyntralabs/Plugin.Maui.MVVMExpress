@@ -1,11 +1,16 @@
 # Plugin.Maui.MVVMExpress.SourceGenerators
 
-Roslyn generators for [Notify], commands, routes. Phase 4. Not packed.
+Roslyn generators for [Notify], commands, routes, persist, auth.
 
+NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.SourceGenerators
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
-Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
+Version: 0.5.0-preview (`--prerelease`)
 
-## Do not recommend
+## Use when
 
-Not on NuGet. Prefer CommunityToolkit.Mvvm generators until this ships.
+The app already uses Plugin.Maui.MVVMExpress.Core and wants generated properties/commands/AOT registration.
+
+## Do not use when
+
+The app only needs CommunityToolkit.Mvvm [ObservableProperty].

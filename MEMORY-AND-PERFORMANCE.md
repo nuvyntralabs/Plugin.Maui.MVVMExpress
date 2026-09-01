@@ -28,13 +28,13 @@ Related: [ARCHITECTURE.md](ARCHITECTURE.md) §15–16, [ROADMAP.md](ROADMAP.md) 
 
 | Area | Result |
 | --- | --- |
-| Runtime (0.4.0-preview) | Real subscriptions exist (MessageHub, lifecycle behavior, navigators). Leak tests cover VM / command / weak hub. |
+| Runtime (0.5.0-preview) | Real subscriptions exist (MessageHub, lifecycle behavior, navigators). Leak tests cover VM / command / weak hub / navigation pop. |
 | `ObservableModel` | Event args **cached by property name**. Same-value `SetProperty` does not notify |
 | `ViewModel` | `Dispose` cancels `ViewModelCancellationToken`. The token stays readable after dispose (cached at construction). WeakReference tests require collectability |
 | `MessageHub` | Default subscribe is **weak** and uses `(recipient, message)` handlers so the delegate does not capture the subscriber. `Dispose` / `Unsubscribe` remove the slot |
 | `ObservableRangeCollection<T>` | `AddRange` / `ReplaceRange` raise **one** `Reset`, not N `Add` events |
 | `AsyncModelCommand` | Single-flight (`Interlocked` lock). Concurrent `ExecuteAsync` is a no-op. `Cancel` + ViewModel dispose cancel in-flight work. Generic command releases the lock if linked CTS construction fails |
-| Device RSS / UI virtualization | **Not measured yet** (needs Android/iOS sample). Budgets above apply when samples exist |
+| Device RSS / UI virtualization | Out of 1.0 catalog scope. Host-process numbers in §2.1 and virtualization rules in §5 / §6 are the 1.0 claim |
 
 ### 2.1 Measured on host (not a device)
 
@@ -68,7 +68,7 @@ dotnet run --project benchmarks/Plugin.Maui.MVVMExpress.Benchmarks -c Release
 | Page → Behavior → VM → Page | Behavior holds page; VM holds page for `DisplayAlert` | VM never references `Page`. Lifecycle is a behavior/host hook that **unsubscribes on Unloaded** | Host Phase 1; WeakReference after pop |
 | Strong messenger | Hub stores `Action` that captured `this` | Weak register + `Action<TRecipient, TMessage>` (recipient passed in). Strong is explicit | `MessageHubGcTests` |
 | `ICommand.CanExecuteChanged` | Static command or long-lived service holds command | Commands are instance fields of the VM; die with the VM | `CommandGcTests` |
-| Navigation stack | Popped VM stays in a list | Hosts track `Stack` / pop; page-scope dispose on pop is still the contract | Navigation tests exist; pop-GC device case remains Phase 5 |
+| Navigation stack | Popped VM stays in a list | Hosts track `Stack` / pop; `ScopedNavigator` / sample flow dispose the page scope on pop | `NavigationPopGcTests`, `ScopedCatalogFlowTests`; device RSS remains later Phase 5 |
 | Child ViewModels | Parent list never cleared | Parent `Dispose` walks children (Phase 3) | Composition GC test |
 | Reactive subscriptions | `Subscribe` without dispose | `ViewModel` trash bag cleared on dispose (Phase 3) | Reactive GC test |
 | Static `Application.Current` | Host event never unhooked | Host registers `IDisposable` on app lifetime (Phase 1 host) | Integration |
@@ -152,7 +152,7 @@ The framework cannot fix:
 - Strong `MessageHub` subscriptions never unsubscribed
 - Calling `.Result` on the UI thread
 
-Samples show Small (Basic), Mid (CRUD + pagination), Large (Enterprise). Device RSS and 50k CollectionView scroll remain Phase 5. Use `ScaleProfile` in tests.
+Samples show Small (Basic), Mid (CRUD + pagination), Large (Enterprise). Use `ScaleProfile` in tests. Hardware RSS and on-device 50k `CollectionView` scroll are out of 1.0 catalog scope.
 
 ## 7. Telemetry hooks (optional)
 
@@ -173,6 +173,6 @@ Never enabled as a default Release cost. Diagnostics off unless `EnableDiagnosti
 | `AddRange` single notification | Required now | Required now | Required now |
 | Allocation bound on repeated same-value `SetProperty` | Required now | Required now | Required now |
 | BenchmarkDotNet S/M/L params | Harness now | Harness now | Harness now |
-| Device RSS vs budget | Phase 5 sample | Phase 5 | Phase 5 Enterprise |
-| Navigation pop GC | Tests exist (in-memory / host) | same | Device RSS still Phase 5 |
-| 50k CollectionView scroll | — | Phase 5 Pagination sample | Phase 5 Enterprise |
+| Device RSS vs budget | Out of 1.0 scope (host §2.1) | same | same |
+| Navigation pop GC | `ScopedNavigator` + Core leak tests | same | same |
+| 50k CollectionView scroll | Out of 1.0 scope (virtualize + page) | `PagedCollection` + `ScaleProfile` | same |

@@ -1,17 +1,17 @@
 # MVVMExpress Public API Design
 
-Contract for **Plugin.Maui.MVVMExpress**. Default namespace root: `Plugin.Maui.MVVMExpress`. Breaking changes after 1.0 follow SemVer. Public APIs may still change before 1.0.
+Contract for **Plugin.Maui.MVVMExpress**. Default namespace root: `Plugin.Maui.MVVMExpress`. Shipped signatures here are the 1.0 contract. Breaking changes after 1.0.0 follow SemVer.
 
 **How to read this file**
 
 | Mark | Meaning |
 | --- | --- |
-| **Shipped (0.4.0-preview)** | Types exist in the packed packages **and** tests exist. Copy these signatures. |
+| **Shipped (0.5.0-preview)** | Types exist in the packed packages **and** tests exist. Copy these signatures. |
 | **Proposed** | Design intent only. Not in a nupkg. Do not implement against these names. |
 
 Shipping versus designed is also tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). Phases live in [ROADMAP.md](ROADMAP.md). Architecture intent lives in [ARCHITECTURE.md](ARCHITECTURE.md).
 
-**Shipped in 0.4.0-preview:** everything from 0.3.0 plus `FormViewModel` / `FormField<T>` / `IDirtyState`, `IPropertyObservable` / `CombineLatest`, `ICachedFetcher` / `FetchPolicy`, `IOperationExecutor`, command debounce / throttle / queue, child ViewModel scopes, and file / media / permission / flag abstractions. Source generators remain proposed.
+**Shipped in 0.5.0-preview:** everything from released `0.4.0-preview` plus `[Notify]` / command / registration / persist / auth attributes, `MvvmExpressGeneratedRegistrations`, `IStateStore`, `INavigationAuthPolicy`, `IMvvmExpressDiagnostics` (Debug-only), and `CommunityToolkitMessageHub`.
 
 ---
 
@@ -35,6 +35,7 @@ public static class MVVMExpressServiceCollectionExtensions
 public sealed class MvvmExpressOptions
 {
     public bool CancelOperationsOnDisappear { get; set; }
+    public bool EnableDiagnostics { get; set; }
 }
 ```
 
@@ -129,7 +130,7 @@ public abstract class PageViewModel : ViewModel, INavigable
 }
 ```
 
-There is no `NavigationContext` parameter on `INavigable`. Manual INPC is always valid. Generators are Phase 4.
+There is no `NavigationContext` parameter on `INavigable`. Manual INPC is always valid. Generators ship in `0.5.0-preview`.
 
 Lifecycle (hosts that apply args):
 
@@ -638,6 +639,26 @@ public sealed class FakeDialogs : IDialogs, INotifier
     public bool ConfirmResult { get; set; }
 }
 
+public sealed class FakeMainThread : IMainThread { public int InvokeCount { get; } }
+public sealed class FakeConnectivity : IConnectivityProbe { public bool IsOnline { get; set; } }
+public sealed class FakeMessageHub : IMessageHub { public List<object?> Published { get; } }
+
+public static class ViewModelLifecycle
+{
+    public static Task AppearAsync(this IViewModel viewModel, CancellationToken cancellationToken = default);
+    public static Task DisappearAsync(this IViewModel viewModel, CancellationToken cancellationToken = default);
+}
+
+public sealed class ScopedNavigator : IDisposable
+{
+    public ScopedNavigator(IViewModelScopeFactory factory);
+    public IViewModel? Current { get; }
+    public int Count { get; }
+    public bool CanGoBack { get; }
+    public TViewModel Push<TViewModel>(Action<TViewModel>? configure = null) where TViewModel : class, IViewModel;
+    public void Pop();
+}
+
 public static class LeakProbe
 {
     public static bool IsCollected(WeakReference reference, int rounds = 3);
@@ -653,7 +674,7 @@ public static class ScaleProfile
 }
 ```
 
-There is no `FakeNotifier` type — `FakeDialogs` is `INotifier`. Inject `IToastPresenter` to record toasts without a window. There is no `ViewModelTest` helper class.
+There is no `FakeNotifier` type — `FakeDialogs` is `INotifier`. Inject `IToastPresenter` to record toasts without a window. There is no `ViewModelTest` helper class. First `AppearAsync` calls `InitializeAsync` once (same order as `ViewModelLifecycleBehavior`).
 
 ---
 
@@ -714,7 +735,7 @@ public sealed class MvvmExpressOptions
     public bool EnableNavigation { get; set; } = true;
     public bool EnableLifecycle { get; set; } = true;
     public bool EnableAutoRegistration { get; set; } = false;
-    public bool EnableDiagnostics { get; set; } = false;
+    // EnableDiagnostics exists on the shipped options (Debug-only wiring).
     public bool EnableReactive { get; set; } = false;
 }
 ```
@@ -760,13 +781,20 @@ public interface IStateMachine<TState> where TState : struct, Enum { }
 Task<TResponse> RequestAsync<TRequest, TResponse>(...);
 ```
 
-### Source generator attributes (Phase 4)
+### Later (not this release)
 
 ```csharp
-namespace Plugin.Maui.MVVMExpress.ComponentModel;
+services.AddViewModel<TViewModel>(...);
+public class CompositeModelCommand : ICommand { }
+Task<Outcome<TResult>> NavigateForResultAsync<...>(...);
+```
 
-[Notify]                          // property + changing/changed + dependents
-[NotifyAlso("Label")]
+---
+
+## Shipped — 14. Generators, persist, auth policy (0.5.0)
+
+```csharp
+[Notify] [NotifyAlso("Label")]
 [ModelCommand] / [AsyncModelCommand]
 [RegisterViewModel] / [RegisterView]
 [Route("details")]
@@ -774,14 +802,14 @@ namespace Plugin.Maui.MVVMExpress.ComponentModel;
 [RequiresAuth] / [RequiresRole("admin")]
 ```
 
-Until they ship, write properties and commands by hand. Typed `NavigateToAsync<TViewModel>()` and explicit `Map<TViewModel>` are the supported registration story.
+Generated `Plugin.Maui.MVVMExpress.Generated.MvvmExpressGeneratedRegistrations` adds ViewModels and routes without a reflection scan. Handwritten `SetProperty` and `Map<TViewModel>` remain valid. `CommunityToolkitMessageHub` lives in the Compatibility package (does not type-forward `IMessenger`).
 
 ---
 
 ## Explicitly not public
 
 - Prism `INavigationService`, `IDialogService`, `INavigationParameters`
-- CommunityToolkit `ObservableObject`, `RelayCommand`, `[ObservableProperty]`, `IMessenger` (unless a later Compatibility package)
+- CommunityToolkit `ObservableObject`, `RelayCommand`, `[ObservableProperty]`, `IMessenger` (use Compatibility `CommunityToolkitMessageHub` to adapt)
 - ReactiveUI `ReactiveObject`, `ReactiveCommand`, `WhenAnyValue`
 - Static `MVVMExpress.Current` in Core
 - Types that reference `Page` or `Shell` inside Core

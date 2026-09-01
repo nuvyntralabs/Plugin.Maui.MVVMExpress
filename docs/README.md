@@ -18,4 +18,4 @@ Canonical design documents live at the repository root so they match the first d
 | [offline.md](offline.md) | FetchPolicy and capability abstractions |
 | [TEST-COVERAGE.md](TEST-COVERAGE.md) | Scenario matrix for Core tests |
 
-Forms / reactive / offline guides ship with 0.4.0. Migration guides remain Phase 5.
+Forms / reactive / offline shipped in `0.4.0-preview`. Generators / persist / auth ship in `0.5.0-preview`. Migration: [CommunityToolkit](migration-communitytoolkit.md), [Prism](migration-prism.md), [ReactiveUI](migration-reactiveui.md). AOT: [aot.md](aot.md). Limits: [known-limitations.md](known-limitations.md).

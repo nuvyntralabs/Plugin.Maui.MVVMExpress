@@ -51,6 +51,13 @@ public class InMemoryNavigator : IPageNavigator, IRouteResolver
         return this;
     }
 
+    /// <summary>Maps <paramref name="viewModelType"/> to a URI route (generated registrations use this).</summary>
+    public InMemoryNavigator Map(Type viewModelType, string route)
+    {
+        _routes.Map(viewModelType, route);
+        return this;
+    }
+
     /// <summary>Resolves <paramref name="route"/> to a ViewModel type.</summary>
     public bool TryResolve(string route, out Type viewModelType) => _routes.TryResolve(route, out viewModelType);
 

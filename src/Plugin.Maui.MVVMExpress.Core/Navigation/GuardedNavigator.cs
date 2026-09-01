@@ -10,14 +10,22 @@ public sealed class GuardedNavigator : IPageNavigator
     private readonly INavigator _inner;
     private readonly IAuthState _auth;
     private readonly HashSet<Type> _protectedTypes;
+    private readonly INavigationAuthPolicy? _policy;
 
     /// <summary>Creates a guard around <paramref name="inner"/>.</summary>
     public GuardedNavigator(INavigator inner, IAuthState auth, params Type[] protectedTypes)
+        : this(inner, auth, policy: null, protectedTypes)
+    {
+    }
+
+    /// <summary>Creates a guard that also applies <paramref name="policy"/> (generated <see cref="RequiresAuthAttribute"/> maps).</summary>
+    public GuardedNavigator(INavigator inner, IAuthState auth, INavigationAuthPolicy? policy, params Type[] protectedTypes)
     {
         ArgumentNullException.ThrowIfNull(inner);
         ArgumentNullException.ThrowIfNull(auth);
         _inner = inner;
         _auth = auth;
+        _policy = policy;
         _protectedTypes = [.. protectedTypes];
     }
 
@@ -85,9 +93,18 @@ public sealed class GuardedNavigator : IPageNavigator
 
     private Task<Result> Gate(Type viewModelType, Func<Task<Result>> next)
     {
-        if (_protectedTypes.Contains(viewModelType) && !_auth.IsAuthenticated)
+        var requiresAuth = _protectedTypes.Contains(viewModelType)
+            || _policy?.RequiresAuthentication(viewModelType) == true;
+        if (requiresAuth && !_auth.IsAuthenticated)
         {
             return Task.FromResult(Result.Failure("E_AUTH", "Sign in required"));
+        }
+
+        if (_policy?.RequiresRole(viewModelType, out var role) == true
+            && !string.IsNullOrEmpty(role)
+            && (_auth is not IRoleState roles || !roles.HasRole(role)))
+        {
+            return Task.FromResult(Result.Failure("E_ROLE", $"Role '{role}' required"));
         }
 
         return next();

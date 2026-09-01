@@ -2,7 +2,7 @@
 
 Scenarios covered by `tests/Plugin.Maui.MVVMExpress.Core.Tests` after the 2026-08-31 recheck.
 
-Latest run (2026-09-01): **151 Core** + **47 sample** + **3 Reactive** + **3 Validation** + **4 Pagination** + **13 Navigation** + **8 Dialogs**. Generators remain identity-only.
+Latest run (2026-09-01): **170 Core** + **60 sample** + **3 generator** + **2 compatibility** + Reactive + Validation + Pagination + Navigation + Dialogs. Phase 4 added notify/command/persist/auth generation and `CommunityToolkitMessageHub`. Phase 5 added Testing fakes, lifecycle driver, ScopedNavigator pop-GC, and sample leak / scale tests.
 
 ## Properties
 
@@ -94,8 +94,9 @@ Latest run (2026-09-01): **151 Core** + **47 sample** + **3 Reactive** + **3 Val
 | Offline | cache-first fallback, no-cache failure |
 | Pagination | page `AddRange` Resets, load-more exhaust, refresh |
 | Reactive | filter, debounce cancel, `FullName` dependents, dispose cancel |
-| Enterprise | online load, offline sink, hub notices, auth gate, DI composition |
-| Memory | counter + list VM GC |
+| Enterprise | online load, offline sink, hub notices, auth gate, DI composition (includes scoped flow) |
+| Page scopes | appear-once list, details + back, pop-GC of details |
+| Memory | counter + list VM GC, enterprise weak hub, search dispose, FakeMessageHub subscriber |
 
 ## Forms / cache / pipeline / Reactive
 
@@ -110,7 +111,11 @@ Latest run (2026-09-01): **151 Core** + **47 sample** + **3 Reactive** + **3 Val
 | Command queue / debounce / throttle / allow | `CommandPipelineTests` |
 | Child attach + scope | `ViewModelComposerTests` |
 | CombineLatest | `PropertyObservableTests` |
+| FakeMainThread / FakeConnectivity / FakeMessageHub | `TestingFakeTests` |
+| `AppearAsync` initializes once | `ViewModelLifecycleDriverTests` |
+| `ScopedNavigator` pop GC | `NavigationPopGcTests` |
+| Pagination Small / Mid single Reset per page | `PagedProductViewModelTests.LoadMore_Scale_UsesSingleResetPerPage` |
 
-## Not covered here (later phases)
+## Out of 1.0 catalog scope
 
-Device RSS, CollectionView virtualization, and generators.
+Hardware RSS, on-device `CollectionView` scroll, and MAUI-window `ViewModelLifecycleBehavior` attach/detach GC. Generators have snapshot tests in `Plugin.Maui.MVVMExpress.Generator.Tests`. See [known-limitations.md](known-limitations.md).

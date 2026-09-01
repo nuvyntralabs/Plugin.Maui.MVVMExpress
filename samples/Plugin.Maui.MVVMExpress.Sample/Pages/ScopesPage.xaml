@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:nav="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Navigation;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    xmlns:models="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Models;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.ScopesPage"
+    x:DataType="nav:ScopedCatalogFlowViewModel"
+    Title="Page scopes">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Padding="20" RowSpacing="8">
+        <Label Text="Each push creates a DI page scope. Back disposes that ViewModel." />
+        <Label Grid.Row="1" Text="{Binding CurrentTitle, StringFormat='Current: {0}'}" />
+        <Label Grid.Row="2" Text="{Binding Depth, StringFormat='Depth: {0}'}" />
+        <HorizontalStackLayout Grid.Row="3" Spacing="8">
+            <Button Text="Open list" Command="{Binding OpenListCommand}" />
+            <Button Text="Open #2" Command="{Binding OpenSecondCommand}" />
+            <Button Text="Back" Command="{Binding GoBackCommand}" />
+        </HorizontalStackLayout>
+        <CollectionView Grid.Row="4" ItemsSource="{Binding List.Items}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Label Text="{Binding Name}" Padding="0,8" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</pages:SampleContentPage>

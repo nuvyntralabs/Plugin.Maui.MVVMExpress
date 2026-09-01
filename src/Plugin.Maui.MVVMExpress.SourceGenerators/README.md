@@ -1,7 +1,11 @@
 # Plugin.Maui.MVVMExpress.SourceGenerators
 
-Roslyn generators for `[Notify]`, commands, and routes. **Not packed** on NuGet yet (Phase 4).
+Roslyn generators for `[Notify]`, `[ModelCommand]` / `[AsyncModelCommand]`, `[RegisterViewModel]` / `[Route]`, `[PersistState]`, and `[RequiresAuth]`.
 
-Use CommunityToolkit.Mvvm source generators if the app needs `[ObservableProperty]` today.
+```xml
+<PackageReference Include="Plugin.Maui.MVVMExpress.SourceGenerators" Version="0.5.0-preview" PrivateAssets="all" />
+```
 
-Product docs: [repository README](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress). License: MIT.
+The consuming project must reference Core (attributes live there). Types must be `partial`. Then call `services.AddGeneratedViewModels()`.
+
+Version `0.5.0-preview` (`--prerelease`). Alternatives: CommunityToolkit.Mvvm generators, handwritten `SetProperty`.
