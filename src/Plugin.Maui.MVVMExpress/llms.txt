@@ -11,7 +11,7 @@ Version: 1.0.0
 
 ## Supported versions
 
-net10.0, net10.0-android (API 21+), net10.0-ios (iOS 15+). Mac Catalyst / Windows compile-only.
+net10.0, net10.0-android (API 21+), net10.0-ios (iOS 15+), net10.0-maccatalyst (15+), Windows (net10.0-windows10.0.19041.0 when packed on Windows; otherwise net10.0). Single-window.
 
 ## Installation
 
@@ -21,7 +21,7 @@ Registration: `builder.UseMvvmExpress(o => o.UseNavigationPage().UseDialogs().Us
 
 ## Use this package when
 
-- A MAUI Android/iOS app already uses Core ViewModels and needs the host dispatcher, lifecycle behavior, and `UseAuth`
+- A MAUI Android, iOS, Mac Catalyst, or Windows app already uses Core ViewModels and needs the host dispatcher, lifecycle behavior, and `UseAuth`
 
 ## Do not use when
 

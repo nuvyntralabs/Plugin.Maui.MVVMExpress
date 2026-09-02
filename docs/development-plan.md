@@ -36,7 +36,7 @@ Shipped and in scope to keep:
 - `GuardedNavigator` + in-memory `IAuthState` (samples / tests)
 - `Compatibility.CommunityToolkit` messenger bridge
 - Host-process BenchmarkDotNet, `ScaleProfile`, in-memory `LeakProbe`
-- Android + iOS first; Windows / Mac Catalyst compile-only
+- Android, iOS, Mac Catalyst, and Windows (single-window) share the host APIs; multi-window and desktop device CI stay later
 
 The gaps are default developer experience, one vocabulary, 1.0 trust, and a few Prism holes (modal stack, feature modules, production auth / deep-link adapters).
 
@@ -120,7 +120,7 @@ A reader who knows CommunityToolkit can create a `partial` ViewModel, navigate, 
 
 ### Out of scope
 
-Generators-as-only-path, killing convention scanning, one-registration rewrite, dual-form merge, analyzer pack, `dotnet new`, first-class Windows / Mac Catalyst, device RSS CI.
+Generators-as-only-path, killing convention scanning, one-registration rewrite, dual-form merge, analyzer pack, `dotnet new`, multi-window desktop, device RSS CI.
 
 ### Exit
 
@@ -199,11 +199,11 @@ Regions, control library, more getting-started NuGets, convention scanning as a 
 7. **`UseDeepLinks()`.** Host feature that maps a URI onto `INavigator`, `[Route]`, and the auth challenge. Adapter to [Plugin.Maui.DeepLinks](https://www.nuget.org/packages/Plugin.Maui.DeepLinks) (Niladri Padhy / Nuvyntra Labs). The ViewModel does not care. Usual alternative: MAUI App Links / Universal Links wiring in the app.
 8. **`UseSecureSessionAuth()`.** Adapter to [Plugin.Maui.SecureSession](https://www.nuget.org/packages/Plugin.Maui.SecureSession) (Niladri Padhy / Nuvyntra Labs), or MAUI `SecureStorage`. In-memory `IAuthState` is tests-only, not the production default. Do not take a PackageReference from Core.
 9. **Keyboard adapter (docs + sample).** Do not build a keyboard engine. Official adapter to [Plugin.Maui.KeyboardManager](https://www.nuget.org/packages/Plugin.Maui.KeyboardManager) (Niladri Padhy / Nuvyntra Labs) or MAUI handlers for composer / form pages. Usual alternative: MAUI handler / platform keyboard APIs.
-10. **Two-window sample** on Mac Catalyst or Windows using `IWindowContext`. Compile-only TFMs stay compile-only; the sample proves the API. Do not claim first-class desktop.
+10. **Two-window sample** on Mac Catalyst or Windows using `IWindowContext`. Single-window Catalyst / Windows is already in the 1.0 host. The sample proves per-window navigation; do not treat multi-window as the default path.
 
 ### Out of scope
 
-Prism regions, bottom sheets / chat bubbles, built-in remote flags, first-class Windows / Mac Catalyst support claims, `System.Reactive`.
+Prism regions, bottom sheets / chat bubbles, built-in remote flags, multi-window as the default desktop path, `System.Reactive`.
 
 ### Exit
 
@@ -236,7 +236,7 @@ Prism regions, bottom sheets / chat bubbles, built-in remote flags, first-class 
 
 ### Out of scope
 
-Reopening the 1.0 contract, first-class desktop claims, Microsoft blessing, more packages.
+Reopening the 1.0 contract, multi-window as the default desktop path, Microsoft blessing, more packages.
 
 ### Exit
 
@@ -258,7 +258,7 @@ These will not get the framework to number one. Do not pull them into Phases 6â€
 | Control library (bottom sheets, chat bubbles) | Dilutes the MVVM score. Different product. |
 | `System.Reactive` on Core or the default path | Reactive package already avoids this. |
 | More packages on getting started | The path to 1.0 is fewer decisions. |
-| First-class Windows / Mac Catalyst | Catalog-primary remains Android + iOS. Compile TFMs stay. Two-window sample is Phase 9; support claims are not. |
+| Multi-window desktop / device CI | Single-window Catalyst and Windows are in the 1.0 host. Per-window navigators, toast overlay QA, and desktop RSS CI stay later. |
 | Visual Studio new-MAUI-app wizard listing | Not a schedule you can own. `dotnet new` is Phase 8. |
 | ReactiveUI `IScreen` as a first-class host | Already deferred in ROADMAP. |
 | Binding debugger visualizer | Already deferred in ROADMAP. |

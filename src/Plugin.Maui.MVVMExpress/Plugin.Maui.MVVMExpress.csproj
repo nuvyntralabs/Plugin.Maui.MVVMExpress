@@ -20,8 +20,8 @@
     <AssemblyName>Plugin.Maui.MVVMExpress</AssemblyName>
     <PackageId>Plugin.Maui.MVVMExpress</PackageId>
     <Title>.NET MAUI MVVMExpress — host, DI, page lifecycle</Title>
-    <Description>MAUI host for MVVMExpress on Android and iOS: UseMvvmExpress, main-thread dispatcher, and page lifecycle behavior. Depends on Plugin.Maui.MVVMExpress.Core.</Description>
-    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm;mvvm-express;dependency-injection;lifecycle</PackageTags>
+    <Description>MAUI host for MVVMExpress on Android, iOS, Mac Catalyst, and Windows: UseMvvmExpress, main-thread dispatcher, and page lifecycle behavior. Depends on Plugin.Maui.MVVMExpress.Core.</Description>
+    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;maccatalyst;windows;nuget;mauiessentials;mvvm;mvvm-express;dependency-injection;lifecycle</PackageTags>
     <Authors>Niladri</Authors>
     <Company>MauiEssentials</Company>
     <Copyright>Copyright © 2026 Niladri</Copyright>

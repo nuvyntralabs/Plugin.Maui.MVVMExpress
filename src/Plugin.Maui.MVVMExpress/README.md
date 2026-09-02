@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress
 
-MAUI host for **MVVMExpress**. **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. DI, main-thread marshal, and page lifecycle.
+MAUI host for **MVVMExpress**. **Supported:** Android, iOS, Mac Catalyst, and Windows (single-window). DI, main-thread marshal, and page lifecycle.
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress)
 
@@ -30,7 +30,7 @@ dotnet add package Plugin.Maui.MVVMExpress.Core
 dotnet add package Plugin.Maui.MVVMExpress
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Version `1.0.0`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+), `net10.0-maccatalyst` (15+), and `net10.0-windows10.0.19041.0` (Windows 10 17763+; packed when MSBuild runs on Windows). Windows apps otherwise resolve `net10.0`. Version `1.0.0`.
 
 ## What this package is
 

@@ -4,7 +4,7 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `1.0.0` — SemVer lock (`UseAuth<TChallenge>()`, 15-minute path, Playground). **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the contract. See [known limitations](docs/known-limitations.md). [Getting started](docs/getting-started.md) · [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
+**Status:** `1.0.0` — SemVer lock (`UseAuth<TChallenge>()`, 15-minute path, Playground). **Supported:** Android, iOS, Mac Catalyst, and Windows (single-window). Host APIs are shared MAUI — no platform stub. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the contract. See [known limitations](docs/known-limitations.md). [Getting started](docs/getting-started.md) · [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 

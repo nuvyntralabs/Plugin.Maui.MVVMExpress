@@ -122,7 +122,7 @@ After 1.0.0: SemVer. Breaking API changes require a major version.
 - Prism-style regions
 - ReactiveUI `IScreen` routing as a first-class host
 - Built-in remote feature-flag or auth provider
-- First-class Windows / Mac Catalyst support claims (compile TFMs may exist)
+- Multi-window desktop sample, `Window.AddOverlay` toast QA, and a Windows nupkg RID from a Windows pack job (single-window Catalyst / Windows is already in the 1.0 host)
 - Bottom-sheet *control* library (abstraction only in Dialogs)
 - Binding debugger visualizer for Visual Studio
 

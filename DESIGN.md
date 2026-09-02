@@ -14,7 +14,7 @@ This is the product design for **Plugin.Maui.MVVMExpress**. It explains how a de
 - Replacing .NET MAUI Shell, `Connectivity`, `Geolocation`, `SecureStorage`, or `Permissions` when those APIs are enough.
 - Shipping a DI container (DryIoc, Autofac).
 - Shipping a SIP stack, FCM registrar, SQLite sync engine, or remote feature-flag service.
-- Claiming Windows / Mac Catalyst as catalog-primary platforms before samples exist.
+- Treating multi-window desktop or sibling Android/iOS adapters (KeyboardManager, DeepLinks, SecureSession) as first-class on Mac Catalyst / Windows.
 - Forking CommunityToolkit.Mvvm, Prism, or ReactiveUI.
 - Implementing every master-prompt feature in the first commit.
 
@@ -209,7 +209,7 @@ Core tests must run on `net10.0` with no MAUI runtime.
 ## 11. Open questions (historical — Phase 1/2 shipped in 0.3.0; remaining items feed Phase 3+)
 
 1. ~~Confirm package prefix~~ — **MVVMExpress** / `Plugin.Maui.MVVMExpress` (accepted).
-2. Confirm Windows / Mac Catalyst stay as compile TFMs only for v1 samples.
+2. ~~Confirm Windows / Mac Catalyst stay as compile TFMs only~~ — **single-window host targets** (accepted). Multi-window stays later.
 3. Confirm `Outcome` vs `Result` naming.
 4. Confirm whether Host may auto-attach lifecycle without an explicit XAML behavior (preferred: yes, via `AddMvvmExpress`, behavior remains available).
 5. Confirm CommunityToolkit compatibility is Phase 4, not Phase 1.

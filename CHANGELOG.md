@@ -15,6 +15,7 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 - Version is `1.0.0` (stable, no `--prerelease`). Shipped 0.6.1 APIs plus `UseAuth` are the SemVer contract
 - AuthApp registers with `UseAuth<AuthLoginViewModel>()` only
 - Design-review sign-off recorded in ROADMAP and known-limitations
+- Docs: Mac Catalyst and Windows are single-window host targets (shared MAUI APIs), not compile-only stubs. Multi-window and toast overlay QA stay later.
 
 ## [0.6.1-preview] — 2026-09-02
 

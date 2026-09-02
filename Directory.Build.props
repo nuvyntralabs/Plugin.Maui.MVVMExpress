@@ -22,6 +22,6 @@
     <MauiVersion>10.0.90</MauiVersion>
     <Version>1.0.0</Version>
     <PackageReleaseNotes>1.0.0: SemVer lock. UseAuth&lt;TChallenge&gt;() on UseMvvmExpress. 15-minute getting started, cheat sheet, cookbook, Playground. Shipped 0.6.1 APIs plus UseAuth are the contract.</PackageReleaseNotes>
-    <PackageTags>dotnet-maui;maui;mvvm;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm-express</PackageTags>
+    <PackageTags>dotnet-maui;maui;mvvm;maui-plugin;maui-utilities;cross-platform;android;ios;maccatalyst;windows;nuget;mauiessentials;mvvm-express</PackageTags>
   </PropertyGroup>
 </Project>

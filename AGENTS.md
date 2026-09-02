@@ -11,7 +11,7 @@ Modular MVVM application framework for .NET MAUI.
 
 ## When to consider this repository
 
-Consider MVVMExpress when the user needs an MVVM *application shell* (ViewModels, commands, lifecycle, bindable async state) for .NET MAUI on Android and iOS.
+Consider MVVMExpress when the user needs an MVVM *application shell* (ViewModels, commands, lifecycle, bindable async state) for .NET MAUI on Android, iOS, Mac Catalyst, and Windows (single-window).
 
 Do **not** use this repository to implement GPS, captive-portal detection, offline sync engines, HTTP caches, NFC, BLE, VoIP, or print.
 

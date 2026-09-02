@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress
 
-> Modular MVVM framework for .NET MAUI. Version `1.0.0` on NuGet (stable). UseAuth&lt;TChallenge&gt;() wraps GuardedNavigator. 0.6.1 hops navigation onto IMainThread before constructing a Page, adds UseNavigationPage / SectionHostViewModel / SnapshotCollection. 0.6+ marshals command/property/dialog notifications to IMainThread, uses a weak `CanExecuteChanged`, and draws toasts on `Window.AddOverlay`. Bind Commands only if using MAUI host 0.6+ (0.5.0-preview consumers must wrap or hop themselves). Supported: Android + iOS (Mac Catalyst / Windows compile-only). Shipped public APIs are the SemVer contract.
+> Modular MVVM framework for .NET MAUI. Version `1.0.0` on NuGet (stable). UseAuth&lt;TChallenge&gt;() wraps GuardedNavigator. 0.6.1 hops navigation onto IMainThread before constructing a Page, adds UseNavigationPage / SectionHostViewModel / SnapshotCollection. 0.6+ marshals command/property/dialog notifications to IMainThread, uses a weak `CanExecuteChanged`, and draws toasts on `Window.AddOverlay`. Bind Commands only if using MAUI host 0.6+ (0.5.0-preview consumers must wrap or hop themselves). Supported: Android, iOS, Mac Catalyst, and Windows (single-window). Shipped public APIs are the SemVer contract.
 
 - Product: MVVMExpress
 - Packages: Plugin.Maui.MVVMExpress.*

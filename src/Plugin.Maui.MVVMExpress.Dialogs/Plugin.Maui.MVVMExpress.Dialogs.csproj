@@ -21,7 +21,7 @@
     <PackageId>Plugin.Maui.MVVMExpress.Dialogs</PackageId>
     <Title>.NET MAUI MVVMExpress — alerts, confirms, and toasts</Title>
     <Description>MauiDialogs adapts IDialogs to DisplayAlert. MauiNotifier shows an in-app toast overlay. ViewModels depend on IDialogs / INotifier, not Page.</Description>
-    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm;mvvm-express;dialogs;alert;confirm;toast</PackageTags>
+    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;maccatalyst;windows;nuget;mauiessentials;mvvm;mvvm-express;dialogs;alert;confirm;toast</PackageTags>
     <Authors>Niladri</Authors>
     <Company>MauiEssentials</Company>
     <Copyright>Copyright © 2026 Niladri</Copyright>

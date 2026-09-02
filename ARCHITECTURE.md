@@ -283,10 +283,9 @@ Stack (shipped on `INavigator`): `Current` (`Type?`), `Stack`, `ModalStack`, `Ca
 | Abstractions for connectivity, cache, files, permissions | Platform pickers, permissions, clipboard adapters |
 | Source generator attributes | Window / app lifecycle bridge |
 
-`net10.0` (no OS TFM) is the shared / test surface. Host APIs that need a window throw `FeatureNotSupportedException` on that TFM.
+`net10.0` (no OS TFM) is the shared / test surface. Host APIs that need a window throw `FeatureNotSupportedException` when no window or page exists — not because of the TFM.
 
-**Primary support:** Android (`net10.0-android`, API 21+) and iOS (`net10.0-ios`, iOS 15+), matching the catalog. 
-**Compile targets:** Mac Catalyst and Windows (`net10.0-windows10.0.19041.0`, Windows-only build) are included because the master prompt requires them. They are not claimed as catalog-primary until samples and tests exist.
+**Primary support:** Android (`net10.0-android`, API 21+), iOS (`net10.0-ios`, iOS 15+), Mac Catalyst (`net10.0-maccatalyst`, 15+), and Windows (`net10.0-windows10.0.19041.0` when packed on Windows; otherwise `net10.0`). Host / Navigation / Dialogs use shared MAUI APIs; there is no platform stub. Single-window is the supported host model (`Windows[0]` / `Shell.Current`). Multi-window and `Window.AddOverlay` toast drawing are not a separate desktop product.
 
 ## 10. CommunityToolkit.Mvvm — conflicts and integration
 

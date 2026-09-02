@@ -1,6 +1,6 @@
 # Getting started
 
-A new hire can finish this in about fifteen minutes. Click along in [`samples/Playground`](../samples/Playground/).
+A new hire can finish this in about fifteen minutes. Click along in [`samples/Playground`](../samples/Playground/) (Android, iOS, Mac Catalyst, or Windows).
 
 ```bash
 dotnet add package Plugin.Maui.MVVMExpress

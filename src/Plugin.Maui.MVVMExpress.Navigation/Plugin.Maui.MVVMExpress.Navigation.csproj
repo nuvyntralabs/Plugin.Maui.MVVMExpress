@@ -21,7 +21,7 @@
     <PackageId>Plugin.Maui.MVVMExpress.Navigation</PackageId>
     <Title>.NET MAUI MVVMExpress — Shell and page navigation hosts</Title>
     <Description>MauiShellNavigator and MauiPageNavigator map ViewModel types to Shell routes or Pages with typed and dictionary URI args. INavigator and GuardedNavigator live in Core.</Description>
-    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm;mvvm-express;navigation;shell;page-stack</PackageTags>
+    <PackageTags>dotnet-maui;maui;maui-plugin;maui-utilities;cross-platform;android;ios;maccatalyst;windows;nuget;mauiessentials;mvvm;mvvm-express;navigation;shell;page-stack</PackageTags>
     <Authors>Niladri</Authors>
     <Company>MauiEssentials</Company>
     <Copyright>Copyright © 2026 Niladri</Copyright>

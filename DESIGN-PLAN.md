@@ -28,7 +28,7 @@ Work plan for implementing [ARCHITECTURE.md](ARCHITECTURE.md) and [API-DESIGN.md
 | D6 | Sibling MauiEssentials plugins are adapters, never PackageReferences | Proposed |
 | D7 | Source generators ship in Phase 4; Phase 1 is handwritten APIs | Proposed |
 | D8 | `UseMvvmExpress` + `AddMvvmExpress` (not `AddMauiMvvm`) | Proposed |
-| D9 | Android + iOS primary; Mac Catalyst + Windows compile TFMs | Proposed |
+| D9 | Android, iOS, Mac Catalyst, and Windows (single-window) share the host APIs | Accepted |
 | D10 | Diagnostics off by default in Release | Proposed |
 
 ## 3. Phase 1 — Core + Host (after review)

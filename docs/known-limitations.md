@@ -19,5 +19,5 @@
 - Shipped public APIs in [API-DESIGN.md](../API-DESIGN.md) are the 1.0 contract. Breaking changes after 1.0.0 follow SemVer.
 - Device RSS and 50k `CollectionView` scroll: the 1.0 claim is host-process BenchmarkDotNet, `ScaleProfile` (Small / Mid / Large), and virtualization rules in [MEMORY-AND-PERFORMANCE.md](../MEMORY-AND-PERFORMANCE.md). Hardware RSS / on-device scroll is out of catalog scope.
 - `ViewModelLifecycleBehavior` attach/detach on a MAUI window: the 1.0 claim is in-memory pop-GC (`ScopedNavigator` + Core leak tests). A device/window detach run is out of catalog scope.
-- Windows / Mac Catalyst compile TFMs exist on Host / Navigation / Dialogs (`net10.0-maccatalyst`, Windows on Windows). They are compile-only; catalog-primary remains Android + iOS.
+- Mac Catalyst and Windows are single-window host targets (shared MAUI APIs on Host / Navigation / Dialogs). Defaults still use `Windows[0]` / `Shell.Current`. Multi-window, `Window.AddOverlay` toast QA, and a Windows nupkg RID when packing on macOS are not a separate desktop product. Sibling adapters (KeyboardManager, DeepLinks, SecureSession, FormValidation, NetworkMonitor) remain Android + iOS.
 - Prism regions, ReactiveUI `IScreen`, remote flag/auth providers, bottom-sheet controls, and a VS binding visualizer stay deferred (see [ROADMAP.md](../ROADMAP.md)).
