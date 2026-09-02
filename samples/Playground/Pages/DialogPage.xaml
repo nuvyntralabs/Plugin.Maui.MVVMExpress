@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:play="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Playground;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Playground.Pages.DialogPage"
+    x:DataType="play:PlaygroundDialogViewModel"
+    Title="Dialog">
+
+    <VerticalStackLayout Padding="20" Spacing="12">
+        <Button Text="Alert" Command="{Binding AlertCommand}" />
+        <Button Text="Confirm" Command="{Binding ConfirmCommand}" />
+        <Label Text="{Binding LastResult}" />
+    </VerticalStackLayout>
+</ContentPage>

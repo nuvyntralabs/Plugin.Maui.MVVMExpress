@@ -6,8 +6,8 @@ Paging and search debounce for **MVVMExpress** lists.
 
 ```csharp
 var page = new DelegatePagedCollection<Product>(
-    (skip, take, ct) => catalog.ListAsync(skip, take, ct),
-    pageSize: 20);
+  (skip, take, ct) => catalog.ListAsync(skip, take, ct),
+  pageSize: 20);
 
 await page.RefreshAsync();
 await page.LoadMoreAsync();
@@ -18,10 +18,10 @@ await page.LoadMoreAsync();
 ## Install
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Pagination --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Pagination
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `0.6.1-preview`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `1.0.0`.
 
 ## Related
 

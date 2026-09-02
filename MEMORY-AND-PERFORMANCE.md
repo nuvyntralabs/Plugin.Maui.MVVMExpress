@@ -28,7 +28,7 @@ Related: [ARCHITECTURE.md](ARCHITECTURE.md) §15–16, [ROADMAP.md](ROADMAP.md) 
 
 | Area | Result |
 | --- | --- |
-| Runtime (0.6.1-preview) | Real subscriptions exist (MessageHub, lifecycle behavior, navigators). Leak tests cover VM / command / weak `CanExecuteChanged` + Button pop / weak hub / navigation pop. Chat lists should use `SnapshotCollection` + `AddLocal`, not `ReplaceRange` after appear. |
+| Runtime (1.0.0) | Real subscriptions exist (MessageHub, lifecycle behavior, navigators). Leak tests cover VM / command / weak `CanExecuteChanged` + Button pop / weak hub / navigation pop. Chat lists should use `SnapshotCollection` + `AddLocal`, not `ReplaceRange` after appear. |
 | `ObservableModel` | Event args **cached by property name**. Same-value `SetProperty` does not notify |
 | `ViewModel` | `Dispose` cancels `ViewModelCancellationToken`. The token stays readable after dispose (cached at construction). WeakReference tests require collectability |
 | `MessageHub` | Default subscribe is **weak** and uses `(recipient, message)` handlers so the delegate does not capture the subscriber. `Dispose` / `Unsubscribe` remove the slot |

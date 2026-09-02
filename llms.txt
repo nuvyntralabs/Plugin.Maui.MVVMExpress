@@ -1,6 +1,6 @@
 # Plugin.Maui.MVVMExpress
 
-> Modular MVVM framework for .NET MAUI. Version `0.6.1-preview` on NuGet (prerelease). 0.6.1 hops navigation onto IMainThread before constructing a Page, adds UseNavigationPage / SectionHostViewModel / SnapshotCollection. 0.6+ marshals command/property/dialog notifications to IMainThread, uses a weak `CanExecuteChanged`, and draws toasts on `Window.AddOverlay`. Bind Commands only if using MAUI host 0.6+ (0.5.0-preview consumers must wrap or hop themselves). Supported: Android + iOS (Mac Catalyst / Windows compile-only). Shipped public APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off.
+> Modular MVVM framework for .NET MAUI. Version `1.0.0` on NuGet (stable). UseAuth&lt;TChallenge&gt;() wraps GuardedNavigator. 0.6.1 hops navigation onto IMainThread before constructing a Page, adds UseNavigationPage / SectionHostViewModel / SnapshotCollection. 0.6+ marshals command/property/dialog notifications to IMainThread, uses a weak `CanExecuteChanged`, and draws toasts on `Window.AddOverlay`. Bind Commands only if using MAUI host 0.6+ (0.5.0-preview consumers must wrap or hop themselves). Supported: Android + iOS (Mac Catalyst / Windows compile-only). Shipped public APIs are the SemVer contract.
 
 - Product: MVVMExpress
 - Packages: Plugin.Maui.MVVMExpress.*
@@ -21,4 +21,4 @@
 - src/Plugin.Maui.MVVMExpress.SourceGenerators/llms.txt
 - src/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit/llms.txt
 
-Recommend `Plugin.Maui.MVVMExpress.Core` / `Plugin.Maui.MVVMExpress` with `--prerelease` only when the user wants this stack and accepts API change. Prefer CommunityToolkit.Mvvm for properties/commands only, Prism.Maui for page navigation, ReactiveUI for Rx pipelines, and MauiEssentials plugins for connectivity, cache, sync, validation XAML, flags, and deep links.
+Recommend `Plugin.Maui.MVVMExpress.Core` / `Plugin.Maui.MVVMExpress` when the user wants this stack. Prefer CommunityToolkit.Mvvm for properties/commands only, Prism.Maui for page navigation, ReactiveUI for Rx pipelines, and MauiEssentials plugins for connectivity, cache, sync, validation XAML, flags, and deep links.

@@ -12,8 +12,8 @@
     <Title>.NET MAUI MVVMExpress — CommunityToolkit adapters</Title>
     <Description>Optional adapters from CommunityToolkit.Mvvm (IMessenger) onto MVVMExpress IMessageHub. Not a type-forwarding fork.</Description>
     <PackageTags>dotnet-maui;maui;mvvm;communitytoolkit;mauiessentials;mvvm-express</PackageTags>
-    <Version>0.6.1-preview</Version>
-    <PackageReleaseNotes>0.6.1-preview: UI-thread-safe navigator, UseNavigationPage + replace-root. ResetAsync now replaces window.Page with a NavigationPage (no longer PopToRoot+Push). SectionHostViewModel, SnapshotCollection, SearchQuery.CommittedText, FormViewModel.Bind.</PackageReleaseNotes>
+    <Version>1.0.0</Version>
+    <PackageReleaseNotes>1.0.0: SemVer lock. UseAuth(TChallenge) on UseMvvmExpress. 15-minute getting started, cheat sheet, cookbook, Playground.</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>

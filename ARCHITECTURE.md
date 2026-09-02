@@ -1,8 +1,8 @@
 # MVVMExpress Architecture
 
-**Product:** MVVMExpress  
-**Official package family:** `Plugin.Maui.MVVMExpress.*`  
-**Status:** `0.6.1-preview`. Device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection`, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation `ILLink.Descriptors.xml`, host/auth/forms UX, and Phase 5 productization are shipped with tests. Shipped public APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
+**Product:** MVVMExpress 
+**Official package family:** `Plugin.Maui.MVVMExpress.*` 
+**Status:** `1.0.0`. Device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + `UseAuth<TChallenge>()` + replace-root, `SectionHostViewModel`, `SnapshotCollection`, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation `ILLink.Descriptors.xml`, host/auth/forms UX, and Phase 5 productization are shipped with tests. Shipped public APIs are the SemVer contract. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
 
 MVVMExpress is a modular MVVM application framework for .NET MAUI. It is not a fork of CommunityToolkit.Mvvm, Prism.Maui, or ReactiveUI. Those libraries are studied as capability references. This document records the original architecture that delivers equivalent developer outcomes without copying their type graphs, containers, or navigation engines.
 
@@ -69,19 +69,19 @@ Compatibility adapters (shipped in `0.5.0-preview`) map CommunityToolkit types o
 ## 4. Package architecture
 
 ```
-Plugin.Maui.MVVMExpress.Core                 net10.0
-        ▲
-        │
-Plugin.Maui.MVVMExpress                      MAUI host (DI, lifecycle, dispatcher, locator)
-        ▲
-        ├── Navigation
-        ├── Dialogs
-        ├── Validation
-        ├── Pagination
-        └── Reactive
+Plugin.Maui.MVVMExpress.Core         net10.0
+    ▲
+    │
+Plugin.Maui.MVVMExpress           MAUI host (DI, lifecycle, dispatcher, locator)
+    ▲
+    ├── Navigation
+    ├── Dialogs
+    ├── Validation
+    ├── Pagination
+    └── Reactive
 
-Plugin.Maui.MVVMExpress.SourceGenerators     netstandard2.0 analyzer (no runtime MAUI)
-Plugin.Maui.MVVMExpress.Testing              net10.0 fakes
+Plugin.Maui.MVVMExpress.SourceGenerators   netstandard2.0 analyzer (no runtime MAUI)
+Plugin.Maui.MVVMExpress.Testing       net10.0 fakes
 ```
 
 | Package | TFMs | MAUI? | Role |
@@ -116,29 +116,29 @@ Plugin.Maui.MVVMExpress.Testing              net10.0 fakes
 ## 5. Dependency graph
 
 ```
-                    ┌──────────────────────────────────────┐
-                    │  Application (MAUI host)             │
-                    │  UseMvvmExpress / AddMvvmExpress       │
-                    └──────────────────┬───────────────────┘
-                                       │
-         ┌──────────────┬──────────────┼──────────────┬──────────────┐
-         ▼              ▼              ▼              ▼              ▼
-    Navigation      Dialogs      Validation     Pagination      Reactive
-         │              │              │              │              │
-         └──────────────┴──────┬───────┴──────────────┴──────────────┘
-                               ▼
-                         Host package
-                     (lifecycle, DI, dispatcher)
-                               │
-                               ▼
-                              Core
-              (no MAUI, no Rx, no FluentValidation, no Prism)
-                               │
-         optional adapters ────┼──── optional sibling plugins
-                               ▼
-         NetworkMonitor · ApiCache · OfflineSync · FormValidation
-         FeatureFlags · DeepLinks · PermissionFlow · SecureSession
-         ClipboardPlus · SharePlus · Diagnostics
+          ┌──────────────────────────────────────┐
+          │ Application (MAUI host)       │
+          │ UseMvvmExpress / AddMvvmExpress    │
+          └──────────────────┬───────────────────┘
+                    │
+     ┌──────────────┬──────────────┼──────────────┬──────────────┐
+     ▼       ▼       ▼       ▼       ▼
+  Navigation   Dialogs   Validation   Pagination   Reactive
+     │       │       │       │       │
+     └──────────────┴──────┬───────┴──────────────┴──────────────┘
+                ▼
+             Host package
+           (lifecycle, DI, dispatcher)
+                │
+                ▼
+               Core
+       (no MAUI, no Rx, no FluentValidation, no Prism)
+                │
+     optional adapters ────┼──── optional sibling plugins
+                ▼
+     NetworkMonitor · ApiCache · OfflineSync · FormValidation
+     FeatureFlags · DeepLinks · PermissionFlow · SecureSession
+     ClipboardPlus · SharePlus · Diagnostics
 ```
 
 **Hard rules**
@@ -158,17 +158,17 @@ Sibling plugins are **never** PackageReferences of MVVMExpress packages. Apps (o
 
 ```
 View (Page / Shell / XAML)
-        │ owns BindingContext
-        │ behaviors bind lifecycle
-        ▼
+    │ owns BindingContext
+    │ behaviors bind lifecycle
+    ▼
 ViewModel (PageViewModel)
-        │ INavigator, IDialogs, IErrorSink, IBusyGate
-        │ Outcome / AsyncState / commands
-        ▼
+    │ INavigator, IDialogs, IErrorSink, IBusyGate
+    │ Outcome / AsyncState / commands
+    ▼
 Application services (interfaces)
-        │ repositories, caches, auth, flags
-        ▼
-Adapters  ──►  MAUI Essentials / MauiEssentials plugins / app backends
+    │ repositories, caches, auth, flags
+    ▼
+Adapters ──► MAUI Essentials / MauiEssentials plugins / app backends
 ```
 
 This matches the intent of the four reference diagrams (navigator creates VC+VM; View owns VM and binds; VM owns and updates model; store sits between disk and network) without adopting any one vendor’s type names.
@@ -183,14 +183,14 @@ This matches the intent of the four reference diagrams (navigator creates VC+VM;
 ### 6.2 Data flow
 
 ```
-User event  →  ICommand / binding
-     →  AsyncModelCommand  →  OperationPipeline
-           →  Outcome<T> / AsyncState<T>
-           →  PropertyChanged
-           →  View update
+User event → ICommand / binding
+   → AsyncModelCommand → OperationPipeline
+      → Outcome<T> / AsyncState<T>
+      → PropertyChanged
+      → View update
 
-Navigate    →  INavigator  →  guards  →  host (Shell or INavigation)
-           →  INavigable.OnNavigatedToAsync
+Navigate  → INavigator → guards → host (Shell or INavigation)
+      → INavigable.OnNavigatedToAsync
 ```
 
 ## 7. Core subsystems
@@ -207,8 +207,8 @@ Navigate    →  INavigator  →  guards  →  host (Shell or INavigation)
 
 ```
 CanExecute → concurrency gate → timeout → retry → execute
-         → progress / IsRunning → error sink → Outcome
-         (debounce/throttle on the command itself remain later; SearchQuery already debounces search)
+     → progress / IsRunning → error sink → Outcome
+     (debounce/throttle on the command itself remain later; SearchQuery already debounces search)
 ```
 
 Shipped concurrency modes: `Prevent`, `CancelPrevious`. Designed later: `Allow`, `Queue`, `Replace`.
@@ -217,13 +217,13 @@ Shipped concurrency modes: `Prevent`, `CancelPrevious`. Designed later: `Allow`,
 
 ```
 Construct (DI)
-  → Accept(args) / Accept(query)    when IAcceptNavArgs / IAcceptNavQuery
-  → InitializeAsync(token)          once
-  → OnNavigatedToAsync(token)
-  → OnAppearingAsync(token)
-  → OnDisappearingAsync(token)
-  → OnNavigatedFromAsync(token)
-  → Dispose
+ → Accept(args) / Accept(query)  when IAcceptNavArgs / IAcceptNavQuery
+ → InitializeAsync(token)     once
+ → OnNavigatedToAsync(token)
+ → OnAppearingAsync(token)
+ → OnDisappearingAsync(token)
+ → OnNavigatedFromAsync(token)
+ → Dispose
 ```
 
 Core: `ViewModelCancellationToken` is created in the constructor and cancelled on dispose. The token stays readable after dispose. `UseMvvmExpress` accepts `MvvmExpressOptions.CancelOperationsOnDisappear`; the current `ViewModelLifecycleBehavior` calls `OnDisappearingAsync` and does not yet cancel the token on disappear.
@@ -247,11 +247,11 @@ This remains the primary differentiator. It is not a Polly clone and not a React
 ### 7.7 Scopes
 
 ```
-Application scope     (singleton services, app ViewModels)
-  Window scope        (IWindowContext — multi-window)
-    Navigation scope  (stack / Shell section)
-      Page scope      (one PageViewModel)
-        Child scope   (composed child ViewModels)
+Application scope   (singleton services, app ViewModels)
+ Window scope    (IWindowContext — multi-window)
+  Navigation scope (stack / Shell section)
+   Page scope   (one PageViewModel)
+    Child scope  (composed child ViewModels)
 ```
 
 Scopes are `IServiceScope` instances owned by `IViewModelScopeFactory`. Navigating away disposes the page scope unless the page stays on the stack (then the scope is retained until pop).
@@ -285,7 +285,7 @@ Stack (shipped on `INavigator`): `Current` (`Type?`), `Stack`, `ModalStack`, `Ca
 
 `net10.0` (no OS TFM) is the shared / test surface. Host APIs that need a window throw `FeatureNotSupportedException` on that TFM.
 
-**Primary support:** Android (`net10.0-android`, API 21+) and iOS (`net10.0-ios`, iOS 15+), matching the catalog.  
+**Primary support:** Android (`net10.0-android`, API 21+) and iOS (`net10.0-ios`, iOS 15+), matching the catalog. 
 **Compile targets:** Mac Catalyst and Windows (`net10.0-windows10.0.19041.0`, Windows-only build) are included because the master prompt requires them. They are not claimed as catalog-primary until samples and tests exist.
 
 ## 10. CommunityToolkit.Mvvm — conflicts and integration
@@ -388,13 +388,13 @@ Library code uses `ConfigureAwait(false)` **except** where the next step must ru
 ```csharp
 builder.UseMvvmExpress(options =>
 {
-    options.CancelOperationsOnDisappear = true; // option exists; lifecycle behavior does not cancel the token yet
+  options.CancelOperationsOnDisappear = true; // option exists; lifecycle behavior does not cancel the token yet
 });
 ```
 
 Shipped `MvvmExpressOptions` has only `CancelOperationsOnDisappear`. Designed flags (`EnableNavigation`, `EnableLifecycle`, `EnableAutoRegistration`, `EnableDiagnostics`, `EnableReactive`) are not on the type yet — register Navigation / Dialogs implementations in the app.
 
-**Minimal mode:** `UseMvvmExpress()` → Core + lifecycle + dispatcher + ViewModel resolve.  
+**Minimal mode:** `UseMvvmExpress()` → Core + lifecycle + dispatcher + ViewModel resolve. 
 **Enterprise mode:** add Navigation, Dialogs, Validation, Pagination, and app-supplied adapters for cache / offline / auth / flags.
 
 ## 18. Telemetry and logging
@@ -415,7 +415,7 @@ Shipped `MvvmExpressOptions` has only `CancelOperationsOnDisappear`. Designed fl
 
 ```
 MVVMExpress/
-├── ARCHITECTURE.md          ← this file
+├── ARCHITECTURE.md     ← this file
 ├── API-DESIGN.md
 ├── DESIGN.md
 ├── DESIGN-PLAN.md
@@ -424,10 +424,10 @@ MVVMExpress/
 ├── MEMORY-AND-PERFORMANCE.md
 ├── README.md
 ├── LICENSE
-├── src/                     packages
+├── src/           packages
 ├── tests/
-├── samples/                 flyout host + shared net10.0 ViewModels
-├── benchmarks/              host-process timings
+├── samples/         flyout host + shared net10.0 ViewModels
+├── benchmarks/       host-process timings
 └── docs/
 ```
 
@@ -435,4 +435,4 @@ This folder is its own git repository and MauiEssentials submodule (`Plugin.Maui
 
 ## 21. How to read this document
 
-This file is the architecture contract. **0.6.1-preview implements** Core through Reactive, device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + `SectionHostViewModel` + `SnapshotCollection`, weak command events, window-overlay toasts, Validation trim roots, source generators, persist/auth attributes, CommunityToolkit compatibility, and Phase 5 productization. Remaining 1.0.0 work is design-review sign-off; accepted scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).
+This file is the architecture contract. **1.0.0 implements** Core through Reactive, device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + `SectionHostViewModel` + `SnapshotCollection`, weak command events, window-overlay toasts, Validation trim roots, source generators, persist/auth attributes, CommunityToolkit compatibility, and Phase 5 productization. Remaining 1.0.0 work is design-review sign-off; accepted scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).

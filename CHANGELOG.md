@@ -2,6 +2,20 @@
 
 All notable changes to Plugin.Maui.MVVMExpress are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [SemVer](https://semver.org/) after 1.0.0.
 
+## [1.0.0] — 2026-09-02
+
+### Added
+
+- `UseAuth<TChallenge>()` on `UseMvvmExpress` — wraps `GuardedNavigator` so getting started never reconstructs the guard
+- `AddAuth<TChallenge>()` for `AddMvvmExpress()` / `net10.0` tests
+- 15-minute getting started, cheat sheet, cookbook, Playground sample, and [0.6.1 → 1.0 migration](docs/migration-0.6.1.md)
+
+### Changed
+
+- Version is `1.0.0` (stable, no `--prerelease`). Shipped 0.6.1 APIs plus `UseAuth` are the SemVer contract
+- AuthApp registers with `UseAuth<AuthLoginViewModel>()` only
+- Design-review sign-off recorded in ROADMAP and known-limitations
+
 ## [0.6.1-preview] — 2026-09-02
 
 ### Fixed

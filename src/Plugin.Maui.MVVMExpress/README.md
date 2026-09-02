@@ -9,29 +9,33 @@ Depends on [Plugin.Maui.MVVMExpress.Core](https://www.nuget.org/packages/Plugin.
 ```csharp
 builder
     .UseMauiApp<App>()
-    .UseMvvmExpress(o => o.UseNavigationPage().UseDialogs()); // login → replace-root → push
+    .UseMvvmExpress(o => o
+        .UseNavigationPage()
+        .UseDialogs()
+        .UseAuth<LoginViewModel>());
 ```
 
 Shell is optional:
 
 ```csharp
-builder.UseMvvmExpress(o => o.UseShell().UseDialogs());
+builder.UseMvvmExpress(o => o.UseShell().UseDialogs().UseAuth<LoginViewModel>());
 ```
 
-`UseMvvmExpress` calls `AddMvvmExpress()`, replaces `IMainThread` with `MauiMainThread`, and marshals command/property/navigation work. `UseNavigationPage` / `UseShell` / `UseDialogs` live in the Navigation and Dialogs packages. Chat-style apps: [chat-host cookbook](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress/blob/main/docs/chat-host.md).
+`UseMvvmExpress` calls `AddMvvmExpress()`, replaces `IMainThread` with `MauiMainThread`, and marshals command/property/navigation work. `UseNavigationPage` / `UseShell` / `UseDialogs` live in the Navigation and Dialogs packages. `UseAuth<TChallenge>()` wraps `GuardedNavigator`. Chat-style apps: [chat-host cookbook](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress/blob/main/docs/chat-host.md).
 
 ## Install
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
-dotnet add package Plugin.Maui.MVVMExpress --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Core
+dotnet add package Plugin.Maui.MVVMExpress
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Version `0.6.1-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Version `1.0.0`.
 
 ## What this package is
 
 - `UseMvvmExpress` on `MauiAppBuilder`
+- `UseAuth<TChallenge>()` — host auth without reconstructing `GuardedNavigator`
 - `MauiMainThread` (`IMainThread`)
 - `ViewModelLifecycleBehavior` for page appear / disappear
 

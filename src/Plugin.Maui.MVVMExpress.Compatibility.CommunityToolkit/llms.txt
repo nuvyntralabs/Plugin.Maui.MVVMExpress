@@ -5,7 +5,7 @@ Adapts CommunityToolkit.Mvvm IMessenger to MVVMExpress IMessageHub.
 NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 License: MIT
-Version: 0.6.1-preview (`--prerelease`)
+Version: 1.0.0
 
 ## Do not use when
 

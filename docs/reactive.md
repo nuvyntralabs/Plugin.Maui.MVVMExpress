@@ -16,5 +16,5 @@ _fullName.Subscribe(_ => Notify(nameof(FullName)));
 Search debounce remains `SearchQuery` in Pagination (no MAUI). Use ReactiveUI when the app already wants Rx operators everywhere.
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Reactive --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Reactive
 ```

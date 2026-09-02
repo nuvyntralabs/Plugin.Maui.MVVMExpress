@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:play="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Playground;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Playground.Pages.ListPage"
+    x:DataType="play:PlaygroundListViewModel"
+    Title="List">
+
+    <CollectionView ItemsSource="{Binding Items.Items}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="play:PlaygroundItem">
+                <Label Text="{Binding Name}" Padding="20,12" />
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

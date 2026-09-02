@@ -9,24 +9,24 @@ UI-framework-free MVVM primitives for **.NET**. No MAUI reference.
 ```csharp
 public sealed class HomeViewModel : ViewModel
 {
-    public AsyncState<IReadOnlyList<Product>> Products { get; } = new();
-    public AsyncModelCommand RefreshCommand { get; }
+  public AsyncState<IReadOnlyList<Product>> Products { get; } = new();
+  public AsyncModelCommand RefreshCommand { get; }
 
-    public HomeViewModel(ICatalog catalog)
-    {
-        RefreshCommand = new AsyncModelCommand(
-            ct => Products.LoadAsync(token => catalog.ListAsync(token), ct));
-    }
+  public HomeViewModel(ICatalog catalog)
+  {
+    RefreshCommand = new AsyncModelCommand(
+      ct => Products.LoadAsync(token => catalog.ListAsync(token), ct));
+  }
 }
 ```
 
 ## Install
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Core
 ```
 
-Target framework: `net10.0`. Version `0.6.1-preview` — UI-thread-safe navigator helpers, `SectionHostViewModel`, `FormViewModel.Bind`, snapshot lists. Shipped APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off.
+Target framework: `net10.0`. Version `1.0.0` — SemVer lock, `UseAuth<TChallenge>()`, UI-thread-safe navigator helpers, `SectionHostViewModel`, `FormViewModel.Bind`, snapshot lists.
 
 ```csharp
 services.AddMvvmExpress(); // tests and shared libraries

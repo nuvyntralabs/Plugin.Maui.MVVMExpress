@@ -7,7 +7,7 @@ GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.6.1-preview (`--prerelease`)
+Version: 1.0.0
 
 ## Supported versions
 
@@ -15,7 +15,7 @@ net10.0 only. Test projects.
 
 ## Installation
 
-dotnet add package Plugin.Maui.MVVMExpress.Testing --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Testing
 
 ## Use this package when
 

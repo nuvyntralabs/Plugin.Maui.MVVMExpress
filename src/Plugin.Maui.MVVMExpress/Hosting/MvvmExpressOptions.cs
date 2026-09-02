@@ -26,6 +26,9 @@ public sealed class MvvmExpressOptions
     /// <summary>When <see langword="true"/> (default), generated <c>[Route]</c> / <c>[RequiresAuth]</c> registrations are applied.</summary>
     public bool ApplyGeneratedRegistrations { get; set; } = true;
 
+    /// <summary>Login ViewModel type set by <c>UseAuth&lt;TChallenge&gt;()</c>.</summary>
+    internal Type? AuthChallengeViewModel { get; set; }
+
     /// <summary>Adds a service-registration callback run at the end of <c>UseMvvmExpress</c>.</summary>
     public MvvmExpressOptions AddRegistration(Action<global::Microsoft.Extensions.DependencyInjection.IServiceCollection> configure)
     {

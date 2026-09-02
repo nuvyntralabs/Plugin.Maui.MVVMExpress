@@ -20,8 +20,8 @@
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
     <MauiVersion>10.0.90</MauiVersion>
-    <Version>0.6.1-preview</Version>
-    <PackageReleaseNotes>0.6.1-preview: UI-thread-safe navigator (construct pages on IMainThread), UseNavigationPage + replace-root. ResetAsync now replaces window.Page with a NavigationPage (no longer PopToRoot+Push). SectionHostViewModel, SnapshotCollection, SearchQuery.CommittedText, FormViewModel.Bind.</PackageReleaseNotes>
+    <Version>1.0.0</Version>
+    <PackageReleaseNotes>1.0.0: SemVer lock. UseAuth&lt;TChallenge&gt;() on UseMvvmExpress. 15-minute getting started, cheat sheet, cookbook, Playground. Shipped 0.6.1 APIs plus UseAuth are the contract.</PackageReleaseNotes>
     <PackageTags>dotnet-maui;maui;mvvm;maui-plugin;maui-utilities;cross-platform;android;ios;nuget;mauiessentials;mvvm-express</PackageTags>
   </PropertyGroup>
 </Project>

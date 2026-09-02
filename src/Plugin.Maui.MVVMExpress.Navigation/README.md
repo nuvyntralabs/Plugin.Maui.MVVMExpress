@@ -8,8 +8,8 @@ Shell and page navigation hosts for **MVVMExpress**: map a ViewModel type to a S
 
 ```csharp
 builder.UseMvvmExpress(o => o.UseNavigationPage((nav, _) => nav
-    .Map<LoginViewModel, LoginPage>("login")
-    .Map<HomeViewModel, HomePage>("home")).UseDialogs());
+  .Map<LoginViewModel, LoginPage>("login")
+  .Map<HomeViewModel, HomePage>("home")).UseDialogs());
 
 await Navigator.ResetAsync<HomeViewModel>(); // replace-root after login
 await Navigator.NavigateToAsync<DetailsViewModel, DetailsArgs>(new(42));
@@ -22,10 +22,10 @@ Typed args become a query string via `NavigationRouteTable.FormatQuery`. `INavig
 ## Install
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Navigation --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Navigation
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.6.1-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile-only. Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `1.0.0`.
 
 Prefer `UseNavigationPage()` for login → host → push. Wrap with `GuardedNavigator` when routes need auth. See the [chat-host cookbook](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress/blob/main/docs/chat-host.md).
 

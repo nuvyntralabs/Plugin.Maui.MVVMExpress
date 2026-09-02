@@ -1,6 +1,6 @@
-# Known limitations (0.6.1-preview)
+# Known limitations (1.0.0)
 
-**Open gate (blocks 1.0.0):** design review sign-off (Phase 0). That is a human decision, not remaining product work.
+**1.0.0 design-review sign-off (2026-09-02).** Shipped public APIs in [API-DESIGN.md](../API-DESIGN.md) plus `UseAuth<TChallenge>()` are the SemVer contract. Deprecations only after 1.0. Breaking change = major version. Phase 8 DX unification is not part of this lock.
 
 **Host footguns (lists / MAUI 10 Android):**
 

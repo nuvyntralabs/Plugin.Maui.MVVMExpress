@@ -30,5 +30,6 @@
     <Project Path="samples/Plugin.Maui.MVVMExpress.Samples.Shared/Plugin.Maui.MVVMExpress.Samples.Shared.csproj" />
     <Project Path="samples/Plugin.Maui.MVVMExpress.Sample/Plugin.Maui.MVVMExpress.Sample.csproj" />
     <Project Path="samples/Plugin.Maui.MVVMExpress.AuthApp/Plugin.Maui.MVVMExpress.AuthApp.csproj" />
+    <Project Path="samples/Playground/Plugin.Maui.MVVMExpress.Playground.csproj" />
   </Folder>
 </Solution>

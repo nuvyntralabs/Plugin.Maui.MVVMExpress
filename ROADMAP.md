@@ -4,6 +4,8 @@ Product: **Plugin.Maui.MVVMExpress**.
 
 Implementation is incremental. Do not implement a later phase in the same change as an earlier one unless a Phase 1 type is blocked without it.
 
+Phases 0–7 below are shipped. **Current work** is Phases 8–10 in [docs/development-plan.md](docs/development-plan.md).
+
 ## Versioning
 
 | Version | Meaning |
@@ -14,8 +16,12 @@ Implementation is incremental. Do not implement a later phase in the same change
 | 0.4.0-preview | Phase 3 released (forms, reactive, cache policies, pipeline, scopes) |
 | 0.5.0-preview | Phases 4–5. Generators, persist/auth, productization |
 | 0.6.0-preview | Device-safe marshal, weak `CanExecuteChanged`, window-overlay toasts, Validation trim roots, host/auth/forms UX |
-| 0.6.1-preview | Host-safe navigator (pages on `IMainThread`), `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection`, chat-host cookbook (current). Not 1.0.0 |
-| 1.0.0 | SemVer lock after design-review sign-off only. Accepted scope: [known-limitations.md](docs/known-limitations.md) |
+| 0.6.1-preview | Host-safe navigator (pages on `IMainThread`), `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection`, chat-host cookbook |
+| 0.6.2-preview | (skipped — Phase 6 docs shipped with 1.0.0) |
+| 1.0.0 | Phase 6 + 7 — 15-minute path, cheat sheet, cookbook, Playground, SemVer lock, `UseAuth<TChallenge>()` (current). Accepted 1.0 scope: [known-limitations.md](docs/known-limitations.md) |
+| 1.1.0 | Phase 8 — one path (generators, registration, forms, nav-args), CT interop, three analyzers, `dotnet new` |
+| 1.2.0 | Phase 9 — Shell parity, modules, modal stack, sibling host adapters |
+| 1.3.0 | Phase 10 — device numbers, trim, zero-reflection policy, production post-mortem |
 
 After 1.0.0: SemVer. Breaking API changes require a major version.
 
@@ -28,7 +34,7 @@ After 1.0.0: SemVer. Breaking API changes require a major version.
 - [x] FEATURE-MATRIX.md
 - [x] Solution / project skeleton
 - [x] Memory / scale design + Core leak tests
-- [ ] Design review sign-off
+- [x] Design review sign-off (1.0.0 — 2026-09-02). Contract: shipped 0.6.1 APIs in [API-DESIGN.md](API-DESIGN.md) plus `UseAuth<TChallenge>()`. Accepted 1.0 scope: [known-limitations.md](docs/known-limitations.md). Phases 8–10 may deprecate, not break, 1.0 types.
 
 ## Phase 1 — Core + Host (shipped in 0.1.0-preview)
 

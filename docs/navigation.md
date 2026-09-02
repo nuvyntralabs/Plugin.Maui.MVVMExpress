@@ -62,4 +62,4 @@ await Navigator.ResetAsync<AuthHomeViewModel>(); // after sign-in
 await Navigator.ResetAsync<AuthLoginViewModel>(); // after sign-out
 ```
 
-`GuardedNavigatorOptions.ChallengeViewModel` opens login on `E_AUTH` and resumes the original route after `IAuthState.Changed`.
+`UseAuth<LoginViewModel>()` on `UseMvvmExpress` opens login on `E_AUTH` and resumes the original route after `IAuthState.Changed`. `GuardedNavigator` is the implementation — not the getting-started API. See [migration-0.6.1.md](migration-0.6.1.md).

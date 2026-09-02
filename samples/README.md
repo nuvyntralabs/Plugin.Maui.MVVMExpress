@@ -2,7 +2,9 @@
 
 ViewModels live in [`Plugin.Maui.MVVMExpress.Samples.Shared`](Plugin.Maui.MVVMExpress.Samples.Shared/) (`net10.0`, no MAUI). They are covered by [`tests/Plugin.Maui.MVVMExpress.Samples.Tests`](../tests/Plugin.Maui.MVVMExpress.Samples.Tests/).
 
-**First run:** [`Plugin.Maui.MVVMExpress.AuthApp`](Plugin.Maui.MVVMExpress.AuthApp/) — login / register / forgot / guarded home (`ResetAsync` replace-root). Demo: `demo@mvvmexpress.dev` / `secret`.
+**Playground (15-minute click tour):** [`Playground`](Playground/) — command, navigation, dialog, form, auth, list. `dotnet run --project samples/Playground/Plugin.Maui.MVVMExpress.Playground.csproj -f net10.0-maccatalyst`.
+
+**First-run login app:** [`Plugin.Maui.MVVMExpress.AuthApp`](Plugin.Maui.MVVMExpress.AuthApp/) — login / register / forgot / guarded home (`UseAuth<AuthLoginViewModel>()`, `ResetAsync` replace-root). Demo: `demo@mvvmexpress.dev` / `secret`.
 
 **Chat host (ViewModels only):** [`ChatHost`](Plugin.Maui.MVVMExpress.Samples.Shared/ChatHost/) — `SectionHostViewModel` + `SnapshotCollection` + Entry `SearchQuery`. Cookbook: [docs/chat-host.md](../docs/chat-host.md). Do not treat this as a `PagedCollection` + `CollectionView` sample.
 

@@ -27,4 +27,4 @@ public partial class HomeViewModel : ViewModel
 }
 ```
 
-Install `Plugin.Maui.MVVMExpress.Core` and `Plugin.Maui.MVVMExpress.SourceGenerators` (`--prerelease`). If you must keep `WeakReferenceMessenger`, add `Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit` and wrap it with `CommunityToolkitMessageHub`. Do not reference both messengers for the same messages.
+Install `Plugin.Maui.MVVMExpress.Core` and `Plugin.Maui.MVVMExpress.SourceGenerators`. If you must keep `WeakReferenceMessenger`, add `Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit` and wrap it with `CommunityToolkitMessageHub`. Do not reference both messengers for the same messages.

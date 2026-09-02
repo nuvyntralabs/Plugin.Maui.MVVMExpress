@@ -7,7 +7,7 @@ Modular MVVM application framework for .NET MAUI.
 - Product: MVVMExpress
 - Package prefix: `Plugin.Maui.MVVMExpress`
 - Catalog: https://github.com/nuvyntralabs/MauiEssentials
-- Status: **0.6.1-preview.** Navigators construct pages on `IMainThread`. `UseNavigationPage` + `SectionHostViewModel` + `SnapshotCollection` cover chat-style hosts. Command/dialog/property notifications marshal to IMainThread. `CanExecuteChanged` is a weak event. Toasts use `Window.AddOverlay` (never wrap `Page.Content`). Validation ships `ILLink.Descriptors.xml`. Shipped APIs are the 1.0 contract; 1.0.0 waits on design-review sign-off. See docs/known-limitations.md. LICENSE and CHANGELOG stay at the repo root.
+- Status: **1.0.0.** Navigators construct pages on `IMainThread`. `UseNavigationPage` + `UseAuth<TChallenge>()` + `SectionHostViewModel` + `SnapshotCollection` cover chat-style hosts. Command/dialog/property notifications marshal to IMainThread. `CanExecuteChanged` is a weak event. Toasts use `Window.AddOverlay` (never wrap `Page.Content`). Validation ships `ILLink.Descriptors.xml`. Shipped APIs are the SemVer contract. See docs/known-limitations.md. LICENSE and CHANGELOG stay at the repo root.
 
 ## When to consider this repository
 
@@ -18,7 +18,7 @@ Do **not** use this repository to implement GPS, captive-portal detection, offli
 ## Before implementing
 
 1. Read [ARCHITECTURE.md](ARCHITECTURE.md), [API-DESIGN.md](API-DESIGN.md), root [llms.txt](llms.txt), the matching `src/*/llms.txt`, [docs/TEST-COVERAGE.md](docs/TEST-COVERAGE.md), [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md), [ROADMAP.md](ROADMAP.md).
-2. Confirm the requested work matches the current phase. Do not generate the entire framework.
+2. Confirm the requested work matches the current phase in [docs/development-plan.md](docs/development-plan.md) (Phase 8 until its exit is met). Do not generate the entire framework.
 3. Do not add PackageReferences to CommunityToolkit.Mvvm, Prism, ReactiveUI, FluentValidation, or sibling MauiEssentials plugins from Core.
 
 ## Important

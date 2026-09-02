@@ -7,20 +7,20 @@ MAUI `DisplayAlert` and toast adapter for **MVVMExpress**. ViewModels depend on 
 ```csharp
 public sealed class EditViewModel : ViewModel
 {
-    private readonly IDialogs _dialogs;
-    private readonly INotifier _notifier;
-    public EditViewModel(IDialogs dialogs, INotifier notifier)
-    {
-        _dialogs = dialogs;
-        _notifier = notifier;
-    }
+  private readonly IDialogs _dialogs;
+  private readonly INotifier _notifier;
+  public EditViewModel(IDialogs dialogs, INotifier notifier)
+  {
+    _dialogs = dialogs;
+    _notifier = notifier;
+  }
 
-    public async Task ConfirmDeleteAsync()
-    {
-        if (await _dialogs.ConfirmAsync("Delete", "Remove this item?"))
-            await DeleteAsync();
-        await _notifier.ToastAsync("Deleted");
-    }
+  public async Task ConfirmDeleteAsync()
+  {
+    if (await _dialogs.ConfirmAsync("Delete", "Remove this item?"))
+      await DeleteAsync();
+    await _notifier.ToastAsync("Deleted");
+  }
 }
 ```
 
@@ -29,10 +29,10 @@ Register `MauiDialogs` as `IDialogs` and `MauiNotifier` as `INotifier` in the MA
 ## Install
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Dialogs --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Dialogs
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile TFMs are present and compile-only. Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `0.6.1-preview`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+). Mac Catalyst / Windows compile TFMs are present and compile-only. Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `1.0.0`.
 
 `MauiNotifier` toasts use `Window.AddOverlay` and never wrap `Page.Content`.
 

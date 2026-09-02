@@ -1,13 +1,13 @@
 # Plugin.Maui.MVVMExpress
 
-MAUI host: UseMvvmExpress, MauiMainThread, page lifecycle. Depends on Core.
+MAUI host: UseMvvmExpress, UseAuth, MauiMainThread, page lifecycle. Depends on Core.
 
 NuGet: https://www.nuget.org/packages/Plugin.Maui.MVVMExpress
 GitHub: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
 Docs: https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/
 Catalog: https://github.com/nuvyntralabs/MauiEssentials
 License: MIT
-Version: 0.6.1-preview (`--prerelease`)
+Version: 1.0.0
 
 ## Supported versions
 
@@ -15,17 +15,17 @@ net10.0, net10.0-android (API 21+), net10.0-ios (iOS 15+). Mac Catalyst / Window
 
 ## Installation
 
-dotnet add package Plugin.Maui.MVVMExpress --prerelease
+dotnet add package Plugin.Maui.MVVMExpress
 
-Registration: `builder.UseMvvmExpress(o => o.UseNavigationPage().UseDialogs())`. `UseShell()` is optional.
+Registration: `builder.UseMvvmExpress(o => o.UseNavigationPage().UseDialogs().UseAuth<LoginViewModel>())`. `UseShell()` is optional.
 
 ## Use this package when
 
-- A MAUI Android/iOS app already uses Core ViewModels and needs the host dispatcher and lifecycle behavior
+- A MAUI Android/iOS app already uses Core ViewModels and needs the host dispatcher, lifecycle behavior, and `UseAuth`
 
 ## Do not use when
 
-- The project is `net10.0` tests only — use Core + `AddMvvmExpress()`
+- The project is `net10.0` tests only — use Core + `AddMvvmExpress()` / `AddAuth<T>()`
 - They need Shell/page navigation or alerts/toasts — add Navigation / Dialogs packages
 
 ## Alternatives

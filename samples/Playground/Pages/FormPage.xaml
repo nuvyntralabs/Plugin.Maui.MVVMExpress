@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:play="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Playground;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Playground.Pages.FormPage"
+    x:DataType="play:PlaygroundFormViewModel"
+    Title="Form">
+
+    <VerticalStackLayout Padding="20" Spacing="12">
+        <Label Text="Edit the Entry, then Back — dirty leave confirms." />
+        <Entry Placeholder="Title" Text="{Binding Title}" />
+        <Button Text="Save" Command="{Binding SaveCommand}" />
+        <Label Text="{Binding IsDirty, StringFormat='Dirty: {0}'}" />
+    </VerticalStackLayout>
+</ContentPage>

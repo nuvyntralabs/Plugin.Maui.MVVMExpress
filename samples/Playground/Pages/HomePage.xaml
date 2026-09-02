@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:play="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Playground;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Playground.Pages.HomePage"
+    x:DataType="play:PlaygroundHomeViewModel"
+    Title="Playground">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+            <Label Text="Click each path once." />
+            <Button Text="Command" Command="{Binding OpenCommandCommand}" />
+            <Button Text="Navigation" Command="{Binding OpenDetailsCommand}" />
+            <Button Text="Dialog" Command="{Binding OpenDialogCommand}" />
+            <Button Text="Form" Command="{Binding OpenFormCommand}" />
+            <Button Text="Auth" Command="{Binding OpenAuthCommand}" />
+            <Button Text="List" Command="{Binding OpenListCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -37,9 +37,20 @@ public sealed class MvvmExpressOptions
     public bool CancelOperationsOnDisappear { get; set; }
     public bool EnableDiagnostics { get; set; }
 }
+
+public static class MvvmExpressAuthExtensions
+{
+    public static MvvmExpressOptions UseAuth<TChallenge>(this MvvmExpressOptions options)
+        where TChallenge : class, IViewModel;
+
+    public static IServiceCollection AddAuth<TChallenge>(this IServiceCollection services, bool forwardFailures = true)
+        where TChallenge : class, IViewModel;
+}
 ```
 
-`UseMvvmExpress` registers Core services, then replaces `IMainThread` with `MauiMainThread`. `AddMvvmExpress` has no options callback. `CancelOperationsOnDisappear` is stored; the current `ViewModelLifecycleBehavior` calls `OnDisappearingAsync` and does **not** yet cancel the token on disappear. Dispose is the guaranteed cancel path.
+`UseMvvmExpress` registers Core services, then replaces `IMainThread` with `MauiMainThread`. `UseAuth<TChallenge>()` wraps the registered `INavigator` with `GuardedNavigator` (challenge + generated `[RequiresAuth]` policy). `AddAuth<TChallenge>()` is the same wrap for `AddMvvmExpress()` hosts. `AddMvvmExpress` has no options callback. `CancelOperationsOnDisappear` is stored; the current `ViewModelLifecycleBehavior` calls `OnDisappearingAsync` and does **not** yet cancel the token on disappear. Dispose is the guaranteed cancel path.
+
+**1.0 compatibility:** shipped 0.6.1 APIs in this file are the 1.0 contract. Deprecations only after 1.0. Breaking change = major version.
 
 `AddMauiMvvm` is **not** used (avoids implying ownership of MAUI’s MVVM).
 

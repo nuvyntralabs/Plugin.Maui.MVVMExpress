@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:play="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Playground;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Playground.Pages.LoginPage"
+    x:DataType="play:PlaygroundLoginViewModel"
+    Title="Sign in">
+
+    <VerticalStackLayout Padding="20" Spacing="8">
+        <Label Text="demo@mvvmexpress.dev / secret" />
+        <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" />
+        <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
+        <Button Text="Sign in" Command="{Binding SignInCommand}" />
+    </VerticalStackLayout>
+</ContentPage>

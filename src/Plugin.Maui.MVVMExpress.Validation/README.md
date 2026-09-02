@@ -7,13 +7,13 @@ DataAnnotations validation for **MVVMExpress** (`IValidator`).
 ```csharp
 public sealed class Product
 {
-    [Required]
-    public string Name { get; set; } = "";
+  [Required]
+  public string Name { get; set; } = "";
 }
 
 var summary = DataAnnotationsValidator.Instance.Validate(product);
 if (!summary.IsValid)
-    await dialogs.AlertAsync("Invalid", summary.ToString());
+  await dialogs.AlertAsync("Invalid", summary.ToString());
 ```
 
 FluentValidation stays an optional app-level adapter. Trim: the package ships `ILLink.Descriptors.xml` for `Required`, `MinLength`, `MaxLength`, `StringLength`, `Range`, `RegularExpression`, `EmailAddress`, `Compare`, and `MustMatch`. Custom attributes need an app-level descriptor.
@@ -21,10 +21,10 @@ FluentValidation stays an optional app-level adapter. Trim: the package ships `I
 ## Install
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Validation --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Validation
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `0.6.1-preview`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `1.0.0`.
 
 ## Related
 

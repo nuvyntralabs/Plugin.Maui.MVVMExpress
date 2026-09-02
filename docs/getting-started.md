@@ -1,86 +1,134 @@
 # Getting started
 
-**First run:** the login → home sample at [`samples/Plugin.Maui.MVVMExpress.AuthApp`](../samples/Plugin.Maui.MVVMExpress.AuthApp/). Demo credentials: `demo@mvvmexpress.dev` / `secret`.
-
-The flyout catalog stays at [`samples/Plugin.Maui.MVVMExpress.Sample`](../samples/Plugin.Maui.MVVMExpress.Sample/).
-
-Phase extras: [forms](forms.md), [reactive](reactive.md), [cache policies](offline.md), [navigation](navigation.md).
-
-## Host footguns
-
-1. Call `InitializeComponent()` on `App` **before** resolving `AppShell` / pages (`App(IServiceProvider)` + `CreateWindow`).
-2. Bind `Button.Command` to `AsyncModelCommand` only on **0.6.0-preview+** (UI-thread marshal + weak `CanExecuteChanged`). On 0.5.0-preview, wrap or hop yourself.
-3. Dirty forms confirm “Discard changes?” when `IDialogs` is registered. Tests keep a silent block when dialogs are null.
+A new hire can finish this in about fifteen minutes. Click along in [`samples/Playground`](../samples/Playground/).
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
-dotnet add package Plugin.Maui.MVVMExpress --prerelease
+dotnet add package Plugin.Maui.MVVMExpress
+dotnet add package Plugin.Maui.MVVMExpress.Navigation
+dotnet add package Plugin.Maui.MVVMExpress.Dialogs
+dotnet add package Plugin.Maui.MVVMExpress.SourceGenerators
 ```
 
-Or project-reference this repository while iterating.
+```csharp
+builder.UseMvvmExpress(o => o
+    .UseNavigationPage((nav, _) => nav
+        .Map<HomeViewModel, HomePage>("home")
+        .Map<DetailsViewModel, DetailsPage>("details")
+        .Map<EditViewModel, EditPage>("edit")
+        .Map<LoginViewModel, LoginPage>("login"))
+    .UseDialogs()
+    .UseAuth<LoginViewModel>());
+```
 
-## ViewModel
+Register an `IAuthState` adapter (Playground uses an in-memory demo; production uses [Plugin.Maui.SecureSession](https://www.nuget.org/packages/Plugin.Maui.SecureSession)). Do not reconstruct `GuardedNavigator`.
+
+---
+
+## Page 1 — ViewModel
+
+A `partial` class, `[Notify]`, and `[AsyncModelCommand]`. Bind the generated `IncrementCommand` to a `Button`.
 
 ```csharp
-using Plugin.Maui.MVVMExpress.ComponentModel;
-using Plugin.Maui.MVVMExpress.Input;
-using Plugin.Maui.MVVMExpress.State;
-
-public sealed class HomeViewModel : ViewModel
+public partial class HomeViewModel : PageViewModel
 {
-    public AsyncState<IReadOnlyList<int>> Items { get; } = new();
+    [Notify] private int _count;
 
-    public AsyncModelCommand RefreshCommand { get; }
-
-    public HomeViewModel()
+    [AsyncModelCommand]
+    private async Task IncrementAsync(CancellationToken cancellationToken)
     {
-        RefreshCommand = new AsyncModelCommand(
-            ct => Items.LoadAsync(_ => Task.FromResult<IReadOnlyList<int>>([1, 2, 3]), ct));
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            RefreshCommand.Cancel();
-        }
-
-        base.Dispose(disposing);
+        await Task.Delay(80, cancellationToken);
+        Count++;
     }
 }
 ```
 
-`Dispose` cancels `ViewModelCancellationToken`. The token remains readable after dispose (`IsCancellationRequested` is true). Do not call `Page.DisplayAlert` or `Shell.Current` from the ViewModel.
-
-## Commands
-
-- `ModelCommand` / `ModelCommand<T>` — sync; weak `CanExecuteChanged`
-- `AsyncModelCommand` / `AsyncModelCommand<T>` — async, `IsRunning`, `Cancel`, timeout / retry / `ConcurrencyMode` via `AsyncCommandOptions`; weak `CanExecuteChanged` (a popped Button does not stay pinned)
-
-## Collections (mid / large lists)
-
-```csharp
-var items = new ObservableRangeCollection<Product>();
-items.AddRange(page);      // one CollectionChanged Reset
-items.ReplaceRange(next);
+```xml
+<Button Text="Increment" Command="{Binding IncrementCommand}" />
 ```
 
-Do not `Add` in a loop for mid or large lists.
+Do not call `Page.DisplayAlert` or `Shell.Current` from the ViewModel.
 
-## Messaging
+---
 
-```csharp
-hub.Subscribe<HomeViewModel, CartChanged>(this, static (vm, msg) => vm.Refresh(), weak: true);
-```
+## Page 2 — Navigation
 
-The handler must use the recipient argument so a weak subscribe does not pin the ViewModel.
-
-## Host registration
+Inject `INavigator` (already on `PageViewModel`) and push a page.
 
 ```csharp
-services.AddMvvmExpress();          // tests / net10.0
-builder.UseMvvmExpress(o => o.UseNavigationPage().UseDialogs()); // login → replace-root → push
-builder.UseMvvmExpress(o => o.UseShell().UseDialogs());          // optional Shell path
+[AsyncModelCommand]
+private Task OpenDetailsAsync(CancellationToken cancellationToken)
+    => Navigator!.NavigateToAsync<DetailsViewModel>(cancellationToken);
 ```
 
-`INavigator`, `MauiShellNavigator`, `MauiPageNavigator`, `IDialogs`, `INotifier` / `MauiNotifier`, `ICache` / `ICachedFetcher`, `IConnectivityProbe`, `IAuthState`, `IValidator`, `FormViewModel`, `IOperationExecutor`, `PagedCollection<T>`, and `SnapshotCollection<T>` ship with tests. Optional `[Notify]` / `[ModelCommand]` / `[RegisterViewModel]` generation: `Plugin.Maui.MVVMExpress.SourceGenerators` plus `services.AddGeneratedViewModels()`. Navigation hosts: [navigation.md](navigation.md). Chat host: [chat-host.md](chat-host.md). Android lists: [maui-android.md](maui-android.md). Samples: [samples/README.md](../samples/README.md). Known limits: [known-limitations.md](known-limitations.md).
+After sign-in, replace the root so Back cannot return to login:
+
+```csharp
+await Navigator.ResetAsync<HomeViewModel>(cancellationToken);
+```
+
+---
+
+## Page 3 — Dialogs
+
+`IDialogs` is on `PageViewModel` when you call `UseDialogs()`.
+
+```csharp
+[AsyncModelCommand]
+private Task AlertAsync(CancellationToken cancellationToken)
+    => Dialogs!.AlertAsync("Saved", "The item is stored.", cancellationToken: cancellationToken);
+```
+
+---
+
+## Page 4 — Form
+
+`FormViewModel.Field` + `Bind`. Bind an `Entry` to the public property. Leaving a dirty form confirms “Discard changes?”.
+
+```csharp
+public sealed class EditViewModel : FormViewModel
+{
+    private readonly FormField<string> _name;
+
+    public EditViewModel(INavigator navigator, IDialogs dialogs)
+        : base(navigator, dialogs)
+    {
+        _name = Field("Name", "");
+        Bind(_name, nameof(Name), () => SaveCommand.NotifyCanExecuteChanged());
+        SaveCommand = new AsyncModelCommand(SaveAsync, () => !string.IsNullOrWhiteSpace(Name));
+    }
+
+    public string Name
+    {
+        get => _name.Value ?? "";
+        set => _name.Value = value;
+    }
+
+    public AsyncModelCommand SaveCommand { get; }
+
+    private async Task SaveAsync(CancellationToken cancellationToken)
+    {
+        await Task.Delay(80, cancellationToken);
+        MarkClean();
+    }
+}
+```
+
+```xml
+<Entry Placeholder="Name" Text="{Binding Name}" />
+<Button Text="Save" Command="{Binding SaveCommand}" />
+```
+
+`SubmitAsync` calls `MarkClean()` on success.
+
+---
+
+## Next
+
+| Want | Open |
+| --- | --- |
+| CommunityToolkit / Prism names | [cheat-sheet.md](cheat-sheet.md) |
+| Login, tabs, list, inbox, dirty form | [cookbook.md](cookbook.md) |
+| Shell vs NavigationPage | [navigation.md](navigation.md) |
+| Chat-style host | [chat-host.md](chat-host.md) |
+
+Playground: command, navigation, dialog, form, auth, list. Auth demo: `demo@mvvmexpress.dev` / `secret`.

@@ -8,7 +8,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 
 **Honesty rule:** The [README](README.md) comparison is the **designed product** (Yes = in the architecture). This file tracks **shipping**. `Yes` here means types exist **and** tests exist. `Designed (Pn)` means specified for phase n, not coded yet. This table does not claim superiority. Scale numbers are host-process measurements; see [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md) and [docs/known-limitations.md](docs/known-limitations.md).
 
-Last validated: 2026-09-02 against the public docs and repos linked above. **0.6.1-preview** adds UI-thread-safe page construction, `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection<T>`, and `SearchQuery.CommittedText`.
+**Status: 1.0.0** (stable SemVer lock). Last validated: 2026-09-02 against the public docs and repos linked above. **1.0.0** adds `UseAuth<TChallenge>()` on `UseMvvmExpress`. 0.6.1 shipped UI-thread-safe page construction, `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection<T>`, and `SearchQuery.CommittedText`.
 
 ## Legend
 
@@ -83,7 +83,7 @@ Last validated: 2026-09-02 against the public docs and repos linked above. **0.6
 | Lifecycle-aware cancellation | Yes (dispose cancels token) | No | Partial | Partial (`WhenActivated`) |
 | State restoration (`[PersistState]`) | Yes | No | Partial | Partial |
 | Deep linking | Yes (sample `DeepLinkRouteMap`; compose Plugin.Maui.DeepLinks) | No | Yes (URI) | Yes |
-| Auth navigation guards | Yes (`IAuthState`, `GuardedNavigator`) | No | Ext | Ext |
+| Auth navigation guards | Yes (`IAuthState`, `UseAuth<TChallenge>()`, `GuardedNavigator`) | No | Ext | Ext |
 | Feature-flag abstraction | Yes (`IFeatureSwitch`) | No | No | No |
 | Testing leak/scale helpers | Yes (`LeakProbe`, `ScaleProfile`, `ScopedNavigator`) | Partial | Yes | Yes |
 | Testing fakes package | Yes (`FakeDialogs`, `FakeNavigator`, `FakeMainThread`, `FakeConnectivity`, `FakeMessageHub`, `AppearAsync`) | Partial | Yes | Yes |

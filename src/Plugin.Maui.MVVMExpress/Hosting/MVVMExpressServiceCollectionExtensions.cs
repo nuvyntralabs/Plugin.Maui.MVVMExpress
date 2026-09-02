@@ -47,6 +47,11 @@ public static class MVVMExpressMauiAppBuilderExtensions
             GeneratedRegistrationHooks.Apply(builder.Services);
         }
 
+        if (options.AuthChallengeViewModel is { } challenge)
+        {
+            builder.Services.AddAuth(challenge, options.ForwardNavigationFailures);
+        }
+
         if (options.AutoAttachLifecycle)
         {
             ViewModelLifecycleHost.Enable(options);

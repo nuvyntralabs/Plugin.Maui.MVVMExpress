@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Plugin.Maui.MVVMExpress.Auth;
 using Plugin.Maui.MVVMExpress.AuthApp.Pages;
 using Plugin.Maui.MVVMExpress.Dialogs;
 using Plugin.Maui.MVVMExpress.Hosting;
@@ -16,28 +15,21 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .UseMvvmExpress(o => o.UseShell().UseDialogs())
+            .UseMvvmExpress(o => o
+                .UseShell((nav, _) => nav
+                    .Map<AuthLoginViewModel, LoginPage>("//login")
+                    .Map<AuthRegisterViewModel, RegisterPage>("register")
+                    .Map<AuthForgotViewModel, ForgotPage>("forgot")
+                    .Map<AuthHomeViewModel, HomePage>("//home"))
+                .UseDialogs()
+                .UseAuth<AuthLoginViewModel>())
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        builder.Services.AddMvvmExpressSamples();
-        builder.Services.AddSingleton<INavigator>(sp =>
-        {
-            var shell = new MauiShellNavigator(builder.Services)
-                .Map<AuthLoginViewModel, LoginPage>("//login")
-                .Map<AuthRegisterViewModel, RegisterPage>("register")
-                .Map<AuthForgotViewModel, ForgotPage>("forgot")
-                .Map<AuthHomeViewModel, HomePage>("//home");
-            return new GuardedNavigator(
-                shell,
-                sp.GetRequiredService<IAuthState>(),
-                Plugin.Maui.MVVMExpress.Generated.MvvmExpressGeneratedRegistrations.AuthPolicy,
-                new GuardedNavigatorOptions { ChallengeViewModel = typeof(AuthLoginViewModel), ForwardFailures = true },
-                typeof(AuthHomeViewModel));
-        });
+        builder.Services.AddMvvmExpressSamples(configureNavigator: false);
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<RegisterPage>();

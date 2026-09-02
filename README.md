@@ -4,11 +4,11 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `0.6.1-preview` — host-safe preview (pages constructed on `IMainThread`, `UseNavigationPage` + replace-root, section host, snapshot lists). **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the 1.0 contract; 1.0.0 waits on design-review sign-off. See [known limitations](docs/known-limitations.md). [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
+**Status:** `1.0.0` — SemVer lock (`UseAuth<TChallenge>()`, 15-minute path, Playground). **Supported: Android + iOS.** Mac Catalyst / Windows compile-only. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the contract. See [known limitations](docs/known-limitations.md). [Getting started](docs/getting-started.md) · [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
-[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Navigation](docs/navigation.md) · [Chat host](docs/chat-host.md) · [Forms](docs/forms.md) · [Reactive](docs/reactive.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
+[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Development plan](docs/development-plan.md) · [Navigation](docs/navigation.md) · [Chat host](docs/chat-host.md) · [Forms](docs/forms.md) · [Reactive](docs/reactive.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
 
 Author: [Niladri Prasad Padhy](https://github.com/NiladriPadhy) · Catalog: [MauiEssentials](https://github.com/nuvyntralabs/MauiEssentials) · License: MIT
 
@@ -62,8 +62,8 @@ hub.Subscribe<HomeViewModel, RefreshMsg>(this, static (vm, _) => vm.Refresh());
 ```
 
 ```bash
-dotnet add package Plugin.Maui.MVVMExpress.Core --prerelease
-dotnet add package Plugin.Maui.MVVMExpress --prerelease
+dotnet add package Plugin.Maui.MVVMExpress.Core
+dotnet add package Plugin.Maui.MVVMExpress
 ```
 
 Register Core services with `services.AddMvvmExpress()`. In a MAUI host call `builder.UseMvvmExpress()`. See [docs/getting-started.md](docs/getting-started.md).
