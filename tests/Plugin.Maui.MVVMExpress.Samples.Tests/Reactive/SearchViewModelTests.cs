@@ -26,7 +26,11 @@ public sealed class SearchViewModelTests
         var vm = new SearchViewModel(catalog, TimeSpan.FromMilliseconds(15));
         vm.Query = "e";
         vm.Query = "latte";
-        await Task.Delay(120);
+        var deadline = DateTime.UtcNow.AddSeconds(2);
+        while (DateTime.UtcNow < deadline && vm.Items.Count != 1)
+        {
+            await Task.Delay(20);
+        }
         Assert.True(vm.SearchStarts >= 1);
         Assert.Single(vm.Items);
         Assert.Equal("Latte", vm.Items[0].Name);

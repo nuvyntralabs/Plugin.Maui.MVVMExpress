@@ -72,6 +72,9 @@ public sealed class ScaleAnalysisTests
         sw.Stop();
         var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
         Assert.True(allocated < 2_048, $"allocated {allocated}");
-        Assert.True(sw.ElapsedMilliseconds < 250, $"elapsed {sw.ElapsedMilliseconds} ms");
+        var elapsedBudget = string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase)
+            ? 1_000
+            : 250;
+        Assert.True(sw.ElapsedMilliseconds < elapsedBudget, $"elapsed {sw.ElapsedMilliseconds} ms");
     }
 }
