@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <PackageType>Template</PackageType>
+    <PackageId>Plugin.Maui.MVVMExpress.Templates</PackageId>
+    <Title>.NET MAUI MVVMExpress — project templates</Title>
+    <Description>dotnet new mvvmexpress (app) and mvvmexpress-page (XAML page, ViewModel, service, bindings, commands).</Description>
+    <PackageTags>dotnet-maui;maui;mvvm;dotnet-new;templates;android;ios;maccatalyst;windows;mauiessentials;mvvm-express</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+    <EmbedUntrackedSources>false</EmbedUntrackedSources>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);NU5128;NU5127;NU5118</NoWarn>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="**\*" />
+    <Compile Remove="..\..\templates\**\*" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <Content Include="..\..\templates\maui-app\**\*" Exclude="..\..\templates\maui-app\**\bin\**;**\obj\**">
+      <Pack>true</Pack>
+      <PackagePath>content/maui-app/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
+    </Content>
+    <Content Include="..\..\templates\page\**\*" Exclude="..\..\templates\page\**\bin\**;**\obj\**">
+      <Pack>true</Pack>
+      <PackagePath>content/page/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
+    </Content>
+  </ItemGroup>
+
+</Project>

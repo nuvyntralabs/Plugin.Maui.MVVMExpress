@@ -2,6 +2,8 @@
 
 ViewModels live in [`Plugin.Maui.MVVMExpress.Samples.Shared`](Plugin.Maui.MVVMExpress.Samples.Shared/) (`net10.0`, no MAUI). They are covered by [`tests/Plugin.Maui.MVVMExpress.Samples.Tests`](../tests/Plugin.Maui.MVVMExpress.Samples.Tests/).
 
+**New app:** `dotnet new install Plugin.Maui.MVVMExpress.Templates` then `dotnet new mvvmexpress -n MyApp`. See [templates/README.md](../templates/README.md).
+
 **Playground (15-minute click tour):** [`Playground`](Playground/) — command, navigation, dialog, form, auth, list. Android, iOS, Mac Catalyst, and Windows (single-window). `dotnet run --project samples/Playground/Plugin.Maui.MVVMExpress.Playground.csproj -f net10.0-maccatalyst`.
 
 **First-run login app:** [`Plugin.Maui.MVVMExpress.AuthApp`](Plugin.Maui.MVVMExpress.AuthApp/) — login / register / forgot / guarded home (`UseAuth<AuthLoginViewModel>()`, `ResetAsync` replace-root). Demo: `demo@mvvmexpress.dev` / `secret`.

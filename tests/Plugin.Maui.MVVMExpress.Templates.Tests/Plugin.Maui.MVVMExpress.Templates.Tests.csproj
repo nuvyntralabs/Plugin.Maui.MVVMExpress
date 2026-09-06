@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Plugin.Maui.MVVMExpress.Templates.Tests</RootNamespace>
+  </PropertyGroup>
+
+</Project>

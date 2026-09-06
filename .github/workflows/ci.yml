@@ -149,15 +149,19 @@ jobs:
             dir="$(dirname "$pkg")"
             base="$(basename "$pkg" .nupkg)"
             symbol="${dir}/${base}.snupkg"
-            if [ ! -f "$symbol" ]; then
-              echo "::error::Missing symbol package for ${pkg}: ${symbol}"
-              exit 1
-            fi
             echo "Pushing ${pkg}"
             dotnet nuget push "$pkg" \
               --api-key "$NUGET_KEY" \
               --source https://api.nuget.org/v3/index.json \
               --skip-duplicate
+            if [[ "${base}" == *.Templates.* ]] || [[ "${base}" == *".Templates."* ]]; then
+              echo "Skipping symbols for template package ${pkg}"
+              continue
+            fi
+            if [ ! -f "$symbol" ]; then
+              echo "::error::Missing symbol package for ${pkg}: ${symbol}"
+              exit 1
+            fi
             echo "Pushing ${symbol}"
             dotnet nuget push "$symbol" \
               --api-key "$NUGET_KEY" \

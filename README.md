@@ -4,7 +4,7 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `1.0.0` — SemVer lock (`UseAuth<TChallenge>()`, 15-minute path, Playground). **Supported:** Android, iOS, Mac Catalyst, and Windows (single-window). Host APIs are shared MAUI — no platform stub. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the contract. See [known limitations](docs/known-limitations.md). [Getting started](docs/getting-started.md) · [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
+**Status:** `1.0.0` — SemVer lock (`UseAuth<TChallenge>()`, 15-minute path, Playground). **Supported:** Android, iOS, Mac Catalyst, and Windows (single-window). Host APIs are shared MAUI — no platform stub. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the contract. See [known limitations](docs/known-limitations.md). [Getting started](docs/getting-started.md) · [Project template](templates/README.md) · [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
@@ -64,6 +64,13 @@ hub.Subscribe<HomeViewModel, RefreshMsg>(this, static (vm, _) => vm.Refresh());
 ```bash
 dotnet add package Plugin.Maui.MVVMExpress.Core
 dotnet add package Plugin.Maui.MVVMExpress
+```
+
+Or scaffold an app:
+
+```bash
+dotnet new install Plugin.Maui.MVVMExpress.Templates
+dotnet new mvvmexpress -n MyApp
 ```
 
 Register Core services with `services.AddMvvmExpress()`. In a MAUI host call `builder.UseMvvmExpress()`. See [docs/getting-started.md](docs/getting-started.md).
@@ -141,6 +148,7 @@ dotnet pack src/Plugin.Maui.MVVMExpress.Testing/Plugin.Maui.MVVMExpress.Testing.
 dotnet pack src/Plugin.Maui.MVVMExpress.Reactive/Plugin.Maui.MVVMExpress.Reactive.csproj -c Release -o artifacts
 dotnet pack src/Plugin.Maui.MVVMExpress.SourceGenerators/Plugin.Maui.MVVMExpress.SourceGenerators.csproj -c Release -o artifacts
 dotnet pack src/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit/Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit.csproj -c Release -o artifacts
+dotnet pack src/Plugin.Maui.MVVMExpress.Templates/Plugin.Maui.MVVMExpress.Templates.csproj -c Release -o artifacts
 ```
 
 Publish (requires a nuget.org API key; siblings are packed and pushed this way, not via a workflow in-repo):

@@ -2,6 +2,13 @@
 
 All notable changes to Plugin.Maui.MVVMExpress are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [SemVer](https://semver.org/) after 1.0.0.
 
+## [Unreleased]
+
+### Added
+
+- `dotnet new mvvmexpress` project template (`Plugin.Maui.MVVMExpress.Templates`) — MainPage + MainPageViewModel, registered `IGreetingService`, bindings and commands, login replace-root, list, form, and tests
+- `dotnet new mvvmexpress-page` item template — XAML page, ViewModel, service, `Add{Name}()`, `{Binding}` and `Command`
+
 ## [1.0.0] — 2026-09-02
 
 ### Added

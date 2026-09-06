@@ -89,6 +89,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 | Testing fakes package | Yes (`FakeDialogs`, `FakeNavigator`, `FakeMainThread`, `FakeConnectivity`, `FakeMessageHub`, `AppearAsync`) | Partial | Yes | Yes |
 | MAUI page lifecycle behaviors | Yes (`ViewModelLifecycleBehavior`) | No | Yes | Yes (`ReactiveContentPage`) |
 | AOT / trim-friendly registration | Yes (`AddGeneratedViewModels`; Validation `ILLink.Descriptors.xml`) | Yes (analyzers in 8.4) | Partial | Partial |
+| `dotnet new` project template | Yes (`mvvmexpress` — NavigationPage, login replace-root, list, form, tests) | Partial (`dotnet new maui`) | Ext | Ext |
 
 ## Differentiating row (design intent, not a claim of current quality)
 

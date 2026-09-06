@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Niladri Prasad Padhy",
+  "classifications": [ "MAUI", "MVVM", "Code" ],
+  "identity": "Plugin.Maui.MVVMExpress.Page",
+  "groupIdentity": "Plugin.Maui.MVVMExpress.Page",
+  "name": "MVVMExpress Page",
+  "shortName": "mvvmexpress-page",
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "sourceName": "Feature",
+  "preferNameDirectory": true,
+  "description": "XAML page, ViewModel, registered service, data binding, and commands for Plugin.Maui.MVVMExpress.",
+  "defaultName": "Feature",
+  "symbols": {
+    "RootNamespace": {
+      "type": "parameter",
+      "description": "Root namespace for the generated types",
+      "replaces": "MauiApp1",
+      "datatype": "text",
+      "defaultValue": "MauiApp1"
+    },
+    "LowerName": {
+      "type": "generated",
+      "generator": "casing",
+      "parameters": {
+        "source": "name",
+        "toLower": true
+      },
+      "replaces": "feature"
+    }
+  },
+  "primaryOutputs": [
+    { "path": "FeaturePage.xaml" },
+    { "path": "FeaturePage.xaml.cs" },
+    { "path": "FeatureViewModel.cs" },
+    { "path": "IFeatureService.cs" },
+    { "path": "FeatureService.cs" },
+    { "path": "FeatureServiceCollectionExtensions.cs" }
+  ]
+}

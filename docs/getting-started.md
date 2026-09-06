@@ -1,6 +1,23 @@
 # Getting started
 
-A new hire can finish this in about fifteen minutes. Click along in [`samples/Playground`](../samples/Playground/) (Android, iOS, Mac Catalyst, or Windows).
+A new hire can finish this in about fifteen minutes. Click along in [`samples/Playground`](../samples/Playground/) (Android, iOS, Mac Catalyst, or Windows), or scaffold an app:
+
+```bash
+dotnet new install Plugin.Maui.MVVMExpress.Templates
+dotnet new mvvmexpress -n MyApp
+cd MyApp
+dotnet test MyApp.Tests
+```
+
+The template is a NavigationPage host that starts on **MainPage** / **MainPageViewModel** (XAML + `IGreetingService` + bindings and commands), plus login → replace-root, one list, one form, and a `net10.0` test project. Demo credentials: `demo@mvvmexpress.dev` / `secret`.
+
+Add another screen later:
+
+```bash
+dotnet new mvvmexpress-page -n Catalog --namespace MyApp
+```
+
+Call `services.AddCatalog()` and `.Map<CatalogViewModel, CatalogPage>("catalog")` in `MauiProgram`.
 
 ```bash
 dotnet add package Plugin.Maui.MVVMExpress

@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Niladri Prasad Padhy",
+  "classifications": [ "MAUI", "Android", "iOS", "Mac Catalyst", "Windows", "MVVM" ],
+  "identity": "Plugin.Maui.MVVMExpress.MauiApp",
+  "groupIdentity": "Plugin.Maui.MVVMExpress",
+  "name": "MVVMExpress MAUI App",
+  "shortName": "mvvmexpress",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "sourceName": "MauiApp1",
+  "preferNameDirectory": true,
+  "description": "A .NET MAUI app using Plugin.Maui.MVVMExpress: MainPage, MainPageViewModel, registered service, data binding, commands, login replace-root, list, form, and tests.",
+  "defaultName": "MauiApp1",
+  "guids": [
+    "8F3A1C2E-4B5D-4E6F-A7B8-C9D0E1F2A3B4",
+    "1A2B3C4D-5E6F-7081-92A3-B4C5D6E7F809",
+    "9E8D7C6B-5A49-3827-16F0-E1D2C3B4A596"
+  ],
+  "symbols": {
+    "LowerName": {
+      "type": "generated",
+      "generator": "casing",
+      "parameters": {
+        "source": "name",
+        "toLower": true
+      },
+      "replaces": "mauiapp1"
+    }
+  },
+  "primaryOutputs": [
+    { "path": "MauiApp1.sln" },
+    { "path": "MauiApp1/MauiApp1.csproj" },
+    { "path": "MauiApp1.Core/MauiApp1.Core.csproj" },
+    { "path": "MauiApp1.Tests/MauiApp1.Tests.csproj" }
+  ],
+  "postActions": [
+    {
+      "description": "Restore NuGet packages required by this project.",
+      "manualInstructions": [
+        { "text": "Run 'dotnet restore'" }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+  ]
+}

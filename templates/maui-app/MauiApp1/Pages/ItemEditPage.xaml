@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MauiApp1;assembly=MauiApp1.Core"
+    x:Class="MauiApp1.ItemEditPage"
+    x:DataType="local:ItemEditViewModel"
+    Title="Add item">
+
+    <VerticalStackLayout Padding="20" Spacing="12">
+        <Label Text="Edit the Entry, then Back — a dirty form confirms discard." />
+        <Entry Placeholder="Name" Text="{Binding Name}" />
+        <Button Text="Save" Command="{Binding SaveCommand}" />
+        <Label Text="{Binding IsDirty, StringFormat='Dirty: {0}'}" />
+    </VerticalStackLayout>
+</ContentPage>

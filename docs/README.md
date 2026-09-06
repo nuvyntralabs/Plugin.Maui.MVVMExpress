@@ -12,7 +12,8 @@ Canonical design documents live at the repository root so they match the first d
 | [ROADMAP.md](../ROADMAP.md) | Versions and exit criteria |
 | [FEATURE-MATRIX.md](../FEATURE-MATRIX.md) | Comparison vs CommunityToolkit, Prism, ReactiveUI (shipping vs designed) |
 | [MEMORY-AND-PERFORMANCE.md](../MEMORY-AND-PERFORMANCE.md) | Leaks, memory budgets, Small / Mid / Large scale |
-| [getting-started.md](getting-started.md) | 15-minute path (ViewModel, navigate, dialog, form) |
+| [getting-started.md](getting-started.md) | 15-minute path (ViewModel, navigate, dialog, form) and `dotnet new mvvmexpress` |
+| [templates](../templates/README.md) | `dotnet new mvvmexpress` — MainPage, login, list, form, tests |
 | [cheat-sheet.md](cheat-sheet.md) | CommunityToolkit / Prism → MVVMExpress names |
 | [cookbook.md](cookbook.md) | Login, tabs, paged catalog, inbox, dirty form |
 | [navigation.md](navigation.md) | Shell / page hosts, toast |

@@ -188,23 +188,33 @@ def test_project(csproj: Path, tfm: str | None, configuration: str) -> None:
     run(command, csproj.parent)
 
 
+def is_template(csproj: Path) -> bool:
+    raw = parse_csproj_values(csproj, {"PackageType"})
+    return any(value.lower() == "template" for value in raw["PackageType"])
+
+
 def pack_project(csproj: Path, configuration: str) -> None:
-    run(
+    command = [
+        "dotnet",
+        "pack",
+        str(csproj),
+        "-c",
+        configuration,
+        "--nologo",
+        "--verbosity",
+        "minimal",
+    ]
+    if is_template(csproj):
+        run(command, csproj.parent)
+        return
+    command.extend(
         [
-            "dotnet",
-            "pack",
-            str(csproj),
-            "-c",
-            configuration,
-            "--nologo",
-            "--verbosity",
-            "minimal",
             "--no-build",
             "-p:IncludeSymbols=true",
             "-p:SymbolPackageFormat=snupkg",
-        ],
-        csproj.parent,
+        ]
     )
+    run(command, csproj.parent)
 
 
 def packaged_outputs(plugin_root: Path, pattern: str) -> list[Path]:
