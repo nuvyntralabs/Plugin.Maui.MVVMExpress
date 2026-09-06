@@ -24,4 +24,4 @@ Login → replace-root back to MainPage, a list, a form, and `MyApp.Tests` are a
 
 Demo sign-in: `demo@mvvmexpress.dev` / `secret`. Production tokens: [Plugin.Maui.SecureSession](https://www.nuget.org/packages/Plugin.Maui.SecureSession).
 
-Version `1.0.0`. Product docs: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress
+Version `1.0.1`. Product docs: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress

@@ -8,7 +8,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 
 **Honesty rule:** The [README](README.md) comparison is the **designed product** (Yes = in the architecture). This file tracks **shipping**. `Yes` here means types exist **and** tests exist. `Designed (Pn)` means specified for phase n, not coded yet. This table does not claim superiority. Scale numbers are host-process measurements; see [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md) and [docs/known-limitations.md](docs/known-limitations.md).
 
-**Status: 1.0.0** (stable SemVer lock). Last validated: 2026-09-02 against the public docs and repos linked above. **1.0.0** adds `UseAuth<TChallenge>()` on `UseMvvmExpress`. 0.6.1 shipped UI-thread-safe page construction, `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection<T>`, and `SearchQuery.CommittedText`.
+**Status: 1.0.1** (stable). Last validated: 2026-09-06. **1.0.1** adds `Plugin.Maui.MVVMExpress.Templates` (`dotnet new mvvmexpress`). SemVer lock remains `UseAuth<TChallenge>()` from **1.0.0**. 0.6.1 shipped UI-thread-safe page construction, `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection<T>`, and `SearchQuery.CommittedText`.
 
 ## Legend
 

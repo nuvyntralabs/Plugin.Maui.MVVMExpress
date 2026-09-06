@@ -4,6 +4,8 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-09-06
+
 ### Added
 
 - `dotnet new mvvmexpress` project template (`Plugin.Maui.MVVMExpress.Templates`) — MainPage + MainPageViewModel, registered `IGreetingService`, bindings and commands, login replace-root, list, form, and tests
