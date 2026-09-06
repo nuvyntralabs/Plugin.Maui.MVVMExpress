@@ -11,6 +11,10 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 - `dotnet new mvvmexpress` project template (`Plugin.Maui.MVVMExpress.Templates`) — MainPage + MainPageViewModel, registered `IGreetingService`, bindings and commands, login replace-root, list, form, and tests
 - `dotnet new mvvmexpress-page` item template — XAML page, ViewModel, service, `Add{Name}()`, `{Binding}` and `Command`
 
+### Fixed
+
+- `Debounce_RunsOnce` used a 25ms window that flakes on busy CI runners
+
 ## [1.0.0] — 2026-09-02
 
 ### Added
