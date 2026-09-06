@@ -154,8 +154,9 @@ jobs:
               --api-key "$NUGET_KEY" \
               --source https://api.nuget.org/v3/index.json \
               --skip-duplicate
-            if [[ "${base}" == *.Templates.* ]] || [[ "${base}" == *".Templates."* ]]; then
-              echo "Skipping symbols for template package ${pkg}"
+            if [[ "${base}" == *.Templates.* ]] || [[ "${base}" == *".Templates."* ]] \
+              || [[ "${base}" == *.SourceGenerators.* ]] || [[ "${base}" == *".SourceGenerators."* ]]; then
+              echo "Skipping symbols for ${pkg}"
               continue
             fi
             if [ ! -f "$symbol" ]; then

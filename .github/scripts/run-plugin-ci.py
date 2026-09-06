@@ -193,6 +193,14 @@ def is_template(csproj: Path) -> bool:
     return any(value.lower() == "template" for value in raw["PackageType"])
 
 
+def skips_symbols(csproj: Path) -> bool:
+    """Analyzer and template packs have no lib/ output; an snupkg is empty (NU5017)."""
+    if is_template(csproj):
+        return True
+    raw = parse_csproj_values(csproj, {"IncludeBuildOutput", "IncludeSymbols"})
+    return any(value.lower() == "false" for value in raw["IncludeBuildOutput"] + raw["IncludeSymbols"])
+
+
 def pack_project(csproj: Path, configuration: str) -> None:
     command = [
         "dotnet",
@@ -207,13 +215,14 @@ def pack_project(csproj: Path, configuration: str) -> None:
     if is_template(csproj):
         run(command, csproj.parent)
         return
-    command.extend(
-        [
-            "--no-build",
-            "-p:IncludeSymbols=true",
-            "-p:SymbolPackageFormat=snupkg",
-        ]
-    )
+    command.append("--no-build")
+    if not skips_symbols(csproj):
+        command.extend(
+            [
+                "-p:IncludeSymbols=true",
+                "-p:SymbolPackageFormat=snupkg",
+            ]
+        )
     run(command, csproj.parent)
 
 

@@ -14,6 +14,7 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 ### Fixed
 
 - `Debounce_RunsOnce` used a 25ms window that flakes on busy CI runners
+- CI no longer requests an empty snupkg for SourceGenerators (`IncludeBuildOutput=false`)
 
 ## [1.0.0] — 2026-09-02
 
