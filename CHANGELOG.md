@@ -4,6 +4,8 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 
 ## [Unreleased]
 
+## [1.0.2] — 2026-09-07
+
 ### Added
 
 - Thin Visual Studio Code and Visual Studio wrappers that install `Plugin.Maui.MVVMExpress.Templates` and run `dotnet new mvvmexpress` / `mvvmexpress-page` (`extensions/`)

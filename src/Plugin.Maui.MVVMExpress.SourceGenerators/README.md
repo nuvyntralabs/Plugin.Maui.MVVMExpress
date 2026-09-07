@@ -8,4 +8,4 @@ Roslyn generators for `[Notify]`, `[ModelCommand]` / `[AsyncModelCommand]`, `[Re
 
 The consuming project must reference Core (attributes live there). Types must be `partial`. Then call `services.AddGeneratedViewModels()`.
 
-Version `1.0.0` (``). Alternatives: CommunityToolkit.Mvvm generators, handwritten `SetProperty`.
+Version `1.0.2` (``). Alternatives: CommunityToolkit.Mvvm generators, handwritten `SetProperty`.

@@ -7,7 +7,7 @@ Modular MVVM application framework for .NET MAUI.
 - Product: MVVMExpress
 - Package prefix: `Plugin.Maui.MVVMExpress`
 - Catalog: https://github.com/nuvyntralabs/MauiEssentials
-- Status: **1.0.0.** Navigators construct pages on `IMainThread`. `UseNavigationPage` + `UseAuth<TChallenge>()` + `SectionHostViewModel` + `SnapshotCollection` cover chat-style hosts. Command/dialog/property notifications marshal to IMainThread. `CanExecuteChanged` is a weak event. Toasts use `Window.AddOverlay` (never wrap `Page.Content`). Validation ships `ILLink.Descriptors.xml`. Shipped APIs are the SemVer contract. See docs/known-limitations.md. LICENSE and CHANGELOG stay at the repo root.
+- Status: **1.0.2.** Navigators construct pages on `IMainThread`. `UseNavigationPage` + `UseAuth<TChallenge>()` + `SectionHostViewModel` + `SnapshotCollection` cover chat-style hosts. Command/dialog/property notifications marshal to IMainThread. `CanExecuteChanged` is a weak event. Toasts use `Window.AddOverlay` (never wrap `Page.Content`). Validation ships `ILLink.Descriptors.xml`. Shipped APIs are the SemVer contract. See docs/known-limitations.md. LICENSE and CHANGELOG stay at the repo root.
 
 ## When to consider this repository
 

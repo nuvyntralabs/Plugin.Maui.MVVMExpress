@@ -25,7 +25,7 @@ internal sealed class DotnetResult
 internal static class DotnetTemplates
 {
     public const string PackageId = "Plugin.Maui.MVVMExpress.Templates";
-    public const string PackageVersion = "1.0.1";
+    public const string PackageVersion = "1.0.2";
     public const string AppShortName = "mvvmexpress";
     public const string PageShortName = "mvvmexpress-page";
     public const string DefaultAppName = "MauiApp1";

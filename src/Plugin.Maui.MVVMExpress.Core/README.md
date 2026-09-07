@@ -26,7 +26,7 @@ public sealed class HomeViewModel : ViewModel
 dotnet add package Plugin.Maui.MVVMExpress.Core
 ```
 
-Target framework: `net10.0`. Version `1.0.0` — SemVer lock, `UseAuth<TChallenge>()`, UI-thread-safe navigator helpers, `SectionHostViewModel`, `FormViewModel.Bind`, snapshot lists.
+Target framework: `net10.0`. Version `1.0.2`. SemVer lock from `1.0.0`: `UseAuth<TChallenge>()`, UI-thread-safe navigator helpers, `SectionHostViewModel`, `FormViewModel.Bind`, snapshot lists.
 
 ```csharp
 services.AddMvvmExpress(); // tests and shared libraries

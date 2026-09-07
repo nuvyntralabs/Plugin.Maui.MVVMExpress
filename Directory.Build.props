@@ -20,8 +20,8 @@
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
     <MauiVersion>10.0.90</MauiVersion>
-    <Version>1.0.1</Version>
-    <PackageReleaseNotes>1.0.1: Plugin.Maui.MVVMExpress.Templates — dotnet new mvvmexpress (MainPage + MainPageViewModel) and mvvmexpress-page.</PackageReleaseNotes>
+    <Version>1.0.2</Version>
+    <PackageReleaseNotes>1.0.2: Library, templates, and IDE extensions aligned. VS Code and Visual Studio wrappers install Plugin.Maui.MVVMExpress.Templates.</PackageReleaseNotes>
     <PackageTags>dotnet-maui;maui;mvvm;maui-plugin;maui-utilities;cross-platform;android;ios;maccatalyst;windows;nuget;mauiessentials;mvvm-express</PackageTags>
   </PropertyGroup>
 </Project>
