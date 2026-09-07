@@ -5,15 +5,26 @@ set -euo pipefail
 out_vsix="${1:-}"
 root="$(cd "$(dirname "$0")" && pwd)"
 repo="$(cd "$root/../.." && pwd)"
+
+# Git Bash pwd is /d/a/...; Windows CPython treats that as \\d\\a\\..., not D:\a\...
+native_path() {
+  if command -v cygpath >/dev/null 2>&1; then
+    cygpath -w "$1"
+  else
+    printf '%s' "$1"
+  fi
+}
+
 version="$(python3 -c "
 from pathlib import Path
 import re
-text = Path('$repo/Directory.Build.props').read_text()
+import sys
+text = Path(sys.argv[1]).read_text(encoding='utf-8')
 match = re.search(r'<Version>([^<]+)</Version>', text)
 if match is None:
     raise SystemExit('Directory.Build.props has no Version')
 print(match.group(1))
-")"
+" "$(native_path "$repo/Directory.Build.props")")"
 stage="$root/obj/vsix-stage"
 pack="$root/obj/vsct-pack"
 
@@ -31,12 +42,13 @@ fi
 vsdk_pkg="$(python3 -c "
 from pathlib import Path
 import re
-text = Path('$props').read_text()
+import sys
+text = Path(sys.argv[1]).read_text(encoding='utf-8')
 m = re.search(r'PkgMicrosoft_VSSDK_BuildTools[^>]*>([^<]+)<', text)
 if not m:
     raise SystemExit('PkgMicrosoft_VSSDK_BuildTools not found')
 print(m.group(1))
-")"
+" "$(native_path "$props")")"
 vsdk="$vsdk_pkg/tools/vssdk"
 if [ ! -x "$vsdk/bin/VSCT.exe" ] && [ ! -f "$vsdk/bin/VSCT.exe" ]; then
   echo "VSCT.exe not found under $vsdk" >&2
@@ -88,9 +100,10 @@ cat > "$stage/NuvyntraLabs.MVVMExpress.VisualStudio.pkgdef" <<'EOF'
 EOF
 python3 -c "
 from pathlib import Path
-path = Path('$stage/NuvyntraLabs.MVVMExpress.VisualStudio.pkgdef')
-path.write_text(path.read_text().replace('__VERSION__', '$version'))
-"
+import sys
+path = Path(sys.argv[1])
+path.write_text(path.read_text(encoding='utf-8').replace('__VERSION__', sys.argv[2]), encoding='utf-8')
+" "$(native_path "$stage/NuvyntraLabs.MVVMExpress.VisualStudio.pkgdef")" "$version"
 
 cat > "$stage/extension.vsixmanifest" <<EOF
 <?xml version="1.0" encoding="utf-8"?>
@@ -143,15 +156,18 @@ fi
 mkdir -p "$(dirname "$out_vsix")"
 rm -f "$out_vsix"
 
+export VSIX_STAGE="$(native_path "$stage")"
+export VSIX_OUT="$(native_path "$out_vsix")"
 python3 - <<PY
 import hashlib
 import json
+import os
 import zipfile
 from pathlib import Path
 from zipfile import ZipInfo
 
-stage = Path("$stage")
-out = Path("$out_vsix")
+stage = Path(os.environ["VSIX_STAGE"])
+out = Path(os.environ["VSIX_OUT"])
 version = "$version"
 identity = "nuvyntralabs.MVVMExpress.VisualStudio"
 description = (
