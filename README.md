@@ -4,11 +4,11 @@ A modular MVVM framework for .NET MAUI (ViewModels, commands, async state, Shell
 
 **Product name:** MVVMExpress (MVVM + Express)  
 **Package prefix:** `Plugin.Maui.MVVMExpress`  
-**Status:** `1.0.1` — `dotnet new mvvmexpress` templates. SemVer lock remains `UseAuth<TChallenge>()` from `1.0.0`. **Supported:** Android, iOS, Mac Catalyst, and Windows (single-window). Host APIs are shared MAUI — no platform stub. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the contract. See [known limitations](docs/known-limitations.md). [Getting started](docs/getting-started.md) · [Project template](templates/README.md) · [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
+**Status:** `1.0.1` — `dotnet new mvvmexpress` templates. [VS Code](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VSCode&category=All%20categories&sortBy=Relevance) and [Visual Studio](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VS&category=All%20categories&vsVersion=&sortBy=Relevance) extensions on the Marketplace. SemVer lock remains `UseAuth<TChallenge>()` from `1.0.0`. **Supported:** Android, iOS, Mac Catalyst, and Windows (single-window). Host APIs are shared MAUI — no platform stub. Shipped public APIs in [API-DESIGN.md](API-DESIGN.md) are the contract. See [known limitations](docs/known-limitations.md). [Getting started](docs/getting-started.md) · [Project template](templates/README.md) · [Chat host](docs/chat-host.md) · [Android do/don't](docs/maui-android.md).
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.MVVMExpress.Core.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core)
 
-[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Development plan](docs/development-plan.md) · [Navigation](docs/navigation.md) · [Chat host](docs/chat-host.md) · [Forms](docs/forms.md) · [Reactive](docs/reactive.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
+[Technical documentation](https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/) · [VS Code extension](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VSCode&category=All%20categories&sortBy=Relevance) · [Visual Studio extension](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VS&category=All%20categories&vsVersion=&sortBy=Relevance) · [Architecture](ARCHITECTURE.md) · [API design](API-DESIGN.md) · [Getting started](docs/getting-started.md) · [Development plan](docs/development-plan.md) · [Navigation](docs/navigation.md) · [Chat host](docs/chat-host.md) · [Forms](docs/forms.md) · [Reactive](docs/reactive.md) · [Memory & performance](MEMORY-AND-PERFORMANCE.md) · [Test coverage](docs/TEST-COVERAGE.md) · [Feature matrix](FEATURE-MATRIX.md)
 
 Author: [Niladri Prasad Padhy](https://github.com/NiladriPadhy) · Catalog: [MauiEssentials](https://github.com/nuvyntralabs/MauiEssentials) · License: MIT
 
@@ -73,7 +73,7 @@ dotnet new install Plugin.Maui.MVVMExpress.Templates
 dotnet new mvvmexpress -n MyApp
 ```
 
-VS Code and Visual Studio wrappers (same commands): [extensions/README.md](extensions/README.md).
+Or install the [Visual Studio Code](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VSCode&category=All%20categories&sortBy=Relevance) or [Visual Studio](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VS&category=All%20categories&vsVersion=&sortBy=Relevance) extension (search **MVVMExpress**). Same `dotnet new` commands: **MVVMExpress: Create New App** / **Add Page** in VS Code, or **Tools → MVVMExpress** in Visual Studio. Details: [extensions/README.md](extensions/README.md).
 
 Register Core services with `services.AddMvvmExpress()`. In a MAUI host call `builder.UseMvvmExpress()`. See [docs/getting-started.md](docs/getting-started.md).
 

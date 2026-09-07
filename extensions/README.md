@@ -11,6 +11,17 @@ After the template pack is installed, Visual Studio’s **File → New → Proje
 
 Requires the .NET SDK on PATH. Extension version is `1.0.1`, same as Plugin.Maui.MVVMExpress.
 
+## Install from Marketplace
+
+Search **MVVMExpress** and install:
+
+| Host | Marketplace |
+| --- | --- |
+| Visual Studio Code | [MVVMExpress](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VSCode&category=All%20categories&sortBy=Relevance) |
+| Visual Studio 2022+ | [MVVMExpress](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VS&category=All%20categories&vsVersion=&sortBy=Relevance) |
+
+In the editor: **Extensions** → search **MVVMExpress** → **Install**. Then **MVVMExpress: Create New App** / **Add Page** (VS Code) or **Tools → MVVMExpress** (Visual Studio).
+
 ## Install (sideload)
 
 Packed installers (version `1.0.1`) are in [`dist/`](dist/):

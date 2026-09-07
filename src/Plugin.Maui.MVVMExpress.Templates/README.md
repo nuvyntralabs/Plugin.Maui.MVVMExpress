@@ -25,4 +25,4 @@ Login → replace-root back to MainPage, a list, a form, and `MyApp.Tests` are a
 Demo sign-in: `demo@mvvmexpress.dev` / `secret`. Production tokens: [Plugin.Maui.SecureSession](https://www.nuget.org/packages/Plugin.Maui.SecureSession).
 
 Version `1.0.1`. Product docs: https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress  
-IDE wrappers: [extensions](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress/tree/main/extensions)
+IDE extensions: [VS Code Marketplace](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VSCode&category=All%20categories&sortBy=Relevance) · [Visual Studio Marketplace](https://marketplace.visualstudio.com/search?term=MVVMExpress&target=VS&category=All%20categories&vsVersion=&sortBy=Relevance). Details: [extensions](https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress/tree/main/extensions)
