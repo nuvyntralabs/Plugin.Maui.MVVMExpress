@@ -1,6 +1,6 @@
 # Getting started
 
-A new hire can finish this in about fifteen minutes. Click along in [`samples/Playground`](../samples/Playground/) (Android, iOS, Mac Catalyst, or Windows), or scaffold an app:
+A new hire can finish this in about fifteen minutes. Click along in [`samples/Playground`](../samples/Playground/) (Android, iOS, Mac Catalyst, or Windows), or scaffold an app (CLI below, or the [VS Code / Visual Studio wrappers](../extensions/README.md)):
 
 ```bash
 dotnet new install Plugin.Maui.MVVMExpress.Templates

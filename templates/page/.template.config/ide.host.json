@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json.schemastore.org/ide.host",
+  "order": 200,
+  "description": {
+    "id": "Plugin.Maui.MVVMExpress.Page",
+    "text": "XAML page, ViewModel, service, bindings, and commands for MVVMExpress."
+  }
+}

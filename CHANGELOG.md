@@ -4,6 +4,12 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 
 ## [Unreleased]
 
+### Added
+
+- Thin Visual Studio Code and Visual Studio wrappers that install `Plugin.Maui.MVVMExpress.Templates` and run `dotnet new mvvmexpress` / `mvvmexpress-page` (`extensions/`)
+- `ide.host.json` on `mvvmexpress-page` so Visual Studio **Add → New Item** lists the page template after the pack is installed
+- Separate **IDE extensions** workflow packs VS Code and Visual Studio VSIX artifacts. Library CI no longer builds extensions or fails when only wrapper versions differ.
+
 ## [1.0.1] — 2026-09-06
 
 ### Added

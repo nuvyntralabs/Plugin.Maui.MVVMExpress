@@ -73,6 +73,8 @@ dotnet new install Plugin.Maui.MVVMExpress.Templates
 dotnet new mvvmexpress -n MyApp
 ```
 
+VS Code and Visual Studio wrappers (same commands): [extensions/README.md](extensions/README.md).
+
 Register Core services with `services.AddMvvmExpress()`. In a MAUI host call `builder.UseMvvmExpress()`. See [docs/getting-started.md](docs/getting-started.md).
 
 ## Feature comparison

@@ -13,6 +13,8 @@ dotnet new mvvmexpress-page -n Catalog --namespace MyApp
 | `mvvmexpress` | MAUI app: MainPage + MainPageViewModel + `IGreetingService`, login, list, form, tests |
 | `mvvmexpress-page` | XAML page, ViewModel, service, `Add{Name}()`, `{Binding}` and `Command` |
 
+IDE wrappers (same `dotnet new` commands): [extensions/README.md](../extensions/README.md).
+
 From this repo (no NuGet install of the template pack):
 
 ```bash

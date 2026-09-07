@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h" />
+  <Extern href="vsshlids.h" />
+
+  <Commands package="guidMvvmExpressPackage">
+    <Menus>
+      <Menu guid="guidMvvmExpressCmdSet" id="MvvmExpressMenu" priority="0x0700" type="Menu">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+        <Strings>
+          <ButtonText>MVVMExpress</ButtonText>
+        </Strings>
+      </Menu>
+    </Menus>
+
+    <Groups>
+      <Group guid="guidMvvmExpressCmdSet" id="MvvmExpressMenuGroup" priority="0x0600">
+        <Parent guid="guidMvvmExpressCmdSet" id="MvvmExpressMenu" />
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidMvvmExpressCmdSet" id="CreateAppCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidMvvmExpressCmdSet" id="MvvmExpressMenuGroup" />
+        <Strings>
+          <ButtonText>Create New App...</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidMvvmExpressCmdSet" id="AddPageCommandId" priority="0x0200" type="Button">
+        <Parent guid="guidMvvmExpressCmdSet" id="MvvmExpressMenuGroup" />
+        <Strings>
+          <ButtonText>Add Page...</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <Symbols>
+    <GuidSymbol name="guidMvvmExpressPackage" value="{5f2c8a91-7e4b-4d16-9a3c-1b8e6f0d4c22}" />
+    <GuidSymbol name="guidMvvmExpressCmdSet" value="{9d1e4b70-2c5a-4f83-b6d1-8e7a3c5f9012}">
+      <IDSymbol name="MvvmExpressMenu" value="0x1000" />
+      <IDSymbol name="MvvmExpressMenuGroup" value="0x1020" />
+      <IDSymbol name="CreateAppCommandId" value="0x0100" />
+      <IDSymbol name="AddPageCommandId" value="0x0101" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

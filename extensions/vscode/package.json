@@ -1,0 +1,52 @@
+{
+  "name": "mvvmexpress",
+  "displayName": "MVVMExpress",
+  "description": "Create .NET MAUI MVVMExpress apps and pages via dotnet new. Templates stay in Plugin.Maui.MVVMExpress.Templates.",
+  "version": "1.0.1",
+  "publisher": "nuvyntralabs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress.git"
+  },
+  "homepage": "https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress/tree/main/extensions",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "maui",
+    "mvvm",
+    "mvvmexpress",
+    "dotnet",
+    "templates"
+  ],
+  "activationEvents": [
+    "onCommand:mvvmexpress.createApp",
+    "onCommand:mvvmexpress.addPage"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "mvvmexpress.createApp",
+        "title": "MVVMExpress: Create New App"
+      },
+      {
+        "command": "mvvmexpress.addPage",
+        "title": "MVVMExpress: Add Page"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.5.0"
+  }
+}

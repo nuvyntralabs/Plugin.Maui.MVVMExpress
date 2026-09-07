@@ -20,8 +20,28 @@ permissions:
   contents: read
 
 jobs:
+  version-align:
+    name: Version alignment
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - name: Checkout package repo
+        uses: actions/checkout@v4
+
+      - name: Require matching library and template versions
+        id: check
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/check-versions.py --plugin-root . --scope library
+
   version-check:
     name: NuGet release
+    needs: [version-align]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
@@ -57,7 +77,7 @@ jobs:
 
   test:
     name: Unit tests
-    needs: [version-check]
+    needs: [version-align]
     uses: ./.github/workflows/plugin-ci.yml
     with:
       runner: ubuntu-latest
@@ -99,7 +119,7 @@ jobs:
 
   publish:
     name: NuGet.org
-    needs: [linux, macos, windows]
+    needs: [linux, macos, windows, version-check]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     defaults:

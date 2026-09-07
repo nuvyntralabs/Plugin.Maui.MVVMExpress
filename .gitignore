@@ -481,6 +481,10 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
+# IDE extensions
+extensions/vscode/out/
+*.vsix
+
 # .NET MAUI
 *.apk
 *.aab
