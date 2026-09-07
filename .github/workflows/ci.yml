@@ -42,6 +42,7 @@ jobs:
   version-check:
     name: NuGet release
     needs: [version-align]
+    if: success()
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
@@ -98,7 +99,7 @@ jobs:
       test: false
 
   macos:
-    needs: [linux]
+    needs: [test]
     if: success()
     uses: ./.github/workflows/plugin-ci.yml
     with:
@@ -110,7 +111,7 @@ jobs:
       workloads: maui-android maui-ios maui-maccatalyst
 
   windows:
-    needs: [macos]
+    needs: [test]
     if: success()
     uses: ./.github/workflows/plugin-ci.yml
     with:
@@ -123,7 +124,7 @@ jobs:
 
   publish:
     name: NuGet.org
-    needs: [windows]
+    needs: [linux, macos, windows]
     if: success()
     runs-on: ubuntu-latest
     timeout-minutes: 20

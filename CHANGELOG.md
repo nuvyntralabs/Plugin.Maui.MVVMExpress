@@ -9,7 +9,7 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 - Thin Visual Studio Code and Visual Studio wrappers that install `Plugin.Maui.MVVMExpress.Templates` and run `dotnet new mvvmexpress` / `mvvmexpress-page` (`extensions/`)
 - `ide.host.json` on `mvvmexpress-page` so Visual Studio **Add → New Item** lists the page template after the pack is installed
 - Separate **IDE extensions** workflow packs VS Code and Visual Studio VSIX artifacts. Library CI no longer builds extensions or fails when only wrapper versions differ.
-- Library CI is fail-fast and sequential: version alignment → NuGet release (key and version) → unit tests → linux pack → macos pack → windows pack → NuGet.org. A failed job skips every later job.
+- Library CI is fail-fast: version alignment → NuGet release (key and version) → unit tests → linux / macos / windows packs in parallel → NuGet.org. A failed job skips every later job.
 
 ## [1.0.1] — 2026-09-06
 
