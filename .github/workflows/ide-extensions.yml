@@ -67,6 +67,7 @@ jobs:
           ./extensions/vscode/pack.sh "$PWD/artifacts/nuvyntralabs.mvvmexpress-${version}.vsix"
 
       - name: Upload VS Code VSIX
+        id: upload
         uses: actions/upload-artifact@v4
         with:
           name: vscode-MVVMExpress
@@ -79,7 +80,9 @@ jobs:
           {
             echo "### VS Code VSIX"
             echo
-            echo "Download artifact **vscode-MVVMExpress** from this run, then update the Visual Studio Code listing at [Marketplace manage](https://marketplace.visualstudio.com/manage)."
+            echo "Download: [vscode-MVVMExpress](${{ steps.upload.outputs.artifact-url }})"
+            echo
+            echo "Then update the Visual Studio Code listing at [Marketplace manage](https://marketplace.visualstudio.com/manage)."
           } >> "$GITHUB_STEP_SUMMARY"
 
   vsix:
@@ -117,6 +120,7 @@ jobs:
           ./extensions/visualstudio/pack-vsix.sh "$PWD/artifacts/nuvyntralabs.MVVMExpress.VisualStudio.${version}.vsix"
 
       - name: Upload VSIX
+        id: upload
         uses: actions/upload-artifact@v4
         with:
           name: vsix-MVVMExpress
@@ -129,5 +133,7 @@ jobs:
           {
             echo "### Visual Studio VSIX"
             echo
-            echo "Download artifact **vsix-MVVMExpress** from this run, then update **MVVMExpress for Visual Studio** at [Marketplace manage](https://marketplace.visualstudio.com/manage). Do not create a new listing."
+            echo "Download: [vsix-MVVMExpress](${{ steps.upload.outputs.artifact-url }})"
+            echo
+            echo "Then update **MVVMExpress for Visual Studio** at [Marketplace manage](https://marketplace.visualstudio.com/manage). Do not create a new listing."
           } >> "$GITHUB_STEP_SUMMARY"
