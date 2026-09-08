@@ -1,11 +1,11 @@
 # Known limitations (1.0.0)
 
-**1.0.0 design-review sign-off (2026-09-02).** Shipped public APIs in [API-DESIGN.md](../API-DESIGN.md) plus `UseAuth<TChallenge>()` are the SemVer contract. Deprecations only after 1.0. Breaking change = major version. Phase 8 DX unification is not part of this lock.
+**1.0.0 design-review sign-off (2026-09-02).** Shipped public APIs in [API-DESIGN.md](../API-DESIGN.md) plus `UseAuth<TChallenge>()` are the SemVer contract. **1.3.0** adds Phases 8–10 without breaking those types. Deprecations only after 1.0. Breaking change = major version.
 
 **Host footguns (lists / MAUI 10 Android):**
 
 1. **Do not** pair `DelegatePagedCollection` with `CollectionView` + `RemainingItemsThreshold` when the fetch is sync. Use `SnapshotCollection<T>`. See [maui-android.md](maui-android.md).
-2. Bind `SearchQuery.Text` to `Entry`, not Android `SearchBar`.
+2. Bind `SearchQuery.Text` to `Entry` or `MvvmSearch`. Android `SearchBar` is not required.
 3. `OnAppearingAsync` does not refresh. Chat lists load once and mutate locally.
 
 **Host footguns (0.5.0-preview consumers):**

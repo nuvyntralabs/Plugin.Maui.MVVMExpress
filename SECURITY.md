@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-MVVMExpress has not shipped a stable NuGet package. Until 1.0.0, report issues against `main`.
+Supported: `1.3.0` (latest stable). Report issues against `main` or the matching tag.
 
 ## Reporting a vulnerability
 

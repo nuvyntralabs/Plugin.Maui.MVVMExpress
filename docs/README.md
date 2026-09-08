@@ -9,6 +9,7 @@ Canonical design documents live at the repository root so they match the first d
 | [DESIGN.md](../DESIGN.md) | Product design and developer experience |
 | [DESIGN-PLAN.md](../DESIGN-PLAN.md) | Phases 0–5 implementation plan (shipped) |
 | [development-plan.md](development-plan.md) | Current work: Phases 8–10 after 1.0.0 |
+| [phase-8-10-implementation-plan.md](phase-8-10-implementation-plan.md) | How to implement 8–10 without breaking 1.0: tests, samples, SemVer |
 | [ROADMAP.md](../ROADMAP.md) | Versions and exit criteria |
 | [FEATURE-MATRIX.md](../FEATURE-MATRIX.md) | Comparison vs CommunityToolkit, Prism, ReactiveUI (shipping vs designed) |
 | [MEMORY-AND-PERFORMANCE.md](../MEMORY-AND-PERFORMANCE.md) | Leaks, memory budgets, Small / Mid / Large scale |
@@ -21,5 +22,7 @@ Canonical design documents live at the repository root so they match the first d
 | [reactive.md](reactive.md) | IPropertyObservable / CombineLatest |
 | [offline.md](offline.md) | FetchPolicy and capability abstractions |
 | [TEST-COVERAGE.md](TEST-COVERAGE.md) | Scenario matrix for Core tests |
+| [device-report.md](device-report.md) | Phase 10 hardware numbers (manual) |
+| [production-postmortem.md](production-postmortem.md) | Phase 10 production write-up slot |
 
-**1.0.0** is the SemVer lock (`UseAuth<TChallenge>()`). Next work is [development-plan.md](development-plan.md) Phase 8. Migration: [0.6.1 → 1.0](migration-0.6.1.md), [CommunityToolkit](migration-communitytoolkit.md), [Prism](migration-prism.md), [ReactiveUI](migration-reactiveui.md). AOT: [aot.md](aot.md). Limits: [known-limitations.md](known-limitations.md).
+**1.3.0** ships Phases 8–10 on the 1.0 SemVer lock (`UseAuth<TChallenge>()` from 1.0.0). Implementation record: [phase-8-10-implementation-plan.md](phase-8-10-implementation-plan.md). Migration: [0.6.1 → 1.0](migration-0.6.1.md), [CommunityToolkit](migration-communitytoolkit.md), [Prism](migration-prism.md), [ReactiveUI](migration-reactiveui.md). AOT: [aot.md](aot.md). Limits: [known-limitations.md](known-limitations.md).

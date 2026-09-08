@@ -33,9 +33,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
-    <PackageReference Include="Plugin.Maui.MVVMExpress" Version="1.0.2" />
-    <PackageReference Include="Plugin.Maui.MVVMExpress.Dialogs" Version="1.0.2" />
-    <PackageReference Include="Plugin.Maui.MVVMExpress.Navigation" Version="1.0.2" />
+    <PackageReference Include="Plugin.Maui.MVVMExpress" Version="1.3.0" />
+    <PackageReference Include="Plugin.Maui.MVVMExpress.Dialogs" Version="1.3.0" />
+    <PackageReference Include="Plugin.Maui.MVVMExpress.Navigation" Version="1.3.0" />
   </ItemGroup>
 
   <ItemGroup>

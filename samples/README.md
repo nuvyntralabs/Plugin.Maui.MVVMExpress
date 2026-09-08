@@ -8,7 +8,7 @@ ViewModels live in [`Plugin.Maui.MVVMExpress.Samples.Shared`](Plugin.Maui.MVVMEx
 
 **First-run login app:** [`Plugin.Maui.MVVMExpress.AuthApp`](Plugin.Maui.MVVMExpress.AuthApp/) — login / register / forgot / guarded home (`UseAuth<AuthLoginViewModel>()`, `ResetAsync` replace-root). Demo: `demo@mvvmexpress.dev` / `secret`.
 
-**Chat host (ViewModels only):** [`ChatHost`](Plugin.Maui.MVVMExpress.Samples.Shared/ChatHost/) — `SectionHostViewModel` + `SnapshotCollection` + Entry `SearchQuery`. Cookbook: [docs/chat-host.md](../docs/chat-host.md). Do not treat this as a `PagedCollection` + `CollectionView` sample.
+**Chat host:** [`ChatHost`](Plugin.Maui.MVVMExpress.Samples.Shared/ChatHost/) ViewModels plus Sample / Playground `ChatHostPage` bound to `SectionHostView` and `MvvmSearch`. Cookbook: [docs/chat-host.md](../docs/chat-host.md). Do not treat this as a `PagedCollection` + `CollectionView` sample.
 
 The MAUI host [`Plugin.Maui.MVVMExpress.Sample`](Plugin.Maui.MVVMExpress.Sample/) is a flyout app with one XAML page per scenario (Android, iOS, Mac Catalyst, Windows). `MauiProgram` calls `UseMvvmExpress()`, then `AddMvvmExpressSamples()`, then replaces `INavigator` with `GuardedNavigator` around `MauiShellNavigator` and `IPageNavigator` with `MauiPageNavigator`. Home → products switches the CRUD flyout; Home → details (typed or URI query) and login → secure home push real Shell pages. **Page stack** pushes onto `INavigation` and shows a `MauiNotifier` toast.
 
@@ -26,7 +26,17 @@ Each sample integrates **library** types. In-memory implementations (`InMemoryNa
 | [Reactive](Plugin.Maui.MVVMExpress.Samples.Shared/Reactive/) | `SearchViewModel` | `SearchQuery` debounce + `PropertyObservable.CombineLatest` `FullName` |
 | [Enterprise](Plugin.Maui.MVVMExpress.Samples.Shared/Enterprise/) | `EnterpriseShellViewModel`, `CatalogStatusViewModel` | Child composition, `IFeatureSwitch`, hub, busy, probe, auth gate — adapt [Plugin.Maui.NetworkMonitor](https://www.nuget.org/packages/Plugin.Maui.NetworkMonitor) / [Plugin.Maui.FeatureFlags](https://www.nuget.org/packages/Plugin.Maui.FeatureFlags) |
 | [Generated](Plugin.Maui.MVVMExpress.Samples.Shared/Generated/) | `GeneratedCatalogViewModel` | `[Notify]`, `[ModelCommand]`, `[PersistState]`, `[RegisterViewModel]`, `[Route]`, `[RequiresAuth]` — AOT `AddGeneratedViewModels()` |
-| Deep links | `DeepLinkRouteMap` | URI → `INavigator` route/query — compose [Plugin.Maui.DeepLinks](https://www.nuget.org/packages/Plugin.Maui.DeepLinks) in production |
+| [Computed](Plugin.Maui.MVVMExpress.Samples.Shared/Computed/) | `ComputedNameViewModel` | `[NotifyDependsOn]` without Reactive |
+| [Escape hatch](Plugin.Maui.MVVMExpress.Samples.Shared/EscapeHatch/) | `ManualCounterViewModel` | Hand-written `SetProperty` |
+| [Operations](Plugin.Maui.MVVMExpress.Samples.Shared/Operations/) | `PipelineViewModel` | `IOperationExecutor` |
+| [Modals](Plugin.Maui.MVVMExpress.Samples.Shared/Modals/) | `ModalHostViewModel`, `NoteModalViewModel` | `PushModalAsync` / `PopModalAsync` |
+| [Modules](Plugin.Maui.MVVMExpress.Samples.Shared/Modules/) | `CatalogModule` | `IModule` / `AddModule<T>()` |
+| [Windows](Plugin.Maui.MVVMExpress.Samples.Shared/Windows/) | `TwoWindowDemoViewModel` | `WindowNavigatorRegistry` — two `IWindowContext` keys |
+| [Gallery](Plugin.Maui.MVVMExpress.Samples.Shared/Gallery/) | `AdapterCatalogViewModel` | FormValidation / KeyboardManager / DeepLinks / SecureSession package ids |
+| CommunityToolkit | Sample `ToolkitInboxViewModel` | Keep `ObservableObject`, inject `INavigator` + `IDialogs` |
+| Deep links | `DeepLinkRouteMap`, `SampleDeepLinkBridge` | URI → `INavigator` route/query — compose [Plugin.Maui.DeepLinks](https://www.nuget.org/packages/Plugin.Maui.DeepLinks) in production |
+| Host controls | Sample `ChatHostPage`, `SearchPage`, lists | `SectionHostView`, `MvvmSearch`, `CollectionBind.AsyncFetch` |
+| `[RegisterView]` | Sample / Playground / AuthApp pages | Generated page maps applied before optional `Map` |
 
 ```bash
 dotnet test tests/Plugin.Maui.MVVMExpress.Samples.Tests

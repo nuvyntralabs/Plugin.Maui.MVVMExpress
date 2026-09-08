@@ -75,6 +75,16 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
         return this;
     }
 
+    /// <summary>Maps a ViewModel type to a page type (generated <c>[RegisterView]</c> uses this).</summary>
+    public MauiPageNavigator Map(Type viewModelType, Type pageType, string? route = null)
+    {
+        ArgumentNullException.ThrowIfNull(viewModelType);
+        ArgumentNullException.ThrowIfNull(pageType);
+        _pages[viewModelType] = pageType;
+        _routes.Map(viewModelType, string.IsNullOrWhiteSpace(route) ? viewModelType.Name : route);
+        return this;
+    }
+
     /// <inheritdoc />
     public bool TryResolve(string route, out Type viewModelType) => _routes.TryResolve(route, out viewModelType);
 
@@ -140,6 +150,17 @@ public sealed class MauiPageNavigator : IPageNavigator, IRouteResolver
     public Task<Result> ReplaceRootAsync<TViewModel>(CancellationToken cancellationToken = default)
         where TViewModel : class, IViewModel
         => ResetAsync<TViewModel>(cancellationToken);
+
+    /// <inheritdoc />
+    public Task<Result> PushModalAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel
+        => GoAsync(typeof(TViewModel), null, null, null, cancellationToken, new NavOptions { Modal = true });
+
+    /// <inheritdoc />
+    public Task<Result> PopModalAsync(CancellationToken cancellationToken = default)
+        => ModalStack.Count == 0
+            ? Task.FromResult(Result.Failure("E_MODAL", "Modal stack is empty."))
+            : GoBackAsync(cancellationToken);
 
     private async Task<Result> GoAsync(
         Type viewModelType,

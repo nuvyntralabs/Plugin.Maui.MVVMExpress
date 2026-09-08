@@ -1,8 +1,10 @@
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.MVVMExpress.Auth;
+using Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit;
 using Plugin.Maui.MVVMExpress.Dialogs;
 using Plugin.Maui.MVVMExpress.Hosting;
 using Plugin.Maui.MVVMExpress.Navigation;
+using Plugin.Maui.MVVMExpress.Sample.Compatibility;
 using Plugin.Maui.MVVMExpress.Sample.Pages;
 using Plugin.Maui.MVVMExpress.Samples;
 using Plugin.Maui.MVVMExpress.Samples.Auth;
@@ -27,6 +29,8 @@ public static class MauiProgram
             });
 
         builder.Services.AddMvvmExpressSamples();
+        builder.Services.AddDeepLinks(new SampleDeepLinkBridge());
+        builder.Services.AddCommunityToolkitViewModel<ToolkitInboxViewModel>();
         builder.Services.AddSingleton<INavigator>(sp =>
         {
             var shell = new MauiShellNavigator(builder.Services)
@@ -61,6 +65,15 @@ public static class MauiProgram
         builder.Services.AddTransient<SearchPage>();
         builder.Services.AddTransient<EnterprisePage>();
         builder.Services.AddTransient<ScopesPage>();
+        builder.Services.AddTransient<ChatHostPage>();
+        builder.Services.AddTransient<ManualCounterPage>();
+        builder.Services.AddTransient<ComputedNamePage>();
+        builder.Services.AddTransient<PipelinePage>();
+        builder.Services.AddTransient<ModalHostPage>();
+        builder.Services.AddTransient<TwoWindowPage>();
+        builder.Services.AddTransient<GeneratedCatalogPage>();
+        builder.Services.AddTransient<AdapterCatalogPage>();
+        builder.Services.AddTransient<ToolkitInboxPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

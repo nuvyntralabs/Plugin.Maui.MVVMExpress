@@ -8,7 +8,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 
 **Honesty rule:** The [README](README.md) comparison is the **designed product** (Yes = in the architecture). This file tracks **shipping**. `Yes` here means types exist **and** tests exist. `Designed (Pn)` means specified for phase n, not coded yet. This table does not claim superiority. Scale numbers are host-process measurements; see [MEMORY-AND-PERFORMANCE.md](MEMORY-AND-PERFORMANCE.md) and [docs/known-limitations.md](docs/known-limitations.md).
 
-**Status: 1.0.2** (stable). Last validated: 2026-09-07. **1.0.2** aligns library, templates, and IDE extensions. **1.0.1** added `Plugin.Maui.MVVMExpress.Templates` (`dotnet new mvvmexpress`). SemVer lock remains `UseAuth<TChallenge>()` from **1.0.0**. 0.6.1 shipped UI-thread-safe page construction, `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection<T>`, and `SearchQuery.CommittedText`.
+**Status: 1.3.0** (stable). Last validated: 2026-09-08. Phases 8–10 shipped on the 1.0 SemVer lock (`UseAuth<TChallenge>()`). Library, templates, and IDE extensions are aligned at **1.3.0**.
 
 ## Legend
 
@@ -27,7 +27,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 | --- | --- | --- | --- | --- |
 | Observable properties | Yes | Yes | Yes (`BindableBase`) | Yes |
 | `INotifyPropertyChanging` | Yes | Yes | Partial | Yes |
-| Dependent / computed properties | Yes (`NotifyDependsOn`; `[NotifyAlso]`) | Partial (`NotifyPropertyChangedFor`) | No | Yes (OAPH) |
+| Dependent / computed properties | Yes (`NotifyDependsOn`; `[NotifyAlso]`; `[NotifyDependsOn]`) | Partial (`NotifyPropertyChangedFor`) | No | Yes (OAPH) |
 | Source generators for properties | Yes (`[Notify]`) | Yes (`[ObservableProperty]`, partial properties in 8.4) | No | Yes (`[Reactive]`) |
 | Manual INPC without generators | Yes | Yes | Yes | Yes |
 | Sync commands | Yes | Yes (`RelayCommand`) | Yes (`DelegateCommand`) | Yes |
@@ -50,7 +50,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 | ViewModel navigation service | Yes (`INavigator`, `InMemoryNavigator`) | No | Yes | Yes (`IScreen` / `RoutingState`) |
 | Shell navigation host | Yes (`MauiShellNavigator` routes + URI stack) | No | No (docs: Shell not supported) | Partial |
 | Page / `INavigation` host | Yes (`MauiPageNavigator` / `UseNavigationPage`) | No | Yes (primary) | Partial |
-| In-place tab / section host | Yes (`SectionHostViewModel`) | No | Partial (regions) | Partial |
+| In-place tab / section host | Yes (`SectionHostViewModel` + `SectionHostView`) | No | Partial (regions) | Partial |
 | Typed navigation parameters | Yes (`IAcceptNavArgs<T>`, `record` args) | No | No (dictionary / URI query) | Partial |
 | Dictionary / URI parameters | Yes (`NavigateToAsync(route, query)`, `IAcceptNavQuery`) | No | Yes | Partial |
 | Navigation guards / cancel | Yes (`CanNavigateAwayAsync`, dirty `InMemoryNavigator` guard) | No | Partial (`IConfirmNavigation`) | Partial |
@@ -88,7 +88,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 | Testing leak/scale helpers | Yes (`LeakProbe`, `ScaleProfile`, `ScopedNavigator`) | Partial | Yes | Yes |
 | Testing fakes package | Yes (`FakeDialogs`, `FakeNavigator`, `FakeMainThread`, `FakeConnectivity`, `FakeMessageHub`, `AppearAsync`) | Partial | Yes | Yes |
 | MAUI page lifecycle behaviors | Yes (`ViewModelLifecycleBehavior`) | No | Yes | Yes (`ReactiveContentPage`) |
-| AOT / trim-friendly registration | Yes (`AddGeneratedViewModels`; Validation `ILLink.Descriptors.xml`) | Yes (analyzers in 8.4) | Partial | Partial |
+| AOT / trim-friendly registration | Yes (`AddGeneratedViewModels`; ILLink on Validation / Forms / Navigation / Dialogs / Pagination) | Yes (analyzers in 8.4) | Partial | Partial |
 | `dotnet new` project template | Yes (`mvvmexpress` — NavigationPage, login replace-root, list, form, tests) | Partial (`dotnet new maui`) | Ext | Ext |
 
 ## Differentiating row (design intent, not a claim of current quality)
@@ -100,7 +100,7 @@ Comparison of **Plugin.Maui.MVVMExpress** against publicly documented capabiliti
 | Shell **or** page host without requiring either | Yes | Prism: page only; CT: none; RxUI: router |
 | Typed `record` navigation args as the default | Yes (`IAcceptNavArgs<T>`) | Prism/RxUI are string/URI/dictionary-first |
 | ViewModel scopes (app / window / nav / page / child) | Yes (`IViewModelComposer`, `IViewModelScopeFactory`) | Prism container + regions; not the same model |
-| Compose MauiEssentials plugins via adapters | Designed | Out of scope for CT/Prism/RxUI |
+| Compose MauiEssentials plugins via adapters | Yes (`UseDeepLinks`, `UseSecureSessionAuth`, FormValidation / KeyboardManager adapters) | Out of scope for CT/Prism/RxUI |
 
 ## MauiEssentials plugins vs MVVMExpress
 

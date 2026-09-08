@@ -7,6 +7,7 @@ internal sealed class CommandPipeline
     private readonly SemaphoreSlim _queue = new(1, 1);
     private readonly object _gate = new();
     private CancellationTokenSource? _debounce;
+    private int _debounceGeneration;
     private DateTimeOffset _lastStart;
 
     public CommandPipeline(AsyncCommandOptions options)
@@ -45,10 +46,12 @@ internal sealed class CommandPipeline
         }
 
         CancellationTokenSource debounceCts;
+        int generation;
         lock (_gate)
         {
             _debounce?.Cancel();
             _debounce?.Dispose();
+            generation = ++_debounceGeneration;
             debounceCts = new CancellationTokenSource();
             _debounce = debounceCts;
         }
@@ -57,7 +60,10 @@ internal sealed class CommandPipeline
         {
             using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, debounceCts.Token);
             await Task.Delay(debounce, linked.Token).ConfigureAwait(false);
-            return true;
+            lock (_gate)
+            {
+                return generation == _debounceGeneration;
+            }
         }
         catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
         {

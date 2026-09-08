@@ -9,7 +9,7 @@ Thin Visual Studio Code and Visual Studio extensions. They install [`Plugin.Maui
 
 After the template pack is installed, Visual Studio’s **File → New → Project** lists **MVVMExpress MAUI App** (`ide.host.json` on the project template). **Add → New Item** lists **MVVMExpress Page**.
 
-Requires the .NET SDK on PATH. Extension version is `1.0.2`, same as Plugin.Maui.MVVMExpress.
+Requires the .NET SDK on PATH. Extension version is `1.3.0`, same as Plugin.Maui.MVVMExpress.
 
 ## Install from Marketplace
 
@@ -24,12 +24,12 @@ In the editor: **Extensions** → search **MVVMExpress** → **Install**. Then *
 
 ## Install (sideload)
 
-Packed installers (version `1.0.2`) are in [`dist/`](dist/):
+Packed installers (version `1.3.0`) are in [`dist/`](dist/):
 
 | Host | File | Install |
 | --- | --- | --- |
-| Visual Studio Code | `dist/nuvyntralabs.mvvmexpress-1.0.2.vsix` | `code --install-extension extensions/dist/nuvyntralabs.mvvmexpress-1.0.2.vsix` |
-| Visual Studio 2022+ | `dist/nuvyntralabs.MVVMExpress.VisualStudio.1.0.2.vsix` | Double-click the `.vsix`, or **Extensions → Manage Extensions → Install from VSIX…** |
+| Visual Studio Code | `dist/nuvyntralabs.mvvmexpress-1.3.0.vsix` | `code --install-extension extensions/dist/nuvyntralabs.mvvmexpress-1.3.0.vsix` |
+| Visual Studio 2022+ | `dist/nuvyntralabs.MVVMExpress.VisualStudio.1.3.0.vsix` | Double-click the `.vsix`, or **Extensions → Manage Extensions → Install from VSIX…** |
 
 After Visual Studio install, the package loads in the background and installs `Plugin.Maui.MVVMExpress.Templates`, so **File → New → Project** lists **MVVMExpress MAUI App**. **Tools → MVVMExpress** is present after install.
 

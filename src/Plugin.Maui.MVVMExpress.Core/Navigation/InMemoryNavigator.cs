@@ -149,6 +149,23 @@ public class InMemoryNavigator : IPageNavigator, IRouteResolver
         where TViewModel : class, IViewModel
         => ResetAsync<TViewModel>(cancellationToken);
 
+    /// <inheritdoc />
+    public Task<Result> PushModalAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : class, IViewModel
+        => NavigateCore(typeof(TViewModel), null, null, null, new NavOptions { Modal = true }, cancellationToken);
+
+    /// <inheritdoc />
+    public Task<Result> PopModalAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (ModalStack.Count == 0)
+        {
+            return Task.FromResult(Result.Failure("E_MODAL", "Modal stack is empty."));
+        }
+
+        return GoBackAsync(cancellationToken);
+    }
+
     private Task<Result> NavigateCore(
         Type viewModelType,
         object? args,

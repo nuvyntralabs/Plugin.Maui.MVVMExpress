@@ -21,7 +21,7 @@ await page.LoadMoreAsync();
 dotnet add package Plugin.Maui.MVVMExpress.Pagination
 ```
 
-Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `1.0.2`.
+Target framework: `net10.0`. Depends on [Core](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress.Core). Version `1.3.0`.
 
 ## Related
 

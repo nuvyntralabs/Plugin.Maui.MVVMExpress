@@ -17,6 +17,9 @@
                     CommandParameter="{x:Int32 2}" />
             <Button Text="Open Latte via URI query" Command="{Binding OpenDetailsByRouteCommand}" />
             <Button Text="Show toast" Command="{Binding ShowToastCommand}" />
+            <Button Text="Open chat host" Command="{Binding OpenChatCommand}" />
+            <Button Text="Open modal host" Command="{Binding OpenModalCommand}" />
+            <Button Text="Open Latte via deep link" Command="{Binding OpenDeepLinkCommand}" />
         </VerticalStackLayout>
     </ScrollView>
 </pages:SampleContentPage>

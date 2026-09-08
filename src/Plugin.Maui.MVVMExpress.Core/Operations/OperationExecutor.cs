@@ -13,6 +13,8 @@ public sealed class OperationExecutor : IOperationExecutor
     private readonly SemaphoreSlim _queue = new(1, 1);
     private readonly object _gate = new();
     private CancellationTokenSource? _debounce;
+    private TaskCompletionSource? _debounceStarted;
+    private int _debounceGeneration;
     private DateTimeOffset _lastStart;
     private int _running;
 
@@ -149,23 +151,43 @@ public sealed class OperationExecutor : IOperationExecutor
         }
 
         CancellationTokenSource debounceCts;
+        int generation;
+        TaskCompletionSource entered;
         lock (_gate)
         {
             _debounce?.Cancel();
             _debounce?.Dispose();
+            generation = ++_debounceGeneration;
             debounceCts = new CancellationTokenSource();
             _debounce = debounceCts;
+            _debounceStarted ??= new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            entered = _debounceStarted;
         }
+
+        entered.TrySetResult();
 
         try
         {
             using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, debounceCts.Token);
             await Task.Delay(debounce, linked.Token).ConfigureAwait(false);
-            return true;
+            lock (_gate)
+            {
+                return generation == _debounceGeneration;
+            }
         }
         catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
         {
             return false;
+        }
+    }
+
+    /// <summary>Completes when a debounce wait has started. Tests only.</summary>
+    internal Task WaitForDebounceAsync()
+    {
+        lock (_gate)
+        {
+            _debounceStarted ??= new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            return _debounceStarted.Task;
         }
     }
 }

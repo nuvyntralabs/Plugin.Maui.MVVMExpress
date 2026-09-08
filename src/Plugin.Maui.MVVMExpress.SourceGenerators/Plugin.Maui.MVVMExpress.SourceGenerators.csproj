@@ -23,8 +23,8 @@
     <PackageProjectUrl>https://nuvyntralabs.github.io/packages/plugin-maui-mvvmexpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.0.2</Version>
-    <PackageReleaseNotes>1.0.0: SemVer lock. UseAuth(TChallenge) on UseMvvmExpress. 15-minute getting started, cheat sheet, cookbook, Playground.</PackageReleaseNotes>
+    <Version>1.3.0</Version>
+    <PackageReleaseNotes>1.3.0: Phases 8–10. One registration path, [NotifyDependsOn], analyzers, CommunityToolkit ViewModel interop, modules, modal stack, DeepLinks/SecureSession adapters, Search/SectionHost views, ILLink roots, 1.0 contract tests.</PackageReleaseNotes>
     <IncludeSymbols>false</IncludeSymbols>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

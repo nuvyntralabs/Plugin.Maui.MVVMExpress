@@ -4,7 +4,7 @@ Product: **Plugin.Maui.MVVMExpress**.
 
 Implementation is incremental. Do not implement a later phase in the same change as an earlier one unless a Phase 1 type is blocked without it.
 
-Phases 0–7 below are shipped. **Current work** is Phases 8–10 in [docs/development-plan.md](docs/development-plan.md).
+Phases 0–10 are shipped in `1.3.0`. Product intent: [docs/development-plan.md](docs/development-plan.md). Implementation record: [docs/phase-8-10-implementation-plan.md](docs/phase-8-10-implementation-plan.md).
 
 ## Versioning
 
@@ -18,10 +18,10 @@ Phases 0–7 below are shipped. **Current work** is Phases 8–10 in [docs/devel
 | 0.6.0-preview | Device-safe marshal, weak `CanExecuteChanged`, window-overlay toasts, Validation trim roots, host/auth/forms UX |
 | 0.6.1-preview | Host-safe navigator (pages on `IMainThread`), `UseNavigationPage` + replace-root, `SectionHostViewModel`, `SnapshotCollection`, chat-host cookbook |
 | 0.6.2-preview | (skipped — Phase 6 docs shipped with 1.0.0) |
-| 1.0.0 | Phase 6 + 7 — 15-minute path, cheat sheet, cookbook, Playground, SemVer lock, `UseAuth<TChallenge>()` (current). Accepted 1.0 scope: [known-limitations.md](docs/known-limitations.md) |
-| 1.1.0 | Phase 8 — one path (generators, registration, forms, nav-args), CT interop, three analyzers, `dotnet new` |
-| 1.2.0 | Phase 9 — Shell parity, modules, modal stack, sibling host adapters |
-| 1.3.0 | Phase 10 — device numbers, trim, zero-reflection policy, production post-mortem |
+| 1.0.0 | Phase 6 + 7 — 15-minute path, cheat sheet, cookbook, Playground, SemVer lock, `UseAuth<TChallenge>()`. Accepted 1.0 scope: [known-limitations.md](docs/known-limitations.md) |
+| 1.1.0 | Phase 8 — one path (generators, registration, forms, nav-args), CT interop, three analyzers, `dotnet new` (shipped inside 1.3.0) |
+| 1.2.0 | Phase 9 — Shell parity, modules, modal stack, sibling host adapters (shipped inside 1.3.0) |
+| 1.3.0 | Phase 10 — analyzers, ILLink, contract tests, host-process proof. Hardware RSS / production post-mortem stay documented as manual |
 
 After 1.0.0: SemVer. Breaking API changes require a major version.
 

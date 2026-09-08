@@ -4,6 +4,21 @@ All notable changes to Plugin.Maui.MVVMExpress are documented here. The format f
 
 ## [Unreleased]
 
+## [1.3.0] — 2026-09-08
+
+### Added
+
+- Phase 8: `[NotifyDependsOn]`, generated `[RegisterView]` page maps, CommunityToolkit ViewModel registration, MVVME001–003 analyzers, 1.0 `Contract.Tests`
+- Phase 9: `IModule` / `AddModule<T>()`, `PushModalAsync` / `PopModalAsync`, `UseDeepLinks` / `UseSecureSessionAuth` (fail closed), `SectionHostView`, `MvvmSearch`, `CollectionBind.AsyncFetch`
+- Phase 10: MVVME010–013 analyzers, ILLink descriptors for Core forms, Navigation, Dialogs, and Pagination
+- Escape-hatch sample `ManualCounterViewModel` keeps handwritten `SetProperty` proven
+
+### Changed
+
+- `UseNavigationPage` / `UseShell` apply generated page maps before the optional `Map` callback
+- `FormViewModel.Bind` is public (1.0 callers already used the public changelog contract)
+- VS Code and Visual Studio wrappers pin `Plugin.Maui.MVVMExpress.Templates` `1.3.0` (same as the library)
+
 ## [1.0.2] — 2026-09-07
 
 ### Added

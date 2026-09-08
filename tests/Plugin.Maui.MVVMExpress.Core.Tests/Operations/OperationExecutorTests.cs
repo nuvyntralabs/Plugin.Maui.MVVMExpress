@@ -69,18 +69,23 @@ public sealed class OperationExecutorTests
     {
         var runs = 0;
         var executor = new OperationExecutor();
-        var options = new OperationOptions { Debounce = TimeSpan.FromMilliseconds(30) };
+        var options = new OperationOptions { Debounce = TimeSpan.FromMilliseconds(200) };
         var first = executor.RunAsync(_ =>
         {
             Interlocked.Increment(ref runs);
             return Task.CompletedTask;
         }, options);
+        await executor.WaitForDebounceAsync().WaitAsync(TimeSpan.FromSeconds(2));
         var second = executor.RunAsync(_ =>
         {
             Interlocked.Increment(ref runs);
             return Task.CompletedTask;
         }, options);
-        await Task.WhenAll(first, second);
+        var firstOutcome = await first;
+        var secondOutcome = await second;
+        Assert.False(firstOutcome.IsSuccess);
+        Assert.Equal("E_THROTTLE", firstOutcome.Error?.Code);
+        Assert.True(secondOutcome.IsSuccess);
         Assert.Equal(1, runs);
     }
 

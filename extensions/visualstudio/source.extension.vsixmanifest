@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="nuvyntralabs.MVVMExpress.VisualStudio" Version="1.0.2" Language="en-US" Publisher="Nuvyntra Labs" />
+    <Identity Id="nuvyntralabs.MVVMExpress.VisualStudio" Version="1.3.0" Language="en-US" Publisher="Nuvyntra Labs" />
     <DisplayName>MVVMExpress for Visual Studio</DisplayName>
     <Description xml:space="preserve">Install Plugin.Maui.MVVMExpress.Templates and create MVVMExpress MAUI apps and pages via dotnet new.</Description>
     <MoreInfo>https://github.com/nuvyntralabs/Plugin.Maui.MVVMExpress</MoreInfo>

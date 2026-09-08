@@ -118,9 +118,21 @@ public sealed class MvvmExpressGenerator : IIncrementalGenerator
                 {
                     target.Commands.Add(CommandMethod.Sync(method));
                 }
-                else if (HasAttribute(method, "AsyncModelCommandAttribute"))
+                else                 if (HasAttribute(method, "AsyncModelCommandAttribute"))
                 {
                     target.Commands.Add(CommandMethod.Async(method));
+                }
+            }
+
+            foreach (var property in type.GetMembers().OfType<IPropertySymbol>())
+            {
+                foreach (var source in GetNotifyDependsOn(property))
+                {
+                    var field = target.Fields.FirstOrDefault(item => item.PropertyName == source);
+                    if (field is not null && !field.Also.Contains(property.Name, StringComparer.Ordinal))
+                    {
+                        field.Also.Add(property.Name);
+                    }
                 }
             }
 
@@ -156,7 +168,7 @@ public sealed class MvvmExpressGenerator : IIncrementalGenerator
                 sb.Append("            get => ").Append(field.FieldName).AppendLine(";");
                 sb.AppendLine("            set");
                 sb.AppendLine("            {");
-                if (field.Also.Length == 0)
+                if (field.Also.Count == 0)
                 {
                     sb.Append("                SetProperty(ref ").Append(field.FieldName).AppendLine(", value);");
                 }
@@ -269,6 +281,27 @@ public sealed class MvvmExpressGenerator : IIncrementalGenerator
 
             sb.AppendLine("    }");
             sb.AppendLine();
+            sb.AppendLine("    public static void ApplyPageMaps(global::System.Action<global::System.Type, global::System.Type, string?> map)");
+            sb.AppendLine("    {");
+            var routesByVm = targets
+                .Where(static t => t.Route is not null)
+                .ToDictionary(static t => t.FullName, static t => t.Route!, StringComparer.Ordinal);
+            foreach (var target in targets.Where(static t => t.RegisterView && t.ViewModelType is not null))
+            {
+                routesByVm.TryGetValue(target.ViewModelType!, out var route);
+                sb.Append("        map(typeof(").Append(target.ViewModelType).Append("), typeof(").Append(target.FullName).Append("), ");
+                if (route is null)
+                {
+                    sb.AppendLine("null);");
+                }
+                else
+                {
+                    sb.Append('"').Append(route).AppendLine("\");");
+                }
+            }
+
+            sb.AppendLine("    }");
+            sb.AppendLine();
             sb.Append("    public static global::Plugin.Maui.MVVMExpress.Auth.INavigationAuthPolicy AuthPolicy { get; } = new global::Plugin.Maui.MVVMExpress.Auth.NavigationAuthPolicy(");
             var auth = targets.Where(static t => t.RequiresAuth || t.Role is not null).ToArray();
             if (auth.Length == 0)
@@ -304,6 +337,7 @@ public sealed class MvvmExpressGenerator : IIncrementalGenerator
             sb.AppendLine("    {");
             sb.AppendLine("        public void AddViewModels(global::Microsoft.Extensions.DependencyInjection.IServiceCollection services) => AddGeneratedViewModels(services);");
             sb.AppendLine("        public void ApplyRoutes(global::System.Action<global::System.Type, string> map) => MvvmExpressGeneratedRegistrations.ApplyRoutes(map);");
+            sb.AppendLine("        public void ApplyPageMaps(global::System.Action<global::System.Type, global::System.Type, string?> map) => MvvmExpressGeneratedRegistrations.ApplyPageMaps(map);");
             sb.AppendLine("        public global::Plugin.Maui.MVVMExpress.Auth.INavigationAuthPolicy AuthPolicy => MvvmExpressGeneratedRegistrations.AuthPolicy;");
             sb.AppendLine("    }");
             sb.AppendLine();
@@ -336,11 +370,41 @@ public sealed class MvvmExpressGenerator : IIncrementalGenerator
             return false;
         }
 
-        private static string[] GetNotifyAlso(IFieldSymbol field)
+        private static List<string> GetNotifyAlso(IFieldSymbol field)
             => [.. field.GetAttributes()
                 .Where(a => a.AttributeClass?.Name == "NotifyAlsoAttribute")
                 .Select(a => a.ConstructorArguments.Length > 0 ? a.ConstructorArguments[0].Value?.ToString() : null)
-                .Where(s => !string.IsNullOrEmpty(s))!];
+                .Where(s => s is { Length: > 0 })
+                .Select(s => s!)];
+
+        private static IEnumerable<string> GetNotifyDependsOn(IPropertySymbol property)
+        {
+            foreach (var data in property.GetAttributes())
+            {
+                if (data.AttributeClass?.Name != "NotifyDependsOnAttribute")
+                {
+                    continue;
+                }
+
+                foreach (var argument in data.ConstructorArguments)
+                {
+                    if (argument.Kind == TypedConstantKind.Array)
+                    {
+                        foreach (var value in argument.Values)
+                        {
+                            if (value.Value is string name && name.Length > 0)
+                            {
+                                yield return name;
+                            }
+                        }
+                    }
+                    else if (argument.Value is string single && single.Length > 0)
+                    {
+                        yield return single;
+                    }
+                }
+            }
+        }
 
         private static string? GetStringArgument(INamedTypeSymbol type, string attribute)
         {
@@ -376,7 +440,21 @@ public sealed class MvvmExpressGenerator : IIncrementalGenerator
         }
     }
 
-    internal readonly record struct NotifyField(string FieldName, string PropertyName, string Type, string[] Also);
+    internal sealed class NotifyField
+    {
+        public NotifyField(string fieldName, string propertyName, string type, IEnumerable<string> also)
+        {
+            FieldName = fieldName;
+            PropertyName = propertyName;
+            Type = type;
+            Also = [.. also];
+        }
+
+        public string FieldName { get; }
+        public string PropertyName { get; }
+        public string Type { get; }
+        public List<string> Also { get; }
+    }
 
     internal readonly record struct PersistField(string FieldName, string Type);
 

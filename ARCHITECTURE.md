@@ -2,7 +2,7 @@
 
 **Product:** MVVMExpress 
 **Official package family:** `Plugin.Maui.MVVMExpress.*` 
-**Status:** `1.0.0`. Device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + `UseAuth<TChallenge>()` + replace-root, `SectionHostViewModel`, `SnapshotCollection`, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation `ILLink.Descriptors.xml`, host/auth/forms UX, and Phase 5 productization are shipped with tests. Shipped public APIs are the SemVer contract. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
+**Status:** `1.3.0`. Device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + `UseAuth<TChallenge>()` + replace-root, `SectionHostViewModel`, `SnapshotCollection`, weak `CanExecuteChanged`, `Window.AddOverlay` toasts, Validation `ILLink.Descriptors.xml`, host/auth/forms UX, and Phase 5 productization are shipped with tests. Shipped public APIs are the SemVer contract. See [FEATURE-MATRIX.md](FEATURE-MATRIX.md), [ROADMAP.md](ROADMAP.md), and [docs/known-limitations.md](docs/known-limitations.md).
 
 MVVMExpress is a modular MVVM application framework for .NET MAUI. It is not a fork of CommunityToolkit.Mvvm, Prism.Maui, or ReactiveUI. Those libraries are studied as capability references. This document records the original architecture that delivers equivalent developer outcomes without copying their type graphs, containers, or navigation engines.
 
@@ -434,4 +434,4 @@ This folder is its own git repository and MauiEssentials submodule (`Plugin.Maui
 
 ## 21. How to read this document
 
-This file is the architecture contract. **1.0.0 implements** Core through Reactive, device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + `SectionHostViewModel` + `SnapshotCollection`, weak command events, window-overlay toasts, Validation trim roots, source generators, persist/auth attributes, CommunityToolkit compatibility, and Phase 5 productization. Remaining 1.0.0 work is design-review sign-off; accepted scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).
+This file is the architecture contract. **1.3.0** ships Phases 8–10 on the 1.0 SemVer lock: Core through Reactive, generated page maps, `[NotifyDependsOn]`, analyzers, modules, modal stack, DeepLinks/SecureSession adapters, device-safe marshal, UI-thread-safe navigators, `UseNavigationPage` + `UseAuth<TChallenge>()` + `SectionHostViewModel` + `SnapshotCollection`, weak command events, window-overlay toasts, ILLink trim roots, and CommunityToolkit ViewModel interop. Accepted 1.0 scope is in [docs/known-limitations.md](docs/known-limitations.md). Shipping versus designed is tracked in [FEATURE-MATRIX.md](FEATURE-MATRIX.md). See [ROADMAP.md](ROADMAP.md).

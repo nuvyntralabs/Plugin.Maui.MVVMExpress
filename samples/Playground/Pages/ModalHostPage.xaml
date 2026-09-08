@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:modals="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Modals;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Playground.Pages.ModalHostPage"
+    x:DataType="modals:ModalHostViewModel"
+    Title="Modal">
+
+    <VerticalStackLayout Padding="20" Spacing="12">
+        <Button Text="Open note modal" Command="{Binding OpenModalCommand}" />
+    </VerticalStackLayout>
+</ContentPage>

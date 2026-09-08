@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:SampleContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Plugin.Maui.MVVMExpress.Sample.Pages"
+    xmlns:gallery="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Gallery;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Sample.Pages.AdapterCatalogPage"
+    x:DataType="gallery:AdapterCatalogViewModel"
+    Title="Adapters">
+
+    <VerticalStackLayout Padding="20" Spacing="8">
+        <Label Text="Sibling plugins stay optional. Compose them; do not fork them." />
+        <Label Text="{Binding FormValidationPackage}" />
+        <Label Text="{Binding KeyboardPackage}" />
+        <Label Text="{Binding DeepLinksPackage}" />
+        <Label Text="{Binding SecureSessionPackage}" />
+    </VerticalStackLayout>
+</pages:SampleContentPage>

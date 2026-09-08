@@ -12,6 +12,11 @@ public interface IGeneratedMvvmExpressModule
     /// <summary>Applies <c>[Route]</c> mappings.</summary>
     void ApplyRoutes(Action<Type, string> map);
 
+    /// <summary>Applies <c>[RegisterView]</c> page + ViewModel maps. Default is a no-op so 1.0 modules stay valid.</summary>
+    void ApplyPageMaps(Action<Type, Type, string?> map)
+    {
+    }
+
     /// <summary>Generated <c>[RequiresAuth]</c> / <c>[RequiresRole]</c> policy.</summary>
     INavigationAuthPolicy AuthPolicy { get; }
 }
@@ -47,6 +52,35 @@ public static class GeneratedRegistrationHooks
         foreach (var module in Snapshot())
         {
             module.AddViewModels(services);
+        }
+    }
+
+    /// <summary>Applies every generated <c>[Route]</c> mapping.</summary>
+    public static void ApplyRoutes(Action<Type, string> map)
+    {
+        ArgumentNullException.ThrowIfNull(map);
+        foreach (var module in Snapshot())
+        {
+            module.ApplyRoutes(map);
+        }
+    }
+
+    /// <summary>Applies every generated <c>[RegisterView]</c> page map.</summary>
+    public static void ApplyPageMaps(Action<Type, Type, string?> map)
+    {
+        ArgumentNullException.ThrowIfNull(map);
+        foreach (var module in Snapshot())
+        {
+            module.ApplyPageMaps(map);
+        }
+    }
+
+    /// <summary>Clears generated modules. Tests only.</summary>
+    internal static void ClearForTests()
+    {
+        lock (Modules)
+        {
+            Modules.Clear();
         }
     }
 }

@@ -119,6 +119,26 @@ Latest run (2026-09-02): **200 Core** (includes `NavigationThread`, `CoalescingD
 | `ScopedNavigator` pop GC | `NavigationPopGcTests` |
 | Pagination Small / Mid single Reset per page | `PagedProductViewModelTests.LoadMore_Scale_UsesSingleResetPerPage` |
 
+## Phase 8–10
+
+| Area | Tests |
+| --- | --- |
+| 1.0 public API lock | `Contract.Tests.PublicApiContractTests` |
+| `[NotifyDependsOn]` sample | `ComputedNameTests` |
+| Operation pipeline sample | `PipelineTests` |
+| Modal sample | `ModalHostTests` |
+| `IModule` sample | `CatalogModuleTests` |
+| Deep-link sample | `DeepLinkBridgeTests` |
+| Two-window sample | `TwoWindowDemoTests` |
+| Adapter catalog | `AdapterCatalogTests` |
+| `[NotifyDependsOn]` runtime | `NotifyDependsOnRuntimeTests` |
+| `[NotifyDependsOn]` / `[RegisterView]` generator | `NotifyDependsOnAndAnalyzerTests` |
+| Analyzers MVVME001–003, 010–013 | `NotifyDependsOnAndAnalyzerTests` |
+| Modules / DeepLinks / SecureSession fail-closed | `ModuleAndAdapterTests` |
+| Modal stack / two windows / generated page maps | `Phase910NavigatorTests` |
+| CommunityToolkit `ObservableObject` interop | `CommunityToolkitViewModelInteropTests` |
+| Handwritten `SetProperty` escape hatch | `ManualCounterTests` |
+
 ## Out of 1.0 catalog scope
 
 Hardware RSS, on-device `CollectionView` scroll, and MAUI-window `ViewModelLifecycleBehavior` attach/detach GC. Generators have snapshot tests in `Plugin.Maui.MVVMExpress.Generator.Tests`. See [known-limitations.md](known-limitations.md).

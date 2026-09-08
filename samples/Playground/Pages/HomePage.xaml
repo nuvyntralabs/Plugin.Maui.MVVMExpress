@@ -16,6 +16,10 @@
             <Button Text="Form" Command="{Binding OpenFormCommand}" />
             <Button Text="Auth" Command="{Binding OpenAuthCommand}" />
             <Button Text="List" Command="{Binding OpenListCommand}" />
+            <Button Text="Chat host" Command="{Binding OpenChatCommand}" />
+            <Button Text="NotifyDependsOn" Command="{Binding OpenComputedCommand}" />
+            <Button Text="Escape hatch" Command="{Binding OpenManualCommand}" />
+            <Button Text="Modal" Command="{Binding OpenModalCommand}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

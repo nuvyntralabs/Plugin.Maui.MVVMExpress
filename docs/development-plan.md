@@ -1,6 +1,6 @@
 # MVVMExpress development plan (post-0.6.1)
 
-Work plan for the next phases after **0.6.1-preview**. Phases 0–5 in [ROADMAP.md](../ROADMAP.md) and [DESIGN-PLAN.md](../DESIGN-PLAN.md) are shipped. This document is the current implementation contract.
+Work plan for the next phases after **0.6.1-preview**. Phases 0–5 in [ROADMAP.md](../ROADMAP.md) and [DESIGN-PLAN.md](../DESIGN-PLAN.md) are shipped. This document is the current product contract. Implementation steps, regression gates, and the Phase 8–10 test/sample lists live in [phase-8-10-implementation-plan.md](phase-8-10-implementation-plan.md).
 
 **Product:** Plugin.Maui.MVVMExpress  
 **Baseline:** `0.6.1-preview`  
@@ -283,7 +283,7 @@ These are Niladri Padhy / MauiEssentials / Nuvyntra Labs plugins. Usual alternat
 
 ## How to use this document
 
-1. Confirm the change matches the **current** phase. Phase 8 is current until its exit is met.
+1. Confirm the change matches the **current** phase. Phases 8–10 shipped in 1.3.0. Follow [phase-8-10-implementation-plan.md](phase-8-10-implementation-plan.md) for the 1.0 regression gate.
 2. Update [FEATURE-MATRIX.md](../FEATURE-MATRIX.md) when a phase ships (`Designed` → `Yes` only with types and tests).
 3. Update [ROADMAP.md](../ROADMAP.md) version table when a version ships.
 4. Do not regenerate the framework. One phase per change set.

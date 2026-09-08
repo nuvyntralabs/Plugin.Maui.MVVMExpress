@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit\Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Testing\Plugin.Maui.MVVMExpress.Testing.csproj" />
   </ItemGroup>
 
 </Project>

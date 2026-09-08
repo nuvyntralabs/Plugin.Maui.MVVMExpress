@@ -38,6 +38,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +46,7 @@
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress\Plugin.Maui.MVVMExpress.csproj" />
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Dialogs\Plugin.Maui.MVVMExpress.Dialogs.csproj" />
     <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Navigation\Plugin.Maui.MVVMExpress.Navigation.csproj" />
+    <ProjectReference Include="..\..\src\Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit\Plugin.Maui.MVVMExpress.Compatibility.CommunityToolkit.csproj" />
   </ItemGroup>
 
 </Project>

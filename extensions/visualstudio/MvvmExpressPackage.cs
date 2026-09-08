@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace NuvyntraLabs.MVVMExpress.VisualStudio;
 
 [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-[InstalledProductRegistration("MVVMExpress", "Create MVVMExpress MAUI apps and pages from Plugin.Maui.MVVMExpress.Templates.", "1.0.2")]
+[InstalledProductRegistration("MVVMExpress", "Create MVVMExpress MAUI apps and pages from Plugin.Maui.MVVMExpress.Templates.", "1.3.0")]
 [ProvideMenuResource("Menus.ctmenu", 1)]
 [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
 [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]

@@ -16,8 +16,16 @@ using Plugin.Maui.MVVMExpress.Samples.Generated;
 using Plugin.Maui.MVVMExpress.Samples.Pagination;
 using Plugin.Maui.MVVMExpress.Samples.Reactive;
 using Plugin.Maui.MVVMExpress.Samples.AuthApp;
+using Plugin.Maui.MVVMExpress.Samples.ChatHost;
+using Plugin.Maui.MVVMExpress.Samples.Computed;
+using Plugin.Maui.MVVMExpress.Samples.EscapeHatch;
+using Plugin.Maui.MVVMExpress.Samples.Gallery;
+using Plugin.Maui.MVVMExpress.Samples.Modals;
+using Plugin.Maui.MVVMExpress.Samples.Modules;
+using Plugin.Maui.MVVMExpress.Samples.Operations;
 using Plugin.Maui.MVVMExpress.Samples.Playground;
 using Plugin.Maui.MVVMExpress.Samples.Services;
+using Plugin.Maui.MVVMExpress.Samples.Windows;
 using Plugin.Maui.MVVMExpress.Validation;
 
 namespace Plugin.Maui.MVVMExpress.Samples;
@@ -31,7 +39,9 @@ public static class SampleServiceCollectionExtensions
         services.AddSingleton<IAuthState, InMemoryAuthState>();
         services.AddSingleton<IAccountService, MemoryAccountService>();
         services.AddSingleton<IValidator>(_ => DataAnnotationsValidator.Instance);
+        services.AddSingleton<IDeepLinkBridge, SampleDeepLinkBridge>();
         services.AddMvvmExpress();
+        services.AddModule<CatalogModule>();
 
         if (configureNavigator)
         {
@@ -99,6 +109,14 @@ public static class SampleServiceCollectionExtensions
         services.AddTransient<PlaygroundListViewModel>();
         services.AddTransient<PlaygroundLoginViewModel>();
         services.AddTransient<PlaygroundSecureViewModel>();
+        services.AddTransient(_ => new ChatHostViewModel(ChatHostViewModel.DemoSeed));
+        services.AddTransient<ManualCounterViewModel>();
+        services.AddTransient<ComputedNameViewModel>();
+        services.AddTransient<PipelineViewModel>();
+        services.AddTransient<ModalHostViewModel>();
+        services.AddTransient<NoteModalViewModel>();
+        services.AddTransient<TwoWindowDemoViewModel>();
+        services.AddTransient<AdapterCatalogViewModel>();
         services.AddGeneratedViewModels();
         return services;
     }

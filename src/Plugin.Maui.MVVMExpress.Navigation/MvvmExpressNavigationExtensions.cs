@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Plugin.Maui.MVVMExpress.Diagnostics;
+using Plugin.Maui.MVVMExpress.Generated;
 using Plugin.Maui.MVVMExpress.Hosting;
 using Plugin.Maui.MVVMExpress.Threading;
 
@@ -25,6 +26,8 @@ public static class MvvmExpressNavigationExtensions
                     services,
                     sp.GetService<IMainThread>(),
                     sp.GetService<IMvvmExpressDiagnostics>());
+                GeneratedRegistrationHooks.ApplyRoutes((type, route) => navigator.Map(type, route));
+                GeneratedRegistrationHooks.ApplyPageMaps((vm, page, route) => navigator.Map(vm, page, route));
                 configure?.Invoke(navigator, sp);
                 return navigator;
             });
@@ -56,6 +59,7 @@ public static class MvvmExpressNavigationExtensions
                     sp.GetService<IMainThread>(),
                     sp.GetService<IMvvmExpressDiagnostics>(),
                     static () => Application.Current is { Windows.Count: > 0 } app ? app.Windows[0] : null);
+                GeneratedRegistrationHooks.ApplyPageMaps((vm, page, route) => navigator.Map(vm, page, route));
                 configure?.Invoke(navigator, sp);
                 return navigator;
             });

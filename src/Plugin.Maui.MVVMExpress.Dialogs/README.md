@@ -32,7 +32,7 @@ Register `MauiDialogs` as `IDialogs` and `MauiNotifier` as `INotifier` in the MA
 dotnet add package Plugin.Maui.MVVMExpress.Dialogs
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+), `net10.0-maccatalyst` (15+), and `net10.0-windows10.0.19041.0` (packed on Windows; otherwise `net10.0`). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `1.0.2`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+), `net10.0-maccatalyst` (15+), and `net10.0-windows10.0.19041.0` (packed on Windows; otherwise `net10.0`). Requires the [host](https://www.nuget.org/packages/Plugin.Maui.MVVMExpress) package. Version `1.3.0`.
 
 `MauiNotifier` toasts use `Window.AddOverlay` and never wrap `Page.Content`.
 

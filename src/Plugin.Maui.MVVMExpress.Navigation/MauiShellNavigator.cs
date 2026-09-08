@@ -78,6 +78,34 @@ public sealed class MauiShellNavigator : INavigator, IRouteResolver
         return this;
     }
 
+    /// <summary>Maps a ViewModel type to a Shell route (generated <c>[Route]</c> uses this).</summary>
+    public MauiShellNavigator Map(Type viewModelType, string route)
+    {
+        ArgumentNullException.ThrowIfNull(viewModelType);
+        ArgumentException.ThrowIfNullOrWhiteSpace(route);
+        _routes.Map(viewModelType, route);
+        return this;
+    }
+
+    /// <summary>Maps a ViewModel type to a page type and Shell route (generated <c>[RegisterView]</c> uses this).</summary>
+    public MauiShellNavigator Map(Type viewModelType, Type pageType, string? route = null)
+    {
+        ArgumentNullException.ThrowIfNull(viewModelType);
+        ArgumentNullException.ThrowIfNull(pageType);
+        var path = string.IsNullOrWhiteSpace(route) ? viewModelType.Name : route;
+        _routes.Map(viewModelType, path);
+        var register = path.TrimStart('/');
+        if (register.StartsWith("//", StringComparison.Ordinal))
+        {
+            register = register[2..];
+        }
+
+        Routing.RegisterRoute(register.TrimStart('/'), pageType);
+        _services?.TryAddTransient(viewModelType);
+        _services?.TryAddTransient(pageType);
+        return this;
+    }
+
     /// <summary>Creates a <see cref="ShellContent"/> that resolves <typeparamref name="TPage"/> per navigation.</summary>
     public static ShellContent CreateContent<TPage>(string route, IServiceProvider services)
         where TPage : Page

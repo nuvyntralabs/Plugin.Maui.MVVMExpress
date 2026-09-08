@@ -2,7 +2,7 @@
   "name": "mvvmexpress",
   "displayName": "MVVMExpress",
   "description": "Create .NET MAUI MVVMExpress apps and pages via dotnet new. Templates stay in Plugin.Maui.MVVMExpress.Templates.",
-  "version": "1.0.2",
+  "version": "1.3.0",
   "publisher": "nuvyntralabs",
   "license": "MIT",
   "repository": {

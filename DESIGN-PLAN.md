@@ -10,7 +10,7 @@ Work plan for implementing [ARCHITECTURE.md](ARCHITECTURE.md) and [API-DESIGN.md
 | --- | --- |
 | Architecture | Living contract — status banner updated for 0.5.0 |
 | API design | Living contract — shipped vs proposed distinguished in the header |
-| Roadmap / feature matrix | Current — 1.0.0 (Phases 6–7). Next is Phase 8 |
+| Roadmap / feature matrix | Current — 1.3.0 (Phases 8–10 shipped) |
 | Solution + packages | Core, Host, Navigation, Dialogs, Validation, Pagination, Reactive, Testing, SourceGenerators, Compatibility packed |
 | Core runtime | Implemented + generators / persist / auth / diagnostics tests. Host timings in MEMORY-AND-PERFORMANCE §2.1 |
 | Phase 4 generators | Shipped: `[Notify]`, commands, registration, persist, auth, `AddGeneratedViewModels` |

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:esc="clr-namespace:Plugin.Maui.MVVMExpress.Samples.EscapeHatch;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Playground.Pages.ManualCounterPage"
+    x:DataType="esc:ManualCounterViewModel"
+    Title="Escape hatch">
+
+    <VerticalStackLayout Padding="20" Spacing="12">
+        <Label Text="{Binding Count}" FontSize="24" />
+        <Button Text="Increment" Command="{Binding IncrementCommand}" />
+    </VerticalStackLayout>
+</ContentPage>

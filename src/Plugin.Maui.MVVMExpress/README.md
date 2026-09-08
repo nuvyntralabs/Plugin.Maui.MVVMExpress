@@ -30,7 +30,7 @@ dotnet add package Plugin.Maui.MVVMExpress.Core
 dotnet add package Plugin.Maui.MVVMExpress
 ```
 
-Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+), `net10.0-maccatalyst` (15+), and `net10.0-windows10.0.19041.0` (Windows 10 17763+; packed when MSBuild runs on Windows). Windows apps otherwise resolve `net10.0`. Version `1.0.2`.
+Target frameworks: `net10.0`, `net10.0-android` (API 21+), `net10.0-ios` (iOS 15+), `net10.0-maccatalyst` (15+), and `net10.0-windows10.0.19041.0` (Windows 10 17763+; packed when MSBuild runs on Windows). Windows apps otherwise resolve `net10.0`. Version `1.3.0`.
 
 ## What this package is
 

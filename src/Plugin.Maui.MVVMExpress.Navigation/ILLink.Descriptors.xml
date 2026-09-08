@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+  <assembly fullname="Plugin.Maui.MVVMExpress.Navigation">
+    <type fullname="Plugin.Maui.MVVMExpress.Navigation.MauiPageNavigator" preserve="all" />
+    <type fullname="Plugin.Maui.MVVMExpress.Navigation.MauiShellNavigator" preserve="all" />
+    <type fullname="Plugin.Maui.MVVMExpress.Navigation.MvvmExpressNavigationExtensions" preserve="all" />
+  </assembly>
+</linker>

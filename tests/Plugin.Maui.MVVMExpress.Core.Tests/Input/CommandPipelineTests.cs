@@ -41,9 +41,10 @@ public sealed class CommandPipelineTests
                 Interlocked.Increment(ref runs);
                 return Task.CompletedTask;
             },
-            options: new AsyncCommandOptions { Debounce = TimeSpan.FromMilliseconds(250) });
+            options: new AsyncCommandOptions { Debounce = TimeSpan.FromMilliseconds(200) });
 
         var first = command.ExecuteAsync();
+        await Task.Delay(20);
         var second = command.ExecuteAsync();
         await Task.WhenAll(first, second);
         Assert.Equal(1, runs);

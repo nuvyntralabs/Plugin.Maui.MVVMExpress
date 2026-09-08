@@ -241,7 +241,7 @@ public abstract class FormViewModel : PageViewModel, IDirtyState
     /// <param name="field">Tracked field.</param>
     /// <param name="propertyName">Public property to notify (for example <c>nameof(Draft)</c>).</param>
     /// <param name="notifyCanExecute">Optional command refresh (<c>() => SendCommand.NotifyCanExecuteChanged()</c>).</param>
-    protected void Bind<T>(FormField<T> field, string propertyName, Action? notifyCanExecute = null)
+    public void Bind<T>(FormField<T> field, string propertyName, Action? notifyCanExecute = null)
     {
         ArgumentNullException.ThrowIfNull(field);
         ArgumentException.ThrowIfNullOrEmpty(propertyName);

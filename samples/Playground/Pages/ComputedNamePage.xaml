@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:computed="clr-namespace:Plugin.Maui.MVVMExpress.Samples.Computed;assembly=Plugin.Maui.MVVMExpress.Samples.Shared"
+    x:Class="Plugin.Maui.MVVMExpress.Playground.Pages.ComputedNamePage"
+    x:DataType="computed:ComputedNameViewModel"
+    Title="NotifyDependsOn">
+
+    <VerticalStackLayout Padding="20" Spacing="8">
+        <Entry Text="{Binding First}" />
+        <Entry Text="{Binding Last}" />
+        <Label Text="{Binding FullName}" FontSize="22" />
+    </VerticalStackLayout>
+</ContentPage>
