@@ -16,6 +16,7 @@
     <PackageReleaseNotes>1.3.0: Phases 8–10. One registration path, [NotifyDependsOn], analyzers, CommunityToolkit ViewModel interop, modules, modal stack, DeepLinks/SecureSession adapters, Search/SectionHost views, ILLink roots, 1.0 contract tests.</PackageReleaseNotes>
     <IsPackable>true</IsPackable>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>
   </PropertyGroup>
 
@@ -28,6 +29,7 @@
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\..\nuget.png" Pack="true" PackagePath="icon.png" />
   </ItemGroup>
 
 </Project>

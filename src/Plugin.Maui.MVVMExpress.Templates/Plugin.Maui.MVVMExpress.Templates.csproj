@@ -8,6 +8,7 @@
     <Description>dotnet new mvvmexpress (app) and mvvmexpress-page (XAML page, ViewModel, service, bindings, commands).</Description>
     <PackageTags>dotnet-maui;maui;mvvm;dotnet-new;templates;android;ios;maccatalyst;windows;mauiessentials;mvvm-express</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>false</IncludeSymbols>
@@ -27,6 +28,7 @@
     <Compile Remove="..\..\templates\**\*" />
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\..\nuget.png" Pack="true" PackagePath="icon.png" />
     <Content Include="..\..\templates\maui-app\**\*" Exclude="..\..\templates\maui-app\**\bin\**;**\obj\**">
       <Pack>true</Pack>
       <PackagePath>content/maui-app/%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
